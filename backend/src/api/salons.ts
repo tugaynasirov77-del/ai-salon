@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import prisma from '../db/prisma';
 import { asyncHandler } from '../middleware/errors';
+import { setWebhookForSalon } from '../channels/telegram';
 
 const router = Router();
 
@@ -43,6 +44,37 @@ router.put(
     delete data.createdAt;
     const salon = await prisma.salon.update({ where: { id }, data });
     res.json(salon);
+  })
+);
+
+// POST /api/salons/:id/telegram/connect — подключить Telegram-бот к салону
+router.post(
+  '/:id/telegram/connect',
+  asyncHandler(async (req, res) => {
+    const { token } = req.body;
+    if (!token || typeof token !== 'string') {
+      res.status(400).json({ error: 'token обязателен (строка)' });
+      return;
+    }
+    const baseUrl = process.env.BASE_URL;
+    if (!baseUrl) {
+      res.status(500).json({ error: 'BASE_URL не задан на сервере' });
+      return;
+    }
+
+    const salon = await prisma.salon.update({
+      where: { id: req.params.id },
+      data: { telegramBotToken: token },
+    });
+
+    try {
+      await setWebhookForSalon(salon.id, token, baseUrl);
+    } catch (e: any) {
+      res.status(400).json({ error: `Не удалось установить webhook: ${e?.message}` });
+      return;
+    }
+
+    res.json({ ok: true, salonId: salon.id, webhookUrl: `${baseUrl}/webhook/telegram/${salon.id}` });
   })
 );
 

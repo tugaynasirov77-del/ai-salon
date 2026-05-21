@@ -1,13 +1,13 @@
 import redis from '../db/redis';
 import { sendMessage as sendTelegram } from './telegram';
-import { Channel, IClient, ICascadeResult } from '../../../shared/types';
+import { Channel, IClient, ICascadeResult, ISalon } from '../../../shared/types';
 
 const CHANNEL_ORDER: Channel[] = ['telegram', 'whatsapp', 'max', 'sms'];
 const STATUS_TTL = 300; // 5 минут
 
 export class CascadeSender {
-  // Отправляет сообщение, пробуя каналы по приоритету
-  async send(client: IClient, text: string): Promise<ICascadeResult> {
+  // Отправляет сообщение, пробуя каналы по приоритету. Salon нужен для токенов botToken и др.
+  async send(client: IClient, text: string, salon?: ISalon): Promise<ICascadeResult> {
     const attempted: Channel[] = [];
 
     // Сначала пробуем предпочитаемый клиентом канал
@@ -26,7 +26,7 @@ export class CascadeSender {
       }
 
       try {
-        const ok = await this.sendVia(channel, userId, text);
+        const ok = await this.sendVia(channel, userId, text, salon);
         if (ok) {
           console.log(`[cascade] доставлено через ${channel} клиенту ${client.id}`);
           return { success: true, channel, attemptedChannels: attempted };
@@ -81,10 +81,22 @@ export class CascadeSender {
     }
   }
 
-  private async sendVia(channel: Channel, userId: string, text: string): Promise<boolean> {
+  private async sendVia(
+    channel: Channel,
+    userId: string,
+    text: string,
+    salon?: ISalon
+  ): Promise<boolean> {
     switch (channel) {
-      case 'telegram':
-        return sendTelegram(userId, text);
+      case 'telegram': {
+        // Берём токен бота из салона; fallback на глобальный для обратной совместимости.
+        const token = salon?.telegramBotToken || process.env.TELEGRAM_BOT_TOKEN;
+        if (!token) {
+          console.warn('[cascade] нет telegram-токена ни в салоне, ни в env');
+          return false;
+        }
+        return sendTelegram(token, userId, text);
+      }
       case 'whatsapp':
         return this.sendWhatsApp(userId, text);
       case 'max':

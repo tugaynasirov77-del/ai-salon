@@ -12,7 +12,7 @@ import salonsRouter from './api/salons';
 import appointmentsRouter from './api/appointments';
 import healthRouter from './api/health';
 
-import { initTelegramBot } from './channels/telegram';
+import { initAllSalonBots } from './channels/telegram';
 import { startReminderWorker } from './queues/reminderWorker';
 
 const app = express();
@@ -39,12 +39,8 @@ app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`[server] запущен на порту ${PORT}`);
 
-  // Инициализируем интеграции
-  try {
-    initTelegramBot();
-  } catch (e) {
-    console.error('[startup] telegram init error:', e);
-  }
+  // Инициализируем интеграции — поднимаем webhook'и всех салонов с подключённым ботом
+  initAllSalonBots().catch((e) => console.error('[startup] telegram init error:', e));
 
   try {
     startReminderWorker();

@@ -40,8 +40,12 @@ export class MessageRouter {
         salon as unknown as ISalon
       );
 
-      // Отправка через каскад
-      const result = await cascadeSender.send(client as unknown as IClient, reply);
+      // Отправка через каскад (передаём салон для multi-tenant: токен его бота)
+      const result = await cascadeSender.send(
+        client as unknown as IClient,
+        reply,
+        salon as unknown as ISalon
+      );
 
       // Сохраняем исходящее
       await prisma.message.create({

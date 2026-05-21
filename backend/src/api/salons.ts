@@ -1,0 +1,130 @@
+import { Router } from 'express';
+import prisma from '../db/prisma';
+import { asyncHandler } from '../middleware/errors';
+
+const router = Router();
+
+// POST /api/salons — создать салон
+router.post(
+  '/',
+  asyncHandler(async (req, res) => {
+    const { name, ownerName, phone, address, niche, plan, telegramBotToken, settings } = req.body;
+    if (!name || !ownerName || !phone || !niche) {
+      res.status(400).json({ error: 'name, ownerName, phone, niche обязательны' });
+      return;
+    }
+    const salon = await prisma.salon.create({
+      data: { name, ownerName, phone, address, niche, plan, telegramBotToken, settings },
+    });
+    res.status(201).json(salon);
+  })
+);
+
+// GET /api/salons/:id
+router.get(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    const salon = await prisma.salon.findUnique({ where: { id: req.params.id } });
+    if (!salon) {
+      res.status(404).json({ error: 'Салон не найден' });
+      return;
+    }
+    res.json(salon);
+  })
+);
+
+// PUT /api/salons/:id — обновить настройки
+router.put(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const data = req.body;
+    delete data.id;
+    delete data.createdAt;
+    const salon = await prisma.salon.update({ where: { id }, data });
+    res.json(salon);
+  })
+);
+
+// GET /api/salons/:id/clients
+router.get(
+  '/:id/clients',
+  asyncHandler(async (req, res) => {
+    const clients = await prisma.client.findMany({
+      where: { salonId: req.params.id },
+      orderBy: { createdAt: 'desc' },
+      take: 200,
+    });
+    res.json(clients);
+  })
+);
+
+// GET /api/salons/:id/appointments
+router.get(
+  '/:id/appointments',
+  asyncHandler(async (req, res) => {
+    const { status, from, to } = req.query as Record<string, string | undefined>;
+    const where: any = { salonId: req.params.id };
+    if (status) where.status = status;
+    if (from || to) {
+      where.datetime = {};
+      if (from) where.datetime.gte = new Date(from);
+      if (to) where.datetime.lte = new Date(to);
+    }
+    const appointments = await prisma.appointment.findMany({
+      where,
+      orderBy: { datetime: 'asc' },
+      include: { client: true },
+      take: 500,
+    });
+    res.json(appointments);
+  })
+);
+
+// GET /api/salons/:id/messages
+router.get(
+  '/:id/messages',
+  asyncHandler(async (req, res) => {
+    const { clientId } = req.query as Record<string, string | undefined>;
+    const where: any = { salonId: req.params.id };
+    if (clientId) where.clientId = clientId;
+    const messages = await prisma.message.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      take: 200,
+    });
+    res.json(messages);
+  })
+);
+
+// GET /api/salons/:id/analytics
+router.get(
+  '/:id/analytics',
+  asyncHandler(async (req, res) => {
+    const salonId = req.params.id;
+    const since = new Date(Date.now() - 30 * 24 * 3600 * 1000);
+
+    const [clientsTotal, appointmentsTotal, appointmentsLast30, messagesLast30, byStatus] =
+      await Promise.all([
+        prisma.client.count({ where: { salonId } }),
+        prisma.appointment.count({ where: { salonId } }),
+        prisma.appointment.count({ where: { salonId, createdAt: { gte: since } } }),
+        prisma.message.count({ where: { salonId, createdAt: { gte: since } } }),
+        prisma.appointment.groupBy({
+          by: ['status'],
+          where: { salonId },
+          _count: { _all: true },
+        }),
+      ]);
+
+    res.json({
+      clientsTotal,
+      appointmentsTotal,
+      appointmentsLast30,
+      messagesLast30,
+      byStatus: byStatus.map((r) => ({ status: r.status, count: r._count._all })),
+    });
+  })
+);
+
+export default router;

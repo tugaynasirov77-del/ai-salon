@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Salon {
+  id               String        @id @default(cuid())
+  name             String
+  ownerName        String
+  phone            String
+  address          String?
+  niche            String
+  plan             String        @default("starter")
+  telegramBotToken String?
+  settings         Json?
+  isActive         Boolean       @default(true)
+  createdAt        DateTime      @default(now())
+  clients          Client[]
+  appointments     Appointment[]
+  messages         Message[]
+}
+
+model Client {
+  id               String        @id @default(cuid())
+  salonId          String
+  name             String?
+  phone            String?
+  telegramId       String?
+  whatsappId       String?
+  maxId            String?
+  preferredChannel String        @default("telegram")
+  createdAt        DateTime      @default(now())
+  salon            Salon         @relation(fields: [salonId], references: [id], onDelete: Cascade)
+  appointments     Appointment[]
+  messages         Message[]
+
+  @@index([salonId])
+  @@index([telegramId])
+  @@index([phone])
+}
+
+model Appointment {
+  id          String   @id @default(cuid())
+  salonId     String
+  clientId    String
+  service     String
+  master      String?
+  datetime    DateTime
+  status      String   @default("confirmed")
+  reminder24h Boolean  @default(false)
+  reminder2h  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  salon       Salon    @relation(fields: [salonId], references: [id], onDelete: Cascade)
+  client      Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([salonId])
+  @@index([clientId])
+  @@index([datetime])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  salonId   String
+  clientId  String
+  channel   String
+  direction String
+  text      String
+  intent    String?
+  createdAt DateTime @default(now())
+  salon     Salon    @relation(fields: [salonId], references: [id], onDelete: Cascade)
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([salonId])
+  @@index([clientId])
+  @@index([createdAt])
+}
+
+model ChannelStatus {
+  id        String   @id @default(cuid())
+  channel   String   @unique
+  isBlocked Boolean  @default(false)
+  checkedAt DateTime @default(now())
+}

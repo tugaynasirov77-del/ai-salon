@@ -1,32 +1,74 @@
 import Anthropic from '@anthropic-ai/sdk';
 import prisma from '../db/prisma';
-import { buildSystemPrompt, NICHES } from '../../../shared/niches';
+import { buildSystemPrompt } from '../../../shared/niches';
+import { scheduleReminders } from '../queues/reminderWorker';
 import {
   IClient,
   IIncomingMessage,
   ISalon,
   Intent,
-  IBookingIntent,
   NicheKey,
   ISalonSettings,
+  IAppointment,
 } from '../../../shared/types';
 
 const MODEL = 'claude-haiku-4-5-20251001';
 const HISTORY_LIMIT = 10;
+const MAX_MSG_LEN = 2000;
+const MAX_TOOL_ROUNDS = 3;
+
+// Tool — Claude сам вызывает когда понимает что клиент хочет записаться
+const TOOLS: Anthropic.Tool[] = [
+  {
+    name: 'create_appointment',
+    description:
+      'Создать запись клиента на услугу. Вызывай только когда собрал все обязательные поля: услугу из прайса, дату и время. Имя/телефон клиента уже есть в системе.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        service: {
+          type: 'string',
+          description: 'Название услуги из прайс-листа салона (точно как в прайсе)',
+        },
+        datetime_iso: {
+          type: 'string',
+          description:
+            'Дата и время записи в формате ISO 8601 без таймзоны, например 2026-05-22T15:00. Используй текущую дату из системного промпта для разрешения слов "завтра", "послезавтра", "в пятницу" и т.п.',
+        },
+        master: {
+          type: 'string',
+          description: 'Имя мастера (если клиент указал конкретного). Необязательно.',
+        },
+        comment: {
+          type: 'string',
+          description: 'Дополнительный комментарий клиента к записи. Необязательно.',
+        },
+      },
+      required: ['service', 'datetime_iso'],
+    },
+  },
+];
 
 export class AIAgent {
-  private client: Anthropic;
+  private _client: Anthropic | null = null;
+  private explicitKey?: string;
 
   constructor(apiKey?: string) {
-    this.client = new Anthropic({
-      apiKey: apiKey || process.env.ANTHROPIC_API_KEY || '',
-    });
+    this.explicitKey = apiKey;
+  }
+
+  private get client(): Anthropic {
+    if (!this._client) {
+      const key = this.explicitKey || process.env.ANTHROPIC_API_KEY || '';
+      if (!key) throw new Error('ANTHROPIC_API_KEY не задан в окружении');
+      this._client = new Anthropic({ apiKey: key });
+    }
+    return this._client;
   }
 
   // Основной обработчик: формирует ответ AI на сообщение клиента
   async process(client: IClient, message: IIncomingMessage, salon: ISalon): Promise<string> {
     try {
-      // 1. История последних N сообщений
       const history = await prisma.message.findMany({
         where: { clientId: client.id, salonId: salon.id },
         orderBy: { createdAt: 'desc' },
@@ -34,116 +76,141 @@ export class AIAgent {
       });
       history.reverse();
 
-      // 2. Системный промпт из конфига ниши
       const settings: ISalonSettings = (salon.settings as ISalonSettings) || {};
-      const servicesText = this.formatServices(settings);
-      const scheduleText = this.formatSchedule(settings);
-      const systemPrompt = buildSystemPrompt(salon.niche as NicheKey, {
+      const baseSystem = buildSystemPrompt(salon.niche as NicheKey, {
         name: salon.name,
-        services: servicesText,
-        schedule: scheduleText,
+        services: this.formatServices(settings),
+        schedule: this.formatSchedule(settings),
       });
+      const systemPrompt =
+        baseSystem +
+        `\n\nТекущая дата: ${new Date().toISOString().slice(0, 16)} (UTC).` +
+        `\nИмя клиента в системе: ${client.name || '(не указано)'}.` +
+        `\n\nКогда клиент явно подтвердил желание записаться И ты знаешь услугу, дату и время — ОБЯЗАТЕЛЬНО вызови инструмент create_appointment. Не пиши «запись оформлена», пока не вызвал инструмент.`;
 
-      // 3. Сборка истории для Claude
-      const messages = history.map((m) => ({
-        role: (m.direction === 'in' ? 'user' : 'assistant') as 'user' | 'assistant',
-        content: m.text,
+      const messages: Anthropic.MessageParam[] = history.map((m) => ({
+        role: m.direction === 'in' ? 'user' : 'assistant',
+        content: this.truncate(m.text),
       }));
-      messages.push({ role: 'user', content: message.text });
+      messages.push({ role: 'user', content: this.truncate(message.text) });
 
-      // 4. Запрос в Claude с prompt caching на системном промпте
-      const response = await this.client.messages.create({
-        model: MODEL,
-        max_tokens: 512,
-        system: [
-          {
-            type: 'text',
-            text: systemPrompt,
-            cache_control: { type: 'ephemeral' },
-          },
-        ],
-        messages,
-      });
+      // Цикл tool use: Claude может вызвать инструмент → исполняем → отдаём результат
+      let finalText = '';
+      for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
+        const response = await this.client.messages.create({
+          model: MODEL,
+          max_tokens: 600,
+          system: [
+            { type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } },
+          ],
+          tools: TOOLS,
+          messages,
+        });
 
-      const replyText = response.content
-        .filter((b: any) => b.type === 'text')
-        .map((b: any) => b.text)
-        .join('\n')
-        .trim();
+        this.logUsage(response.usage, salon.id);
 
-      // 5. Если намерение — запись, пытаемся распарсить и создать
-      const intent = this.detectIntent(message.text);
-      if (intent === 'booking') {
-        const booking = this.parseBookingIntent(message.text + '\n' + replyText);
-        if (booking.isComplete && booking.service && booking.datetime) {
-          try {
-            await prisma.appointment.create({
-              data: {
-                salonId: salon.id,
-                clientId: client.id,
-                service: booking.service,
-                master: booking.master || null,
-                datetime: new Date(booking.datetime),
-                status: 'confirmed',
-              },
-            });
-          } catch (e) {
-            console.error('[aiAgent] failed to create appointment:', e);
-          }
+        const toolUses = response.content.filter((b) => b.type === 'tool_use') as Anthropic.ToolUseBlock[];
+
+        if (toolUses.length === 0 || response.stop_reason !== 'tool_use') {
+          finalText = response.content
+            .filter((b) => b.type === 'text')
+            .map((b) => (b as Anthropic.TextBlock).text)
+            .join('\n')
+            .trim();
+          break;
         }
+
+        // Добавляем ответ ассистента (с tool_use) в историю
+        messages.push({ role: 'assistant', content: response.content });
+
+        // Исполняем все вызовы инструментов
+        const toolResults: Anthropic.ToolResultBlockParam[] = [];
+        for (const tu of toolUses) {
+          const result = await this.executeTool(tu, client, salon);
+          toolResults.push({
+            type: 'tool_result',
+            tool_use_id: tu.id,
+            content: result.content,
+            is_error: result.isError,
+          });
+        }
+        messages.push({ role: 'user', content: toolResults });
       }
 
-      return replyText || 'Извините, не могу сейчас ответить. Перезвоните нам.';
+      return finalText || 'Извините, не могу сейчас ответить. Перезвоните нам.';
     } catch (err) {
       console.error('[aiAgent.process] error:', err);
       return 'Извините, произошла ошибка. Попробуйте написать ещё раз.';
     }
   }
 
-  // Определение намерения по ключевым словам
+  // Выполнение инструмента, который вызвал Claude
+  private async executeTool(
+    tu: Anthropic.ToolUseBlock,
+    client: IClient,
+    salon: ISalon
+  ): Promise<{ content: string; isError: boolean }> {
+    if (tu.name === 'create_appointment') {
+      const input = tu.input as {
+        service: string;
+        datetime_iso: string;
+        master?: string;
+        comment?: string;
+      };
+      try {
+        const datetime = new Date(input.datetime_iso);
+        if (isNaN(datetime.getTime())) {
+          return { content: 'Ошибка: некорректный формат datetime_iso', isError: true };
+        }
+        const appointment = await prisma.appointment.create({
+          data: {
+            salonId: salon.id,
+            clientId: client.id,
+            service: input.service,
+            master: input.master || null,
+            datetime,
+            status: 'confirmed',
+          },
+        });
+        await scheduleReminders(appointment as unknown as IAppointment);
+        console.log(`[aiAgent] создана запись ${appointment.id} для ${client.id}`);
+        return {
+          content: `Запись успешно создана. ID: ${appointment.id}. Услуга: ${input.service}. Время: ${datetime.toLocaleString('ru-RU')}.`,
+          isError: false,
+        };
+      } catch (e: any) {
+        console.error('[aiAgent.executeTool] error:', e);
+        return { content: `Ошибка создания записи: ${e?.message || 'unknown'}`, isError: true };
+      }
+    }
+    return { content: `Неизвестный инструмент: ${tu.name}`, isError: true };
+  }
+
+  // Определение намерения для аналитики (поле Message.intent)
   detectIntent(text: string): Intent {
     const t = text.toLowerCase();
-    if (/(запис|записаться|свободно|есть окошко|можно прийти|хочу попасть)/.test(t)) {
-      return 'booking';
-    }
-    if (/(отмен|не приду|перенест|сдвинуть)/.test(t)) {
-      return 'cancel';
-    }
-    if (/(цена|стоимость|сколько стоит|адрес|время работы|график|часы)/.test(t)) {
-      return 'faq';
-    }
+    if (/(запис|записаться|свободно|есть окошко|можно прийти|хочу попасть)/.test(t)) return 'booking';
+    if (/(отмен|не приду|перенест|сдвинуть)/.test(t)) return 'cancel';
+    if (/(цена|стоимость|сколько стоит|адрес|время работы|график|часы)/.test(t)) return 'faq';
     return 'general';
   }
 
-  // Простой парсер намерения записи (эвристика; продакшн — через tool use)
-  parseBookingIntent(text: string): IBookingIntent {
-    const result: IBookingIntent = { isComplete: false };
+  private logUsage(usage: Anthropic.Usage | undefined, salonId: string): void {
+    if (!usage) return;
+    const cacheRead = (usage as any).cache_read_input_tokens || 0;
+    const cacheCreate = (usage as any).cache_creation_input_tokens || 0;
+    console.log(
+      `[usage salon=${salonId}] in=${usage.input_tokens} out=${usage.output_tokens} cache_read=${cacheRead} cache_create=${cacheCreate}`
+    );
+  }
 
-    // Дата/время — ищем ISO или "DD.MM HH:MM"
-    const isoMatch = text.match(/\b(\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2})\b/);
-    if (isoMatch) {
-      result.datetime = isoMatch[1];
-    } else {
-      const dmMatch = text.match(/\b(\d{1,2})\.(\d{1,2})(?:\.(\d{2,4}))?\s+(\d{1,2}):(\d{2})/);
-      if (dmMatch) {
-        const [, d, m, y, hh, mm] = dmMatch;
-        const year = y ? (y.length === 2 ? '20' + y : y) : new Date().getFullYear().toString();
-        result.datetime = `${year}-${m.padStart(2, '0')}-${d.padStart(2, '0')}T${hh.padStart(2, '0')}:${mm}`;
-      }
-    }
-
-    // Услуга — пока заглушка, в проде брать из tool-use результата
-    const svc = text.match(/услуг[ауи]?\s*[:\-]?\s*([А-Яа-яёЁ\w\s]{2,40})/i);
-    if (svc) result.service = svc[1].trim();
-
-    result.isComplete = !!(result.service && result.datetime);
-    return result;
+  private truncate(text: string): string {
+    if (text.length <= MAX_MSG_LEN) return text;
+    return text.slice(0, MAX_MSG_LEN) + ' […]';
   }
 
   private formatServices(settings: ISalonSettings): string {
-    if (!settings?.priceList || !Array.isArray(settings.priceList)) {
-      return '(не указано)';
-    }
+    if (!settings?.priceList || !Array.isArray(settings.priceList)) return '(не указано)';
     return settings.priceList
       .map((p) => `• ${p.service} — ${p.price}₽${p.duration ? ` (${p.duration} мин)` : ''}`)
       .join('\n');

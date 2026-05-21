@@ -2,6 +2,9 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 
+# OpenSSL для корректной детекции Prisma engine
+RUN apk add --no-cache openssl
+
 # Зеркало npm — registry.npmjs.org нестабилен из РФ
 RUN npm config set registry https://registry.npmmirror.com
 

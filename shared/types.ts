@@ -1,7 +1,16 @@
 // Общие TypeScript интерфейсы для всей платформы
 
 export type Channel = 'telegram' | 'whatsapp' | 'max' | 'sms';
-export type NicheKey = 'beauty_salon' | 'barbershop' | 'fitness' | 'clinic' | 'auto_service';
+export type NicheKey =
+  | 'beauty_salon'
+  | 'barbershop'
+  | 'fitness'
+  | 'clinic'
+  | 'auto_service'
+  | 'restaurant'
+  | 'lawyer'
+  | 'tutor'
+  | 'other';
 export type Intent = 'booking' | 'faq' | 'cancel' | 'general';
 export type AppointmentStatus = 'confirmed' | 'cancelled' | 'completed' | 'no_show';
 

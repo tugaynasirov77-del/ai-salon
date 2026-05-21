@@ -51,6 +51,34 @@ npm run dev
 - **CascadeSender** (`src/channels/cascadeSender.ts`) — отправка через каналы по приоритету с обходом блокировок.
 - **ReminderWorker** (`src/queues/reminderWorker.ts`) — напоминания за 24ч и 2ч до записи.
 
+## Для фронтенда (frontend/)
+
+`shared/` подключается **без симлинков** (важно для Windows):
+
+**tsconfig.json:**
+```json
+{
+  "compilerOptions": {
+    "paths": { "@shared/*": ["../shared/*"] }
+  }
+}
+```
+
+**next.config.js** — разрешить tracing родительских папок:
+```js
+module.exports = {
+  outputFileTracingRoot: require('path').join(__dirname, '../'),
+}
+```
+
+Импорт типов: `import { ISalon, NICHES } from '@shared/types'` или относительно: `'../../shared/types'`.
+
+Бэкенд по умолчанию на `http://localhost:3000` — пропиши `NEXT_PUBLIC_API_URL` в `.env.local`. CORS на бэке разрешён для всех origin (для прода надо ужесточить).
+
+## Ниши
+
+Поддерживается 9 ниш (см. [shared/niches.ts](shared/niches.ts)): `beauty_salon`, `barbershop`, `fitness`, `clinic`, `auto_service`, `restaurant`, `lawyer`, `tutor`, `other`.
+
 ## Эндпоинты
 
 - `POST /webhook/telegram` — апдейты от Telegram

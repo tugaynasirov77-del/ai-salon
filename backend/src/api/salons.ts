@@ -129,6 +129,53 @@ router.get(
   })
 );
 
+// GET /api/salons/:id/usage — расход токенов Claude (для биллинга)
+router.get(
+  '/:id/usage',
+  asyncHandler(async (req, res) => {
+    const salonId = req.params.id;
+    const { from, to } = req.query as Record<string, string | undefined>;
+    const where: any = { salonId, direction: 'out' };
+    if (from || to) {
+      where.createdAt = {};
+      if (from) where.createdAt.gte = new Date(from);
+      if (to) where.createdAt.lte = new Date(to);
+    }
+    const agg = await prisma.message.aggregate({
+      where,
+      _sum: {
+        inputTokens: true,
+        outputTokens: true,
+        cacheReadTokens: true,
+        cacheCreateTokens: true,
+      },
+      _count: { _all: true },
+    });
+    const sum = agg._sum;
+    // Цены Haiku 4.5 (на момент написания): in $1/M, out $5/M, cache_read $0.1/M, cache_create $1.25/M
+    const cost =
+      ((sum.inputTokens || 0) * 1 +
+        (sum.outputTokens || 0) * 5 +
+        (sum.cacheReadTokens || 0) * 0.1 +
+        (sum.cacheCreateTokens || 0) * 1.25) /
+      1_000_000;
+    const cacheHitRate =
+      (sum.cacheReadTokens || 0) /
+      Math.max(1, (sum.inputTokens || 0) + (sum.cacheReadTokens || 0) + (sum.cacheCreateTokens || 0));
+    res.json({
+      messages: agg._count._all,
+      tokens: {
+        input: sum.inputTokens || 0,
+        output: sum.outputTokens || 0,
+        cacheRead: sum.cacheReadTokens || 0,
+        cacheCreate: sum.cacheCreateTokens || 0,
+      },
+      estimatedCostUsd: Number(cost.toFixed(4)),
+      cacheHitRate: Number(cacheHitRate.toFixed(3)),
+    });
+  })
+);
+
 // GET /api/salons/:id/analytics
 router.get(
   '/:id/analytics',

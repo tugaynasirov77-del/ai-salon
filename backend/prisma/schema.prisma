@@ -63,16 +63,20 @@ model Appointment {
 }
 
 model Message {
-  id        String   @id @default(cuid())
-  salonId   String
-  clientId  String
-  channel   String
-  direction String
-  text      String
-  intent    String?
-  createdAt DateTime @default(now())
-  salon     Salon    @relation(fields: [salonId], references: [id], onDelete: Cascade)
-  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  id                String   @id @default(cuid())
+  salonId           String
+  clientId          String
+  channel           String
+  direction         String
+  text              String
+  intent            String?
+  inputTokens       Int?
+  outputTokens      Int?
+  cacheReadTokens   Int?
+  cacheCreateTokens Int?
+  createdAt         DateTime @default(now())
+  salon             Salon    @relation(fields: [salonId], references: [id], onDelete: Cascade)
+  client            Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
   @@index([salonId])
   @@index([clientId])

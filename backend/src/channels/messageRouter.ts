@@ -22,7 +22,8 @@ export class MessageRouter {
 
       const client = await this.findOrCreateClient(salon.id, msg);
 
-      // Сохраняем входящее
+      // Сохраняем входящее (с intent для аналитики)
+      const intent = aiAgent.detectIntent(msg.text);
       await prisma.message.create({
         data: {
           salonId: salon.id,
@@ -30,11 +31,12 @@ export class MessageRouter {
           channel: msg.channel,
           direction: 'in',
           text: msg.text,
+          intent,
         },
       });
 
       // AI обрабатывает
-      const reply = await aiAgent.process(
+      const { text: reply, usage } = await aiAgent.process(
         client as unknown as IClient,
         msg,
         salon as unknown as ISalon
@@ -47,7 +49,7 @@ export class MessageRouter {
         salon as unknown as ISalon
       );
 
-      // Сохраняем исходящее
+      // Сохраняем исходящее с расходом токенов (для биллинга и оптимизации)
       await prisma.message.create({
         data: {
           salonId: salon.id,
@@ -55,6 +57,10 @@ export class MessageRouter {
           channel: result.channel || msg.channel,
           direction: 'out',
           text: reply,
+          inputTokens: usage.inputTokens,
+          outputTokens: usage.outputTokens,
+          cacheReadTokens: usage.cacheReadTokens,
+          cacheCreateTokens: usage.cacheCreateTokens,
         },
       });
     } catch (err) {

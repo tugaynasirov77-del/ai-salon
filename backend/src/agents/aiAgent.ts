@@ -17,6 +17,13 @@ const HISTORY_LIMIT = 10;
 const MAX_MSG_LEN = 2000;
 const MAX_TOOL_ROUNDS = 3;
 
+export type AggregateUsage = {
+  inputTokens: number;
+  outputTokens: number;
+  cacheReadTokens: number;
+  cacheCreateTokens: number;
+};
+
 // Tool — Claude сам вызывает когда понимает что клиент хочет записаться
 const TOOLS: Anthropic.Tool[] = [
   {
@@ -67,7 +74,17 @@ export class AIAgent {
   }
 
   // Основной обработчик: формирует ответ AI на сообщение клиента
-  async process(client: IClient, message: IIncomingMessage, salon: ISalon): Promise<string> {
+  async process(
+    client: IClient,
+    message: IIncomingMessage,
+    salon: ISalon
+  ): Promise<{ text: string; usage: AggregateUsage }> {
+    const usage: AggregateUsage = {
+      inputTokens: 0,
+      outputTokens: 0,
+      cacheReadTokens: 0,
+      cacheCreateTokens: 0,
+    };
     try {
       const history = await prisma.message.findMany({
         where: { clientId: client.id, salonId: salon.id },
@@ -77,16 +94,18 @@ export class AIAgent {
       history.reverse();
 
       const settings: ISalonSettings = (salon.settings as ISalonSettings) || {};
-      const baseSystem = buildSystemPrompt(salon.niche as NicheKey, {
-        name: salon.name,
-        services: this.formatServices(settings),
-        schedule: this.formatSchedule(settings),
-      });
-      const systemPrompt =
-        baseSystem +
-        `\n\nТекущая дата: ${new Date().toISOString().slice(0, 16)} (UTC).` +
-        `\nИмя клиента в системе: ${client.name || '(не указано)'}.` +
+      // Стабильная часть system — кэшируется per salon (cache hit ≥80% на активных салонах)
+      const stableSystem =
+        buildSystemPrompt(salon.niche as NicheKey, {
+          name: salon.name,
+          services: this.formatServices(settings),
+          schedule: this.formatSchedule(settings),
+        }) +
         `\n\nКогда клиент явно подтвердил желание записаться И ты знаешь услугу, дату и время — ОБЯЗАТЕЛЬНО вызови инструмент create_appointment. Не пиши «запись оформлена», пока не вызвал инструмент.`;
+      // Переменная часть — НЕ кэшируется (дата/клиент меняются)
+      const volatileSystem =
+        `Текущая дата: ${new Date().toISOString().slice(0, 10)} (UTC, только день).\n` +
+        `Имя клиента в системе: ${client.name || '(не указано)'}.`;
 
       const messages: Anthropic.MessageParam[] = history.map((m) => ({
         role: m.direction === 'in' ? 'user' : 'assistant',
@@ -101,12 +120,14 @@ export class AIAgent {
           model: MODEL,
           max_tokens: 600,
           system: [
-            { type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } },
+            { type: 'text', text: stableSystem, cache_control: { type: 'ephemeral' } },
+            { type: 'text', text: volatileSystem },
           ],
           tools: TOOLS,
           messages,
         });
 
+        this.accumulateUsage(usage, response.usage);
         this.logUsage(response.usage, salon.id);
 
         const toolUses = response.content.filter((b) => b.type === 'tool_use') as Anthropic.ToolUseBlock[];
@@ -137,11 +158,22 @@ export class AIAgent {
         messages.push({ role: 'user', content: toolResults });
       }
 
-      return finalText || 'Извините, не могу сейчас ответить. Перезвоните нам.';
+      return {
+        text: finalText || 'Извините, не могу сейчас ответить. Перезвоните нам.',
+        usage,
+      };
     } catch (err) {
       console.error('[aiAgent.process] error:', err);
-      return 'Извините, произошла ошибка. Попробуйте написать ещё раз.';
+      return { text: 'Извините, произошла ошибка. Попробуйте написать ещё раз.', usage };
     }
+  }
+
+  private accumulateUsage(acc: AggregateUsage, u: Anthropic.Usage | undefined): void {
+    if (!u) return;
+    acc.inputTokens += u.input_tokens || 0;
+    acc.outputTokens += u.output_tokens || 0;
+    acc.cacheReadTokens += (u as any).cache_read_input_tokens || 0;
+    acc.cacheCreateTokens += (u as any).cache_creation_input_tokens || 0;
   }
 
   // Выполнение инструмента, который вызвал Claude

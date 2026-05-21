@@ -15,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "AI Salon — автоматизация записи",
-  description: "AI-платформа для записи клиентов через Telegram, WhatsApp и SMS",
+  title: "Liva ai — автоматизация записи",
+  description: "AI-платформа для записи клиентов через Telegram, MAX, ВКонтакте, SMS и веб-чат",
 };
 
 export default function RootLayout({

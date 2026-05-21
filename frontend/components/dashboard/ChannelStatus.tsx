@@ -8,9 +8,10 @@ interface ChannelInfo {
 
 const DEFAULT_CHANNELS: ChannelInfo[] = [
   { key: 'TG', label: 'Telegram', ok: true },
-  { key: 'WA', label: 'WhatsApp', ok: false },
   { key: 'MAX', label: 'MAX', ok: false },
+  { key: 'VK', label: 'ВКонтакте', ok: false },
   { key: 'SMS', label: 'SMS', ok: true },
+  { key: 'WEB', label: 'Веб-чат', ok: true },
 ];
 
 export function ChannelStatus({ channels = DEFAULT_CHANNELS }: { channels?: ChannelInfo[] }) {

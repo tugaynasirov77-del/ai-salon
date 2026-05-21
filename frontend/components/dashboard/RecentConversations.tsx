@@ -1,26 +1,32 @@
-import { Send, MessageCircle, Phone, MessagesSquare, MailX } from 'lucide-react';
+'use client';
+
+import Link from 'next/link';
+import { Send, Phone, MessagesSquare, Globe, MailX, Users as UsersIcon } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { timeAgo } from '@/lib/utils';
-import type { IMessage, IClient, Channel } from '@shared/types';
+import type { Channel } from '@shared/types';
+import type { IConversationItem } from '@/lib/api';
 
 interface Props {
-  messages: IMessage[];
-  clients: IClient[];
+  items: IConversationItem[];
   loading?: boolean;
+  limit?: number;
 }
 
 const CHANNEL_ICON: Record<Channel, React.ComponentType<{ className?: string }>> = {
   telegram: Send,
-  whatsapp: MessageCircle,
-  sms: Phone,
   max: MessagesSquare,
+  vk: UsersIcon,
+  sms: Phone,
+  webchat: Globe,
 };
 
 const CHANNEL_COLOR: Record<Channel, string> = {
   telegram: 'text-blue-500',
-  whatsapp: 'text-green-500',
-  sms: 'text-slate-500',
   max: 'text-purple-500',
+  vk: 'text-sky-500',
+  sms: 'text-slate-500',
+  webchat: 'text-emerald-500',
 };
 
 function initials(name?: string | null) {
@@ -33,18 +39,18 @@ function truncate(s: string, n: number) {
   return s.length > n ? s.slice(0, n).trimEnd() + '…' : s;
 }
 
-export function RecentMessages({ messages, clients, loading }: Props) {
-  const items = messages.slice(0, 8);
+export function RecentConversations({ items, loading, limit = 5 }: Props) {
+  const list = items.slice(0, limit);
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Последние сообщения</CardTitle>
+        <CardTitle>Последние диалоги</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
         {loading ? (
           <div className="space-y-3 p-5">
-            {[0, 1, 2, 3].map((i) => (
+            {[0, 1, 2, 3, 4].map((i) => (
               <div key={i} className="flex gap-3">
                 <div className="h-9 w-9 animate-pulse rounded-full bg-slate-200 dark:bg-slate-800" />
                 <div className="flex-1 space-y-2">
@@ -54,33 +60,41 @@ export function RecentMessages({ messages, clients, loading }: Props) {
               </div>
             ))}
           </div>
-        ) : items.length === 0 ? (
+        ) : list.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-slate-400">
             <MailX className="mb-3 h-10 w-10" />
-            <div className="text-sm">Сообщений пока нет</div>
+            <div className="text-sm">Диалогов пока нет</div>
           </div>
         ) : (
           <ul className="divide-y divide-slate-100 dark:divide-slate-800">
-            {items.map((m) => {
-              const client = clients.find((c) => c.id === m.clientId);
-              const Icon = CHANNEL_ICON[m.channel];
+            {list.map((it) => {
+              const ch = it.client.preferredChannel;
+              const Icon = CHANNEL_ICON[ch];
+              const msg = it.lastMessage;
               return (
-                <li key={m.id} className="flex gap-3 px-5 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                <li key={it.client.id} className="flex gap-3 px-5 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/50">
                   <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700 dark:bg-blue-950 dark:text-blue-300">
-                    {initials(client?.name)}
+                    {initials(it.client.name)}
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-1.5 truncate">
                         <span className="truncate text-sm font-medium text-slate-900 dark:text-slate-100">
-                          {client?.name || 'Без имени'}
+                          {it.client.name || 'Без имени'}
                         </span>
-                        <Icon className={`h-3.5 w-3.5 flex-shrink-0 ${CHANNEL_COLOR[m.channel]}`} />
+                        <Icon className={`h-3.5 w-3.5 flex-shrink-0 ${CHANNEL_COLOR[ch]}`} />
+                        {it.messagesCount > 0 && (
+                          <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-500 dark:bg-slate-800">
+                            {it.messagesCount}
+                          </span>
+                        )}
                       </div>
-                      <span className="flex-shrink-0 text-xs text-slate-400">{timeAgo(m.createdAt)}</span>
+                      {msg && (
+                        <span className="flex-shrink-0 text-xs text-slate-400">{timeAgo(msg.createdAt)}</span>
+                      )}
                     </div>
                     <div className="mt-0.5 truncate text-xs text-slate-500 dark:text-slate-400">
-                      {truncate(m.text, 50)}
+                      {msg ? truncate(msg.text, 50) : 'Нет сообщений'}
                     </div>
                   </div>
                 </li>

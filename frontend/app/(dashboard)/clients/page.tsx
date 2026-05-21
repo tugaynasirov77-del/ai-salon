@@ -2,36 +2,37 @@
 
 import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Search, Send, MessageCircle, Phone, MessagesSquare, X, MessageSquarePlus, Users as UsersIcon } from 'lucide-react';
+import { Search, Send, Phone, MessagesSquare, Globe, X, MessageSquarePlus, Users as UsersIcon } from 'lucide-react';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
 import { fetchClients, fetchAppointments, fetchMessages } from '@/lib/api';
+import { SALON_ID } from '@/lib/config';
 import { cn, timeAgo } from '@/lib/utils';
 import type { IClient, IAppointment, IMessage, Channel } from '@shared/types';
 
-const SALON_ID = 'mock-salon-1';
-
 const CHANNEL_ICON: Record<Channel, React.ComponentType<{ className?: string }>> = {
   telegram: Send,
-  whatsapp: MessageCircle,
-  sms: Phone,
   max: MessagesSquare,
+  vk: UsersIcon,
+  sms: Phone,
+  webchat: Globe,
 };
 const CHANNEL_LABEL: Record<Channel, string> = {
   telegram: 'Telegram',
-  whatsapp: 'WhatsApp',
-  sms: 'SMS',
   max: 'MAX',
+  vk: 'ВКонтакте',
+  sms: 'SMS',
+  webchat: 'Веб-чат',
 };
 
 type ChannelFilter = 'all' | Channel;
 
 export default function ClientsPage() {
   const clientsQ = useQuery({ queryKey: ['clients', SALON_ID], queryFn: () => fetchClients(SALON_ID) });
-  const apptsQ = useQuery({ queryKey: ['appointments', SALON_ID], queryFn: () => fetchAppointments(SALON_ID) });
+  const apptsQ = useQuery({ queryKey: ['appointments', SALON_ID, 'all'], queryFn: () => fetchAppointments(SALON_ID) });
   const messagesQ = useQuery({ queryKey: ['messages', SALON_ID], queryFn: () => fetchMessages(SALON_ID) });
 
   const [search, setSearch] = useState('');
@@ -86,7 +87,7 @@ export default function ClientsPage() {
             />
           </div>
           <div className="flex flex-wrap gap-1">
-            {(['all', 'telegram', 'whatsapp', 'sms'] as ChannelFilter[]).map((c) => (
+            {(['all', 'telegram', 'max', 'vk', 'sms', 'webchat'] as ChannelFilter[]).map((c) => (
               <button
                 key={c}
                 onClick={() => setChannelFilter(c)}

@@ -32,7 +32,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       {/* Mobile top bar */}
       <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 md:hidden dark:border-slate-800 dark:bg-slate-900">
-        <div className="font-bold text-slate-900 dark:text-slate-100">AI Salon</div>
+        <div className="font-bold text-slate-900 dark:text-slate-100">Liva ai</div>
         <button onClick={() => setMobileOpen(!mobileOpen)} aria-label="Меню">
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -48,7 +48,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       >
         <div className="flex h-full flex-col">
           <div className="border-b border-slate-100 px-5 py-5 dark:border-slate-800">
-            <div className="text-lg font-bold text-slate-900 dark:text-slate-100">AI Salon</div>
+            <div className="text-lg font-bold text-slate-900 dark:text-slate-100">Liva ai</div>
             <div className="mt-2 text-sm font-medium text-slate-700 dark:text-slate-300">
               Демо Салон
             </div>

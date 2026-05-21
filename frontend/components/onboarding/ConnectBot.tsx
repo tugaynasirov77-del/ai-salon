@@ -4,7 +4,13 @@ import { useState } from 'react';
 import { MessageSquare, Bot, Link as LinkIcon, CheckCircle2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAppStore } from '@/lib/store';
-import { checkTelegramBot } from '@/lib/api';
+
+// Заглушка проверки бота на время онбординга. Реальное подключение —
+// POST /api/salons/:id/telegram/connect — делаем в админке после регистрации салона.
+async function checkTelegramBot(): Promise<{ ok: boolean; botUrl?: string }> {
+  await new Promise((r) => setTimeout(r, 800));
+  return { ok: true, botUrl: 'https://t.me/demo_salon_bot' };
+}
 
 type Status = 'idle' | 'creating' | 'created' | 'checking' | 'success' | 'failed';
 

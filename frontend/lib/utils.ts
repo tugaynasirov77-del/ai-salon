@@ -24,6 +24,43 @@ export function formatPhone(value: string): string {
   return out;
 }
 
+// Понедельник недели для произвольной даты (локальная зона)
+export function startOfWeek(d: Date): Date {
+  const x = new Date(d);
+  x.setHours(0, 0, 0, 0);
+  const day = x.getDay(); // 0=вс..6=сб
+  const diff = day === 0 ? -6 : 1 - day;
+  x.setDate(x.getDate() + diff);
+  return x;
+}
+
+// Прибавить дни
+export function addDays(d: Date, days: number): Date {
+  const x = new Date(d);
+  x.setDate(x.getDate() + days);
+  return x;
+}
+
+// ISO YYYY-MM-DD в локальной зоне (для запроса в API)
+export function toISODate(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${dd}`;
+}
+
+// "21 мая"
+const RU_MONTHS = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+export function fmtDayMonth(d: Date): string {
+  return d.getDate() + ' ' + RU_MONTHS[d.getMonth()];
+}
+
+// "пн", "вт", ... "вс"
+const RU_WEEKDAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
+export function fmtWeekday(d: Date): string {
+  return RU_WEEKDAYS[d.getDay()];
+}
+
 // Относительное время (2 мин назад, 1 час назад)
 export function timeAgo(date: Date | string): string {
   const d = typeof date === 'string' ? new Date(date) : date;

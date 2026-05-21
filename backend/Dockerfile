@@ -2,6 +2,9 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 
+# Зеркало npm — registry.npmjs.org нестабилен из РФ
+RUN npm config set registry https://registry.npmmirror.com
+
 # Копируем манифесты и ставим зависимости
 COPY backend/package*.json ./
 RUN npm ci

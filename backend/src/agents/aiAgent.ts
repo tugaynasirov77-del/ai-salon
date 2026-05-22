@@ -12,7 +12,9 @@ import {
   IAppointment,
 } from '../../../shared/types';
 
-const MODEL = 'claude-haiku-4-5-20251001';
+// Модель и провайдер — настраиваются через env (для прокси через OpenRouter из РФ)
+const MODEL = process.env.LLM_MODEL || 'claude-haiku-4-5-20251001';
+const LLM_BASE_URL = process.env.LLM_BASE_URL; // если задан — идём через прокси (OpenRouter)
 const HISTORY_LIMIT = 10;
 const MAX_MSG_LEN = 2000;
 const MAX_TOOL_ROUNDS = 3;
@@ -66,9 +68,11 @@ export class AIAgent {
 
   private get client(): Anthropic {
     if (!this._client) {
-      const key = this.explicitKey || process.env.ANTHROPIC_API_KEY || '';
-      if (!key) throw new Error('ANTHROPIC_API_KEY не задан в окружении');
-      this._client = new Anthropic({ apiKey: key });
+      const key = this.explicitKey || process.env.LLM_API_KEY || process.env.ANTHROPIC_API_KEY || '';
+      if (!key) throw new Error('LLM API ключ не задан в окружении');
+      const opts: ConstructorParameters<typeof Anthropic>[0] = { apiKey: key };
+      if (LLM_BASE_URL) opts.baseURL = LLM_BASE_URL;
+      this._client = new Anthropic(opts);
     }
     return this._client;
   }

@@ -12,7 +12,9 @@ import salonsRouter from './api/salons';
 import appointmentsRouter from './api/appointments';
 import crmRouter from './api/crm';
 import testChatRouter from './api/testChat';
+import widgetRouter from './api/widget';
 import healthRouter from './api/health';
+import path from 'path';
 
 import { initAllSalonBots } from './channels/telegram';
 import { startReminderWorker } from './queues/reminderWorker';
@@ -35,6 +37,10 @@ app.use('/api/salons', apiLimiter, salonsRouter);
 app.use('/api/salons', apiLimiter, crmRouter);
 app.use('/api/salons', apiLimiter, testChatRouter);
 app.use('/api/appointments', apiLimiter, appointmentsRouter);
+app.use('/api/widget', apiLimiter, widgetRouter);
+
+// Статика для widget.js и демо-страницы (на любом домене салона можно подключить)
+app.use(express.static(path.join(__dirname, '..', 'public'), { maxAge: '5m' }));
 
 // Health-чек без лимита
 app.use('/health', healthRouter);

@@ -37,6 +37,7 @@ model Client {
   telegramId       String?
   maxId            String?
   vkId             String?
+  webchatId        String?
   preferredChannel String        @default("telegram")
   createdAt        DateTime      @default(now())
   salon            Salon         @relation(fields: [salonId], references: [id], onDelete: Cascade)
@@ -46,6 +47,7 @@ model Client {
   @@index([salonId])
   @@index([telegramId])
   @@index([phone])
+  @@index([webchatId])
 }
 
 model Appointment {

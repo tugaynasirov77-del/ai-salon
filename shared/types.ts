@@ -1,6 +1,6 @@
 // Общие TypeScript интерфейсы для всей платформы
 
-export type Channel = 'telegram' | 'max' | 'vk' | 'sms';
+export type Channel = 'telegram' | 'max' | 'vk' | 'sms' | 'webchat';
 export type NicheKey =
   | 'beauty_salon'
   | 'barbershop'
@@ -44,6 +44,7 @@ export interface IClient {
   telegramId?: string | null;
   maxId?: string | null;
   vkId?: string | null;
+  webchatId?: string | null;
   preferredChannel: Channel;
   createdAt: Date;
 }

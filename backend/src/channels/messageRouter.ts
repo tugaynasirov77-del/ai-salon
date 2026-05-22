@@ -122,6 +122,19 @@ export class MessageRouter {
             raw: rawData,
           };
         }
+        case 'webchat': {
+          const sessionId = rawData?.sessionId;
+          const text = rawData?.text;
+          if (!sessionId || !text) return null;
+          return {
+            channel,
+            externalUserId: String(sessionId),
+            text: String(text),
+            senderName: rawData?.name,
+            phone: rawData?.phone,
+            raw: rawData,
+          };
+        }
       }
     } catch (err) {
       console.error('[router.normalize] error:', err);
@@ -138,6 +151,7 @@ export class MessageRouter {
     else if (channel === 'max') where.maxId = msg.externalUserId;
     else if (channel === 'vk') where.vkId = msg.externalUserId;
     else if (channel === 'sms') where.phone = msg.phone || msg.externalUserId;
+    else if (channel === 'webchat') where.webchatId = msg.externalUserId;
 
     let client = await prisma.client.findFirst({ where });
     if (client) return client;
@@ -150,6 +164,7 @@ export class MessageRouter {
         telegramId: channel === 'telegram' ? msg.externalUserId : null,
         maxId: channel === 'max' ? msg.externalUserId : null,
         vkId: channel === 'vk' ? msg.externalUserId : null,
+        webchatId: channel === 'webchat' ? msg.externalUserId : null,
         preferredChannel: channel,
       },
     });

@@ -31,6 +31,7 @@ export interface ISalon {
   niche: NicheKey;
   plan: string;
   telegramBotToken?: string | null;
+  maxBotToken?: string | null;
   settings?: ISalonSettings | null;
   isActive: boolean;
   createdAt: Date;

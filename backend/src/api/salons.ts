@@ -2,6 +2,10 @@ import { Router } from 'express';
 import prisma from '../db/prisma';
 import { asyncHandler } from '../middleware/errors';
 import { setWebhookForSalon } from '../channels/telegram';
+import {
+  setWebhookForSalon as setMaxWebhook,
+  getBotInfo as getMaxBotInfo,
+} from '../channels/max';
 
 const router = Router();
 
@@ -75,6 +79,51 @@ router.post(
     }
 
     res.json({ ok: true, salonId: salon.id, webhookUrl: `${baseUrl}/webhook/telegram/${salon.id}` });
+  })
+);
+
+// POST /api/salons/:id/max/connect — подключить Max-бот
+router.post(
+  '/:id/max/connect',
+  asyncHandler(async (req, res) => {
+    const { token } = req.body;
+    if (!token || typeof token !== 'string') {
+      res.status(400).json({ error: 'token обязателен (строка)' });
+      return;
+    }
+    const baseUrl = process.env.BASE_URL;
+    if (!baseUrl) {
+      res.status(500).json({ error: 'BASE_URL не задан на сервере' });
+      return;
+    }
+
+    // Валидация токена через /me
+    let botInfo;
+    try {
+      botInfo = await getMaxBotInfo(token);
+    } catch (e: any) {
+      res.status(400).json({ error: `Некорректный max-токен: ${e?.message}` });
+      return;
+    }
+
+    const salon = await prisma.salon.update({
+      where: { id: req.params.id },
+      data: { maxBotToken: token },
+    });
+
+    try {
+      await setMaxWebhook(salon.id, token, baseUrl);
+    } catch (e: any) {
+      res.status(400).json({ error: `Не удалось подписать webhook: ${e?.message}` });
+      return;
+    }
+
+    res.json({
+      ok: true,
+      salonId: salon.id,
+      bot: botInfo,
+      webhookUrl: `${baseUrl}/webhook/max/${salon.id}`,
+    });
   })
 );
 

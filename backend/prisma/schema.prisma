@@ -17,6 +17,7 @@ model Salon {
   niche            String
   plan             String         @default("starter")
   telegramBotToken String?
+  maxBotToken      String?
   settings         Json?
   isActive         Boolean        @default(true)
   createdAt        DateTime       @default(now())

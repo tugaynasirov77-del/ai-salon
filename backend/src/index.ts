@@ -17,6 +17,7 @@ import healthRouter from './api/health';
 import path from 'path';
 
 import { initAllSalonBots } from './channels/telegram';
+import { initAllSalonBots as initAllMaxBots } from './channels/max';
 import { startReminderWorker } from './queues/reminderWorker';
 
 const app = express();
@@ -53,6 +54,7 @@ app.listen(PORT, () => {
 
   // Инициализируем интеграции — поднимаем webhook'и всех салонов с подключённым ботом
   initAllSalonBots().catch((e) => console.error('[startup] telegram init error:', e));
+  initAllMaxBots().catch((e) => console.error('[startup] max init error:', e));
 
   try {
     startReminderWorker();

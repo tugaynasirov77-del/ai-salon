@@ -112,13 +112,17 @@ export class MessageRouter {
           };
         }
         case 'max': {
-          const userId = rawData?.user_id || rawData?.userId;
-          const text = rawData?.text;
+          // Max (TamTam) update формат: {update_type, message: {sender: {user_id, name}, body: {text}}}
+          const m = rawData?.message;
+          const sender = m?.sender;
+          const text = m?.body?.text;
+          const userId = sender?.user_id;
           if (!userId || !text) return null;
           return {
             channel,
             externalUserId: String(userId),
             text: String(text),
+            senderName: sender?.name,
             raw: rawData,
           };
         }

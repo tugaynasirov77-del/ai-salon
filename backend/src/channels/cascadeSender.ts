@@ -1,5 +1,6 @@
 import redis from '../db/redis';
 import { sendMessage as sendTelegram } from './telegram';
+import { sendMessage as sendMaxReal } from './max';
 import { sendSMS as sendSmsReal } from './sms';
 import { Channel, IClient, ICascadeResult, ISalon } from '../../../shared/types';
 
@@ -99,7 +100,7 @@ export class CascadeSender {
         return sendTelegram(token, userId, text);
       }
       case 'max':
-        return this.sendMax(userId, text);
+        return this.sendMax(userId, text, salon);
       case 'vk':
         return this.sendVK(userId, text);
       case 'sms':
@@ -108,9 +109,13 @@ export class CascadeSender {
   }
 
   // Заглушки — реализуются по мере подключения провайдеров (см. план Этапа 3)
-  private async sendMax(_to: string, _text: string): Promise<boolean> {
-    console.warn('[cascade] MAX не реализован');
-    return false;
+  private async sendMax(to: string, text: string, salon?: ISalon): Promise<boolean> {
+    const token = salon?.maxBotToken || process.env.MAX_API_KEY;
+    if (!token) {
+      console.warn('[cascade] нет max-токена ни в салоне, ни в env');
+      return false;
+    }
+    return sendMaxReal(token, to, text);
   }
 
   private async sendVK(_to: string, _text: string): Promise<boolean> {

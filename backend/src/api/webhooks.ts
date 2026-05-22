@@ -47,12 +47,14 @@ router.post(
   })
 );
 
-// MAX webhook
+// MAX webhook (формат TamTam: один update в теле, тип в update_type)
 router.post(
   '/max/:salonId',
   asyncHandler(async (req, res) => {
-    res.status(200).json({ ok: true });
-    messageRouter.handleIncoming('max', req.body, req.params.salonId).catch((e) =>
+    res.status(200).send('ok'); // Max ожидает 200 быстро
+    const update = req.body;
+    if (update?.update_type !== 'message_created') return;
+    messageRouter.handleIncoming('max', update, req.params.salonId).catch((e) =>
       console.error('[webhook/max] error:', e)
     );
   })

@@ -63,6 +63,9 @@ export class MessageRouter {
           cacheCreateTokens: usage.cacheCreateTokens,
         },
       });
+
+      // Эскалация владельцу, если клиент просит человека или AI не справляется
+      await this.maybeEscalate(salon, client, msg.text, reply);
     } catch (err) {
       console.error('[router.handleIncoming] error:', err);
     }
@@ -159,6 +162,45 @@ export class MessageRouter {
       return prisma.salon.findUnique({ where: { id: salonId } });
     }
     return prisma.salon.findFirst({ where: { isActive: true } });
+  }
+
+  // Эскалация: если клиент явно просит человека ИЛИ это 3-й «ничего не понял» подряд —
+  // шлём владельцу салона уведомление в его настроенный чат (salon.settings.ownerChatId).
+  private async maybeEscalate(salon: any, client: any, inText: string, replyText: string): Promise<void> {
+    try {
+      const settings = (salon.settings as any) || {};
+      const ownerChatId = settings?.ownerChatId;
+      const ownerToken = salon.telegramBotToken || process.env.TELEGRAM_BOT_TOKEN;
+      if (!ownerChatId || !ownerToken) return;
+
+      const inLow = inText.toLowerCase();
+      const replyLow = replyText.toLowerCase();
+      const wantsHuman = /(оператор|администратор|человек|менеджер|живой|настоящ)/.test(inLow);
+      const aiFailed = /(не понял|не понимаю|извините|произошла ошибка|перезвоните)/.test(replyLow);
+
+      // Считаем неудачные ответы AI подряд (3+ — эскалируем)
+      let failsInRow = 0;
+      if (aiFailed) {
+        const recent = await prisma.message.findMany({
+          where: { clientId: client.id, salonId: salon.id, direction: 'out' },
+          orderBy: { createdAt: 'desc' },
+          take: 3,
+        });
+        failsInRow = recent.filter((m) =>
+          /(не понял|не понимаю|извините|произошла ошибка)/.test(m.text.toLowerCase())
+        ).length;
+      }
+
+      if (wantsHuman || failsInRow >= 3) {
+        const reason = wantsHuman ? 'клиент просит человека' : 'AI не справился 3 раза подряд';
+        const txt = `⚠️ Эскалация (${reason})\n\nКлиент: ${client.name || 'без имени'}\nКанал: ${client.preferredChannel}\nПоследнее сообщение: "${inText}"\n\nОткрой панель чтобы ответить вручную.`;
+        const { sendMessage } = await import('./telegram');
+        await sendMessage(ownerToken, ownerChatId, txt);
+        console.log(`[escalate] салон=${salon.id} клиент=${client.id} причина=${reason}`);
+      }
+    } catch (err) {
+      console.error('[router.maybeEscalate] error:', err);
+    }
   }
 }
 

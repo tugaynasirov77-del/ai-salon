@@ -58,4 +58,29 @@ router.post(
   })
 );
 
+// SMS callback (sms.ru / smsc — оба шлют form-encoded или JSON).
+// sms.ru входящие: https://sms.ru/?panel=settings&subpanel=callback (поля: phone, message, my_phone, time)
+// Привязываем к салону по pathparams.
+router.post(
+  '/sms/:salonId',
+  asyncHandler(async (req, res) => {
+    res.status(200).send('ok');
+    // sms.ru шлёт application/x-www-form-urlencoded — наш express.json() это не парсит.
+    // Поддерживаем оба варианта: либо JSON, либо form-encoded в req.body (если bodyparser стоит).
+    // Если body пуст — берём из query.
+    const data = Object.keys(req.body || {}).length ? req.body : req.query;
+    const normalized = {
+      sender: data.phone || data.from || data.sender,
+      text: data.message || data.body || data.text,
+    };
+    if (!normalized.sender || !normalized.text) {
+      console.warn('[webhook/sms] неполные данные:', data);
+      return;
+    }
+    messageRouter.handleIncoming('sms', normalized, req.params.salonId).catch((e) =>
+      console.error('[webhook/sms] error:', e)
+    );
+  })
+);
+
 export default router;

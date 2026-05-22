@@ -24,6 +24,8 @@ app.set('trust proxy', 1);
 app.use(helmet());
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
+// SMS-провайдеры (sms.ru/smsc) шлют callback в form-encoded
+app.use(express.urlencoded({ extended: false, limit: '1mb' }));
 
 // Webhook-роуты — с мягким rate-limit (без auth, внешние сервисы)
 app.use('/webhook', webhookLimiter, webhooksRouter);

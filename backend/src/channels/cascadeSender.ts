@@ -1,5 +1,6 @@
 import redis from '../db/redis';
 import { sendMessage as sendTelegram } from './telegram';
+import { sendSMS as sendSmsReal } from './sms';
 import { Channel, IClient, ICascadeResult, ISalon } from '../../../shared/types';
 
 // Порядок попыток. WhatsApp намеренно убран (дорого, сложно, низкий приоритет в РФ).
@@ -117,9 +118,8 @@ export class CascadeSender {
     return false;
   }
 
-  private async sendSMS(_to: string, _text: string): Promise<boolean> {
-    console.warn('[cascade] SMS не реализован');
-    return false;
+  private async sendSMS(to: string, text: string): Promise<boolean> {
+    return sendSmsReal(to, text);
   }
 }
 

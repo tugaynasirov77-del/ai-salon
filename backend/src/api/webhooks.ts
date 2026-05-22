@@ -27,26 +27,35 @@ router.post(
   })
 );
 
-// WhatsApp webhook
+// VK Callback API
 router.post(
-  '/whatsapp/:salonId',
+  '/vk/:salonId',
   asyncHandler(async (req, res) => {
-    const { salonId } = req.params;
-    res.status(200).json({ ok: true });
-    messageRouter.handleIncoming('whatsapp', req.body, salonId).catch((e) =>
-      console.error('[webhook/whatsapp/:salonId] error:', e)
-    );
+    // VK ожидает в ответ строку confirmation_code на confirmation-запрос
+    const type = req.body?.type;
+    if (type === 'confirmation') {
+      const code = process.env.VK_CONFIRMATION_CODE || 'ok';
+      res.status(200).send(code);
+      return;
+    }
+    res.status(200).send('ok');
+    if (type === 'message_new') {
+      messageRouter.handleIncoming('vk', req.body, req.params.salonId).catch((e) =>
+        console.error('[webhook/vk] error:', e)
+      );
+    }
   })
 );
 
-// Верификация webhook (Meta Cloud API делает GET-запрос с challenge)
-router.get('/whatsapp/:salonId', (req, res) => {
-  const verifyToken = process.env.WHATSAPP_VERIFY_TOKEN;
-  if (req.query['hub.verify_token'] === verifyToken) {
-    res.send(req.query['hub.challenge']);
-  } else {
-    res.sendStatus(403);
-  }
-});
+// MAX webhook
+router.post(
+  '/max/:salonId',
+  asyncHandler(async (req, res) => {
+    res.status(200).json({ ok: true });
+    messageRouter.handleIncoming('max', req.body, req.params.salonId).catch((e) =>
+      console.error('[webhook/max] error:', e)
+    );
+  })
+);
 
 export default router;

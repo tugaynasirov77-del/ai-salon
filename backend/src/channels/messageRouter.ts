@@ -83,16 +83,16 @@ export class MessageRouter {
             raw: rawData,
           };
         }
-        case 'whatsapp': {
-          // Формат зависит от провайдера (Twilio / 360dialog / Meta Cloud API)
-          const from = rawData?.From || rawData?.from || rawData?.phone;
-          const body = rawData?.Body || rawData?.body || rawData?.text?.body;
-          if (!from || !body) return null;
+        case 'vk': {
+          // VK Callback API: входящие сообщения в сообщество
+          const obj = rawData?.object?.message || rawData?.object || rawData;
+          const from = obj?.from_id || obj?.user_id;
+          const text = obj?.text;
+          if (!from || !text) return null;
           return {
             channel,
             externalUserId: String(from),
-            phone: String(from).replace(/^whatsapp:/, ''),
-            text: String(body),
+            text: String(text),
             raw: rawData,
           };
         }
@@ -132,8 +132,8 @@ export class MessageRouter {
     const where: any = { salonId };
 
     if (channel === 'telegram') where.telegramId = msg.externalUserId;
-    else if (channel === 'whatsapp') where.whatsappId = msg.externalUserId;
     else if (channel === 'max') where.maxId = msg.externalUserId;
+    else if (channel === 'vk') where.vkId = msg.externalUserId;
     else if (channel === 'sms') where.phone = msg.phone || msg.externalUserId;
 
     let client = await prisma.client.findFirst({ where });
@@ -145,8 +145,8 @@ export class MessageRouter {
         name: msg.senderName,
         phone: msg.phone,
         telegramId: channel === 'telegram' ? msg.externalUserId : null,
-        whatsappId: channel === 'whatsapp' ? msg.externalUserId : null,
         maxId: channel === 'max' ? msg.externalUserId : null,
+        vkId: channel === 'vk' ? msg.externalUserId : null,
         preferredChannel: channel,
       },
     });

@@ -2,11 +2,12 @@ import redis from '../db/redis';
 import { sendMessage as sendTelegram } from './telegram';
 import { Channel, IClient, ICascadeResult, ISalon } from '../../../shared/types';
 
-const CHANNEL_ORDER: Channel[] = ['telegram', 'whatsapp', 'max', 'sms'];
+// Порядок попыток. WhatsApp намеренно убран (дорого, сложно, низкий приоритет в РФ).
+const CHANNEL_ORDER: Channel[] = ['telegram', 'max', 'vk', 'sms'];
 const STATUS_TTL = 300; // 5 минут
 
 export class CascadeSender {
-  // Отправляет сообщение, пробуя каналы по приоритету. Salon нужен для токенов botToken и др.
+  // Отправляет сообщение, пробуя каналы по приоритету. Salon нужен для токенов ботов.
   async send(client: IClient, text: string, salon?: ISalon): Promise<ICascadeResult> {
     const attempted: Channel[] = [];
 
@@ -48,10 +49,10 @@ export class CascadeSender {
   async isChannelAvailable(channel: string): Promise<boolean> {
     try {
       const status = await redis.get(`channel_status:${channel}`);
-      if (!status) return true; // нет данных — считаем доступным
+      if (!status) return true;
       return status !== 'blocked';
     } catch {
-      return true; // если Redis недоступен — не блокируем отправку
+      return true;
     }
   }
 
@@ -72,10 +73,10 @@ export class CascadeSender {
     switch (channel) {
       case 'telegram':
         return client.telegramId || null;
-      case 'whatsapp':
-        return client.whatsappId || null;
       case 'max':
         return client.maxId || null;
+      case 'vk':
+        return client.vkId || null;
       case 'sms':
         return client.phone || null;
     }
@@ -89,7 +90,6 @@ export class CascadeSender {
   ): Promise<boolean> {
     switch (channel) {
       case 'telegram': {
-        // Берём токен бота из салона; fallback на глобальный для обратной совместимости.
         const token = salon?.telegramBotToken || process.env.TELEGRAM_BOT_TOKEN;
         if (!token) {
           console.warn('[cascade] нет telegram-токена ни в салоне, ни в env');
@@ -97,23 +97,23 @@ export class CascadeSender {
         }
         return sendTelegram(token, userId, text);
       }
-      case 'whatsapp':
-        return this.sendWhatsApp(userId, text);
       case 'max':
         return this.sendMax(userId, text);
+      case 'vk':
+        return this.sendVK(userId, text);
       case 'sms':
         return this.sendSMS(userId, text);
     }
   }
 
-  // Заглушки — реализовать когда подключим провайдеров
-  private async sendWhatsApp(_to: string, _text: string): Promise<boolean> {
-    console.warn('[cascade] WhatsApp не реализован');
+  // Заглушки — реализуются по мере подключения провайдеров (см. план Этапа 3)
+  private async sendMax(_to: string, _text: string): Promise<boolean> {
+    console.warn('[cascade] MAX не реализован');
     return false;
   }
 
-  private async sendMax(_to: string, _text: string): Promise<boolean> {
-    console.warn('[cascade] MAX не реализован');
+  private async sendVK(_to: string, _text: string): Promise<boolean> {
+    console.warn('[cascade] VK не реализован');
     return false;
   }
 

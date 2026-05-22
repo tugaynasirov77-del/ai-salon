@@ -70,8 +70,14 @@ export class AIAgent {
     if (!this._client) {
       const key = this.explicitKey || process.env.LLM_API_KEY || process.env.ANTHROPIC_API_KEY || '';
       if (!key) throw new Error('LLM API ключ не задан в окружении');
-      const opts: ConstructorParameters<typeof Anthropic>[0] = { apiKey: key };
-      if (LLM_BASE_URL) opts.baseURL = LLM_BASE_URL;
+      const opts: ConstructorParameters<typeof Anthropic>[0] = {};
+      if (LLM_BASE_URL) {
+        // OpenRouter и подобные прокси требуют Authorization: Bearer вместо x-api-key
+        opts.baseURL = LLM_BASE_URL;
+        opts.authToken = key;
+      } else {
+        opts.apiKey = key;
+      }
       this._client = new Anthropic(opts);
     }
     return this._client;

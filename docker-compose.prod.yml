@@ -58,3 +58,14 @@ services:
 volumes:
   pgdata:
   redisdata:
+
+# Включаем IPv6 — российские провайдеры блокируют IPv4 к Cloudflare/Anthropic,
+# хост работает через IPv6, контейнеры должны тоже.
+networks:
+  default:
+    enable_ipv6: true
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.30.0.0/16"
+        - subnet: "fd00:beef::/64"

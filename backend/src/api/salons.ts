@@ -95,9 +95,12 @@ router.get(
 router.get(
   '/:id/appointments',
   asyncHandler(async (req, res) => {
-    const { status, from, to } = req.query as Record<string, string | undefined>;
+    const { status, from, to, masterId, serviceId, clientId } = req.query as Record<string, string | undefined>;
     const where: any = { salonId: req.params.id };
     if (status) where.status = status;
+    if (masterId) where.masterId = masterId;
+    if (serviceId) where.serviceId = serviceId;
+    if (clientId) where.clientId = clientId;
     if (from || to) {
       where.datetime = {};
       if (from) where.datetime.gte = new Date(from);
@@ -106,7 +109,7 @@ router.get(
     const appointments = await prisma.appointment.findMany({
       where,
       orderBy: { datetime: 'asc' },
-      include: { client: true },
+      include: { client: true, serviceRef: true, masterRef: true },
       take: 500,
     });
     res.json(appointments);
@@ -126,6 +129,78 @@ router.get(
       take: 200,
     });
     res.json(messages);
+  })
+);
+
+// GET /api/salons/:id/conversations — список клиентов с последним сообщением
+router.get(
+  '/:id/conversations',
+  asyncHandler(async (req, res) => {
+    const salonId = req.params.id;
+    // Берём последние 1000 сообщений и сворачиваем по clientId
+    const recent = await prisma.message.findMany({
+      where: { salonId },
+      orderBy: { createdAt: 'desc' },
+      take: 1000,
+      select: {
+        id: true,
+        clientId: true,
+        text: true,
+        direction: true,
+        channel: true,
+        createdAt: true,
+      },
+    });
+    const byClient = new Map<string, { last: typeof recent[number]; count: number }>();
+    for (const m of recent) {
+      const entry = byClient.get(m.clientId);
+      if (!entry) byClient.set(m.clientId, { last: m, count: 1 });
+      else entry.count++;
+    }
+    const clientIds = Array.from(byClient.keys());
+    if (clientIds.length === 0) {
+      res.json([]);
+      return;
+    }
+    const clients = await prisma.client.findMany({
+      where: { id: { in: clientIds } },
+    });
+    const result = clients
+      .map((c) => {
+        const entry = byClient.get(c.id)!;
+        return {
+          client: c,
+          lastMessage: entry.last,
+          messagesCount: entry.count,
+        };
+      })
+      .sort((a, b) => b.lastMessage.createdAt.getTime() - a.lastMessage.createdAt.getTime());
+    res.json(result);
+  })
+);
+
+// GET /api/salons/:id/conversations/:clientId — полная история клиента
+router.get(
+  '/:id/conversations/:clientId',
+  asyncHandler(async (req, res) => {
+    const { id: salonId, clientId } = req.params;
+    const [client, messages, appointments] = await Promise.all([
+      prisma.client.findFirst({ where: { id: clientId, salonId } }),
+      prisma.message.findMany({
+        where: { salonId, clientId },
+        orderBy: { createdAt: 'asc' },
+        take: 500,
+      }),
+      prisma.appointment.findMany({
+        where: { salonId, clientId },
+        orderBy: { datetime: 'desc' },
+      }),
+    ]);
+    if (!client) {
+      res.status(404).json({ error: 'Клиент не найден' });
+      return;
+    }
+    res.json({ client, messages, appointments });
   })
 );
 
@@ -176,32 +251,81 @@ router.get(
   })
 );
 
-// GET /api/salons/:id/analytics
+// GET /api/salons/:id/analytics?from=&to=
 router.get(
   '/:id/analytics',
   asyncHandler(async (req, res) => {
     const salonId = req.params.id;
-    const since = new Date(Date.now() - 30 * 24 * 3600 * 1000);
+    const { from, to } = req.query as Record<string, string | undefined>;
+    const fromDt = from ? new Date(from) : new Date(Date.now() - 30 * 24 * 3600 * 1000);
+    const toDt = to ? new Date(to) : new Date();
+    const periodRange = { gte: fromDt, lte: toDt };
 
-    const [clientsTotal, appointmentsTotal, appointmentsLast30, messagesLast30, byStatus] =
-      await Promise.all([
-        prisma.client.count({ where: { salonId } }),
-        prisma.appointment.count({ where: { salonId } }),
-        prisma.appointment.count({ where: { salonId, createdAt: { gte: since } } }),
-        prisma.message.count({ where: { salonId, createdAt: { gte: since } } }),
-        prisma.appointment.groupBy({
-          by: ['status'],
-          where: { salonId },
-          _count: { _all: true },
-        }),
-      ]);
+    const [
+      clientsTotal,
+      newClientsInPeriod,
+      appointmentsTotal,
+      appointmentsInPeriod,
+      messagesInPeriod,
+      byStatus,
+      completed,
+      uniqueClientsMessaged,
+      uniqueClientsBooked,
+    ] = await Promise.all([
+      prisma.client.count({ where: { salonId } }),
+      prisma.client.count({ where: { salonId, createdAt: periodRange } }),
+      prisma.appointment.count({ where: { salonId } }),
+      prisma.appointment.count({ where: { salonId, createdAt: periodRange } }),
+      prisma.message.count({ where: { salonId, createdAt: periodRange } }),
+      prisma.appointment.groupBy({
+        by: ['status'],
+        where: { salonId, createdAt: periodRange },
+        _count: { _all: true },
+      }),
+      prisma.appointment.findMany({
+        where: { salonId, status: 'completed', datetime: periodRange },
+        include: { serviceRef: { select: { price: true } } },
+      }),
+      prisma.message.findMany({
+        where: { salonId, createdAt: periodRange },
+        select: { clientId: true },
+        distinct: ['clientId'],
+      }),
+      prisma.appointment.findMany({
+        where: { salonId, createdAt: periodRange },
+        select: { clientId: true },
+        distinct: ['clientId'],
+      }),
+    ]);
+
+    const revenue = completed.reduce((sum, a) => sum + (a.serviceRef?.price ?? 0), 0);
+    const conversion =
+      uniqueClientsMessaged.length === 0
+        ? 0
+        : uniqueClientsBooked.length / uniqueClientsMessaged.length;
+
+    // По дням: создание записей
+    const byDay = await prisma.$queryRaw<Array<{ day: string; count: bigint }>>`
+      SELECT to_char(date_trunc('day', "createdAt"), 'YYYY-MM-DD') AS day, COUNT(*)::bigint AS count
+      FROM "Appointment"
+      WHERE "salonId" = ${salonId}
+        AND "createdAt" >= ${fromDt}
+        AND "createdAt" <= ${toDt}
+      GROUP BY day
+      ORDER BY day ASC
+    `;
 
     res.json({
+      period: { from: fromDt.toISOString(), to: toDt.toISOString() },
       clientsTotal,
+      newClientsInPeriod,
       appointmentsTotal,
-      appointmentsLast30,
-      messagesLast30,
+      appointmentsInPeriod,
+      messagesInPeriod,
+      revenue,
+      conversion: Number(conversion.toFixed(3)),
       byStatus: byStatus.map((r) => ({ status: r.status, count: r._count._all })),
+      byDay: byDay.map((r) => ({ day: r.day, count: Number(r.count) })),
     });
   })
 );

@@ -8,9 +8,16 @@ import {
   ISalon,
   Intent,
   NicheKey,
-  ISalonSettings,
   IAppointment,
 } from '../../../shared/types';
+import type { Service, Master, WorkingHours, Faq } from '@prisma/client';
+
+type SalonCrm = {
+  services: Service[];
+  masters: (Master & { services: { serviceId: string }[] })[];
+  workingHours: WorkingHours[];
+  faqs: Faq[];
+};
 
 // Модель и провайдер — настраиваются через env (для прокси через OpenRouter из РФ)
 const MODEL = process.env.LLM_MODEL || 'claude-haiku-4-5-20251001';
@@ -153,9 +160,10 @@ export class AIAgent {
       cacheCreateTokens: 0,
     };
     try {
+      const crm = await this.loadSalonCrm(salon.id);
+
       // FAQ-shortcut: если короткий вопрос точно матчится с FAQ — отвечаем без Claude (экономия)
-      const settingsEarly: ISalonSettings = (salon.settings as ISalonSettings) || {};
-      const faqAnswer = this.tryFaqMatch(message.text, settingsEarly);
+      const faqAnswer = this.tryFaqMatch(message.text, crm.faqs);
       if (faqAnswer) {
         console.log(`[aiAgent] FAQ-hit for salon=${salon.id}`);
         return { text: faqAnswer, usage };
@@ -168,13 +176,12 @@ export class AIAgent {
       });
       history.reverse();
 
-      const settings: ISalonSettings = (salon.settings as ISalonSettings) || {};
       // Стабильная часть system — кэшируется per salon (cache hit ≥80% на активных салонах)
       const stableSystem =
         buildSystemPrompt(salon.niche as NicheKey, {
           name: salon.name,
-          services: this.formatServices(settings),
-          schedule: this.formatSchedule(settings),
+          services: this.formatServices(crm.services),
+          schedule: this.formatSchedule(crm.workingHours),
         }) +
         `\n\nКогда клиент явно подтвердил желание записаться И ты знаешь услугу, дату и время — ОБЯЗАТЕЛЬНО вызови инструмент create_appointment. Не пиши «запись оформлена», пока не вызвал инструмент.`;
       // Переменная часть — НЕ кэшируется (дата/клиент меняются)
@@ -317,12 +324,21 @@ export class AIAgent {
     if (isNaN(datetime.getTime())) {
       return { content: 'Ошибка: некорректный формат datetime_iso', isError: true };
     }
+    // Найти FK-связи: услуга по имени, мастер по имени (для CRM)
+    const [serviceRef, masterRef] = await Promise.all([
+      prisma.service.findFirst({ where: { salonId: salon.id, name: input.service } }),
+      input.master
+        ? prisma.master.findFirst({ where: { salonId: salon.id, name: input.master } })
+        : Promise.resolve(null),
+    ]);
     const appointment = await prisma.appointment.create({
       data: {
         salonId: salon.id,
         clientId: client.id,
         service: input.service,
         master: input.master || null,
+        serviceId: serviceRef?.id || null,
+        masterId: masterRef?.id || null,
         datetime,
         status: 'confirmed',
       },
@@ -406,12 +422,76 @@ export class AIAgent {
     };
   }
 
+  // Dry-run для test-chat в админке: без тулов, без записи в БД.
+  // history — простая лента предыдущих реплик (порядок: старые → новые).
+  async processDryRun(
+    salonId: string,
+    history: Array<{ role: 'user' | 'assistant'; text: string }>,
+    newUserText: string
+  ): Promise<{ text: string; usage: AggregateUsage }> {
+    const usage: AggregateUsage = {
+      inputTokens: 0,
+      outputTokens: 0,
+      cacheReadTokens: 0,
+      cacheCreateTokens: 0,
+    };
+    const salon = await prisma.salon.findUnique({ where: { id: salonId } });
+    if (!salon) throw new Error('Салон не найден');
+    const crm = await this.loadSalonCrm(salonId);
+
+    const faqAnswer = this.tryFaqMatch(newUserText, crm.faqs);
+    if (faqAnswer) return { text: faqAnswer, usage };
+
+    const stableSystem =
+      buildSystemPrompt(salon.niche as NicheKey, {
+        name: salon.name,
+        services: this.formatServices(crm.services),
+        schedule: this.formatSchedule(crm.workingHours),
+      }) + `\n\n[РЕЖИМ ТЕСТА] Это пробный чат владельца — отвечай как обычно, но запись не оформляется в системе.`;
+    const volatileSystem =
+      `Текущая дата: ${new Date().toISOString().slice(0, 10)} (UTC).\nИмя клиента: (тестовый чат).`;
+
+    const messages: Anthropic.MessageParam[] = history
+      .slice(-HISTORY_LIMIT)
+      .map((m) => ({ role: m.role, content: this.truncate(m.text) }));
+    messages.push({ role: 'user', content: this.truncate(newUserText) });
+
+    const response = await this.client.messages.create({
+      model: MODEL,
+      max_tokens: 600,
+      system: [
+        { type: 'text', text: stableSystem, cache_control: { type: 'ephemeral' } } as any,
+        { type: 'text', text: volatileSystem },
+      ],
+      messages,
+    });
+    this.accumulateUsage(usage, response.usage);
+
+    const text = response.content
+      .filter((b) => b.type === 'text')
+      .map((b) => (b as Anthropic.TextBlock).text)
+      .join('\n')
+      .trim();
+    return { text: text || '(пустой ответ)', usage };
+  }
+
+  private async loadSalonCrm(salonId: string): Promise<SalonCrm> {
+    const [services, masters, workingHours, faqs] = await Promise.all([
+      prisma.service.findMany({ where: { salonId, isActive: true } }),
+      prisma.master.findMany({
+        where: { salonId, isActive: true },
+        include: { services: { select: { serviceId: true } } },
+      }),
+      prisma.workingHours.findMany({ where: { salonId, masterId: null } }),
+      prisma.faq.findMany({ where: { salonId }, orderBy: { order: 'asc' } }),
+    ]);
+    return { services, masters, workingHours, faqs };
+  }
+
   // Простой матч FAQ: ищем пересечение значимых слов вопроса клиента с FAQ-вопросами салона.
-  // Возвращает ответ если совпадение сильное (>=60% значимых слов).
-  private tryFaqMatch(text: string, settings: ISalonSettings): string | null {
-    const faq = settings?.faq;
-    if (!faq || !Array.isArray(faq) || faq.length === 0) return null;
-    if (text.length > 100) return null; // FAQ только для коротких вопросов
+  private tryFaqMatch(text: string, faqs: Faq[]): string | null {
+    if (!faqs.length) return null;
+    if (text.length > 100) return null;
 
     const normalize = (s: string) =>
       s.toLowerCase().replace(/[^a-zа-яё0-9\s]/gi, ' ').split(/\s+/).filter((w) => w.length > 3);
@@ -421,7 +501,7 @@ export class AIAgent {
 
     let bestScore = 0;
     let bestAnswer: string | null = null;
-    for (const item of faq) {
+    for (const item of faqs) {
       const fqWords = normalize(item.question);
       if (fqWords.length === 0) continue;
       const matched = fqWords.filter((w) => qWords.has(w)).length;
@@ -457,17 +537,32 @@ export class AIAgent {
     return text.slice(0, MAX_MSG_LEN) + ' […]';
   }
 
-  private formatServices(settings: ISalonSettings): string {
-    if (!settings?.priceList || !Array.isArray(settings.priceList)) return '(не указано)';
-    return settings.priceList
-      .map((p) => `• ${p.service} — ${p.price}₽${p.duration ? ` (${p.duration} мин)` : ''}`)
+  private formatServices(services: Service[]): string {
+    if (!services.length) return '(не указано)';
+    return services
+      .map((s) => `• ${s.name} — ${s.price}₽${s.durationMin ? ` (${s.durationMin} мин)` : ''}`)
       .join('\n');
   }
 
-  private formatSchedule(settings: ISalonSettings): string {
-    if (!settings?.schedule) return '(не указан)';
-    const s = settings.schedule;
-    return `${s.from || '?'} – ${s.to || '?'}${s.days ? ` (${s.days.join(', ')})` : ''}`;
+  private formatSchedule(hours: WorkingHours[]): string {
+    if (!hours.length) return '(не указан)';
+    const dayNames = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
+    const fmt = (min: number) =>
+      `${String(Math.floor(min / 60)).padStart(2, '0')}:${String(min % 60).padStart(2, '0')}`;
+    // Группируем по диапазону времени
+    const groups = new Map<string, number[]>();
+    for (const h of hours) {
+      const key = `${h.fromMin}-${h.toMin}`;
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key)!.push(h.weekday);
+    }
+    return Array.from(groups.entries())
+      .map(([range, days]) => {
+        const [from, to] = range.split('-').map(Number);
+        const sorted = days.sort((a, b) => a - b).map((d) => dayNames[d]).join(', ');
+        return `${fmt(from)}–${fmt(to)} (${sorted})`;
+      })
+      .join('; ');
   }
 }
 

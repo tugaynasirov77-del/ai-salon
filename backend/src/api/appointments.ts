@@ -49,4 +49,52 @@ router.put(
   })
 );
 
+// PUT /api/appointments/:id — полное обновление (ручная правка из CRM)
+router.put(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    const { service, master, serviceId, masterId, datetime, status } = req.body;
+    const data: any = {};
+    if (service !== undefined) data.service = service;
+    if (master !== undefined) data.master = master;
+    if (serviceId !== undefined) data.serviceId = serviceId;
+    if (masterId !== undefined) data.masterId = masterId;
+    if (datetime !== undefined) {
+      const dt = new Date(datetime);
+      if (isNaN(dt.getTime())) {
+        res.status(400).json({ error: 'datetime некорректен' });
+        return;
+      }
+      data.datetime = dt;
+      data.reminder24h = false;
+      data.reminder2h = false;
+    }
+    if (status !== undefined) {
+      const allowed = ['confirmed', 'cancelled', 'completed', 'no_show'];
+      if (!allowed.includes(status)) {
+        res.status(400).json({ error: `status: ${allowed.join(', ')}` });
+        return;
+      }
+      data.status = status;
+    }
+    const appointment = await prisma.appointment.update({
+      where: { id: req.params.id },
+      data,
+    });
+    if (data.datetime && appointment.status === 'confirmed') {
+      await scheduleReminders(appointment as unknown as IAppointment);
+    }
+    res.json(appointment);
+  })
+);
+
+// DELETE /api/appointments/:id
+router.delete(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    await prisma.appointment.delete({ where: { id: req.params.id } });
+    res.json({ ok: true });
+  })
+);
+
 export default router;

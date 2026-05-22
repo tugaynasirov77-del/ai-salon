@@ -9,20 +9,24 @@ datasource db {
 }
 
 model Salon {
-  id               String        @id @default(cuid())
+  id               String         @id @default(cuid())
   name             String
   ownerName        String
   phone            String
   address          String?
   niche            String
-  plan             String        @default("starter")
+  plan             String         @default("starter")
   telegramBotToken String?
   settings         Json?
-  isActive         Boolean       @default(true)
-  createdAt        DateTime      @default(now())
+  isActive         Boolean        @default(true)
+  createdAt        DateTime       @default(now())
   clients          Client[]
   appointments     Appointment[]
   messages         Message[]
+  services         Service[]
+  masters          Master[]
+  workingHours     WorkingHours[]
+  faqs             Faq[]
 }
 
 model Client {
@@ -48,6 +52,8 @@ model Appointment {
   id          String   @id @default(cuid())
   salonId     String
   clientId    String
+  serviceId   String?
+  masterId    String?
   service     String
   master      String?
   datetime    DateTime
@@ -57,10 +63,13 @@ model Appointment {
   createdAt   DateTime @default(now())
   salon       Salon    @relation(fields: [salonId], references: [id], onDelete: Cascade)
   client      Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  serviceRef  Service? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  masterRef   Master?  @relation(fields: [masterId], references: [id], onDelete: SetNull)
 
   @@index([salonId])
   @@index([clientId])
   @@index([datetime])
+  @@index([masterId])
 }
 
 model Message {
@@ -89,4 +98,70 @@ model ChannelStatus {
   channel   String   @unique
   isBlocked Boolean  @default(false)
   checkedAt DateTime @default(now())
+}
+
+model Service {
+  id           String          @id @default(cuid())
+  salonId      String
+  name         String
+  price        Int
+  durationMin  Int?
+  isActive     Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+  salon        Salon           @relation(fields: [salonId], references: [id], onDelete: Cascade)
+  masters      MasterService[]
+  appointments Appointment[]
+
+  @@index([salonId])
+}
+
+model Master {
+  id           String          @id @default(cuid())
+  salonId      String
+  name         String
+  phone        String?
+  isActive     Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+  salon        Salon           @relation(fields: [salonId], references: [id], onDelete: Cascade)
+  services     MasterService[]
+  workingHours WorkingHours[]
+  appointments Appointment[]
+
+  @@index([salonId])
+}
+
+model MasterService {
+  masterId  String
+  serviceId String
+  master    Master  @relation(fields: [masterId], references: [id], onDelete: Cascade)
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@id([masterId, serviceId])
+  @@index([serviceId])
+}
+
+model WorkingHours {
+  id       String  @id @default(cuid())
+  salonId  String
+  masterId String?
+  weekday  Int
+  fromMin  Int
+  toMin    Int
+  salon    Salon   @relation(fields: [salonId], references: [id], onDelete: Cascade)
+  master   Master? @relation(fields: [masterId], references: [id], onDelete: Cascade)
+
+  @@index([salonId])
+  @@index([masterId])
+}
+
+model Faq {
+  id        String   @id @default(cuid())
+  salonId   String
+  question  String
+  answer    String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  salon     Salon    @relation(fields: [salonId], references: [id], onDelete: Cascade)
+
+  @@index([salonId])
 }

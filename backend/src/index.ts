@@ -10,6 +10,8 @@ import { errorHandler } from './middleware/errors';
 import webhooksRouter from './api/webhooks';
 import salonsRouter from './api/salons';
 import appointmentsRouter from './api/appointments';
+import crmRouter from './api/crm';
+import testChatRouter from './api/testChat';
 import healthRouter from './api/health';
 
 import { initAllSalonBots } from './channels/telegram';
@@ -28,6 +30,8 @@ app.use('/webhook', webhookLimiter, webhooksRouter);
 
 // API-роуты — со строгим лимитом
 app.use('/api/salons', apiLimiter, salonsRouter);
+app.use('/api/salons', apiLimiter, crmRouter);
+app.use('/api/salons', apiLimiter, testChatRouter);
 app.use('/api/appointments', apiLimiter, appointmentsRouter);
 
 // Health-чек без лимита

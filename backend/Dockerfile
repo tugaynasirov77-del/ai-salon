@@ -6,16 +6,15 @@ WORKDIR /app
 RUN apk add --no-cache openssl
 
 # Копируем манифесты и ставим зависимости.
-# Зеркало npmmirror используется как основное (registry.npmjs.org нестабилен из РФ),
-# но если ci упал на нём (новый пакет ещё не реплицировался) — fallback на npmjs + retries.
+# npmjs.org как основной (через IPv6 работает из РФ), npmmirror как fallback —
+# раньше npmjs был нестабилен, теперь наоборот зеркало может отдавать 502 на новых пакетах.
 COPY backend/package*.json ./
-RUN npm config set registry https://registry.npmmirror.com \
- && npm config set fetch-retries 5 \
- && npm config set fetch-retry-mintimeout 20000 \
- && (npm ci --no-audit --no-fund \
-     || (echo '[build] npmmirror не сработал, fallback на npmjs.org'; \
-         npm config set registry https://registry.npmjs.org \
-         && npm ci --no-audit --no-fund))
+RUN npm config set fetch-retries 3 \
+ && npm config set fetch-retry-mintimeout 15000 \
+ && npm config set fetch-retry-maxtimeout 60000 \
+ && (npm ci --registry=https://registry.npmjs.org --no-audit --no-fund \
+     || (echo '[build] npmjs.org не сработал, fallback на npmmirror'; \
+         npm ci --registry=https://registry.npmmirror.com --no-audit --no-fund))
 
 # Копируем исходники бэка и shared
 COPY backend/ ./

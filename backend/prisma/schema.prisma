@@ -18,6 +18,9 @@ model Salon {
   plan             String         @default("starter")
   telegramBotToken String?
   maxBotToken      String?
+  avitoClientId    String?
+  avitoClientSecret String?
+  avitoUserId      String?
   settings         Json?
   isActive         Boolean        @default(true)
   createdAt        DateTime       @default(now())
@@ -28,6 +31,21 @@ model Salon {
   masters          Master[]
   workingHours     WorkingHours[]
   faqs             Faq[]
+  users            User[]
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  role         String   @default("owner")
+  salonId      String?
+  salon        Salon?   @relation(fields: [salonId], references: [id], onDelete: SetNull)
+  createdAt    DateTime @default(now())
+  lastLoginAt  DateTime?
+
+  @@index([salonId])
 }
 
 model Client {
@@ -38,6 +56,8 @@ model Client {
   telegramId       String?
   maxId            String?
   vkId             String?
+  avitoUserId      String?
+  avitoChatId      String?
   webchatId        String?
   preferredChannel String        @default("telegram")
   createdAt        DateTime      @default(now())
@@ -49,6 +69,7 @@ model Client {
   @@index([telegramId])
   @@index([phone])
   @@index([webchatId])
+  @@index([avitoUserId])
 }
 
 model Appointment {

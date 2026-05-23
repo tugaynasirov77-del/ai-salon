@@ -1,11 +1,12 @@
 import redis from '../db/redis';
 import { sendMessage as sendTelegram } from './telegram';
 import { sendMessage as sendMaxReal } from './max';
+import { sendMessage as sendAvitoReal } from './avito';
 import { sendSMS as sendSmsReal } from './sms';
 import { Channel, IClient, ICascadeResult, ISalon } from '../../../shared/types';
 
 // Порядок попыток. WhatsApp намеренно убран (дорого, сложно, низкий приоритет в РФ).
-const CHANNEL_ORDER: Channel[] = ['telegram', 'max', 'vk', 'sms'];
+const CHANNEL_ORDER: Channel[] = ['telegram', 'max', 'avito', 'vk', 'sms'];
 const STATUS_TTL = 300; // 5 минут
 
 export class CascadeSender {
@@ -77,6 +78,9 @@ export class CascadeSender {
         return client.telegramId || null;
       case 'max':
         return client.maxId || null;
+      case 'avito':
+        // Для Avito нужен chat_id, а не user_id. Храним актуальный в client.avitoChatId.
+        return client.avitoChatId || null;
       case 'vk':
         return client.vkId || null;
       case 'sms':
@@ -101,6 +105,8 @@ export class CascadeSender {
       }
       case 'max':
         return this.sendMax(userId, text, salon);
+      case 'avito':
+        return this.sendAvito(userId, text, salon);
       case 'vk':
         return this.sendVK(userId, text);
       case 'sms':
@@ -109,6 +115,22 @@ export class CascadeSender {
   }
 
   // Заглушки — реализуются по мере подключения провайдеров (см. план Этапа 3)
+  private async sendAvito(chatId: string, text: string, salon?: ISalon): Promise<boolean> {
+    if (!salon?.avitoClientId || !salon?.avitoClientSecret || !salon?.avitoUserId) {
+      console.warn('[cascade] нет avito-кредов для салона');
+      return false;
+    }
+    return sendAvitoReal(
+      {
+        clientId: salon.avitoClientId,
+        clientSecret: salon.avitoClientSecret,
+        userId: salon.avitoUserId,
+      },
+      chatId,
+      text
+    );
+  }
+
   private async sendMax(to: string, text: string, salon?: ISalon): Promise<boolean> {
     const token = salon?.maxBotToken || process.env.MAX_API_KEY;
     if (!token) {

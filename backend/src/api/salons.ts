@@ -6,13 +6,24 @@ import {
   setWebhookForSalon as setMaxWebhook,
   getBotInfo as getMaxBotInfo,
 } from '../channels/max';
+import {
+  getSelfInfo as getAvitoSelfInfo,
+  subscribeWebhook as subscribeAvitoWebhook,
+} from '../channels/avito';
 
 const router = Router();
 
-// POST /api/salons — создать салон
+// POST /api/salons — создать салон (только для платформенных админов, ключ в env ADMIN_TOKEN)
+// Для обычной регистрации владельцами используется /api/auth/register.
 router.post(
   '/',
   asyncHandler(async (req, res) => {
+    const adminToken = process.env.ADMIN_TOKEN;
+    const provided = req.headers['x-admin-token'];
+    if (!adminToken || provided !== adminToken) {
+      res.status(403).json({ error: 'Требуется x-admin-token. Для регистрации используйте /api/auth/register' });
+      return;
+    }
     const { name, ownerName, phone, address, niche, plan, telegramBotToken, settings } = req.body;
     if (!name || !ownerName || !phone || !niche) {
       res.status(400).json({ error: 'name, ownerName, phone, niche обязательны' });
@@ -79,6 +90,51 @@ router.post(
     }
 
     res.json({ ok: true, salonId: salon.id, webhookUrl: `${baseUrl}/webhook/telegram/${salon.id}` });
+  })
+);
+
+// POST /api/salons/:id/avito/connect — подключить Авито (OAuth client_credentials)
+router.post(
+  '/:id/avito/connect',
+  asyncHandler(async (req, res) => {
+    const { clientId, clientSecret, userId } = req.body;
+    if (!clientId || !clientSecret || !userId) {
+      res.status(400).json({ error: 'clientId, clientSecret, userId обязательны' });
+      return;
+    }
+    const baseUrl = process.env.BASE_URL;
+    if (!baseUrl) {
+      res.status(500).json({ error: 'BASE_URL не задан на сервере' });
+      return;
+    }
+
+    const creds = { clientId, clientSecret, userId: String(userId) };
+    let info;
+    try {
+      info = await getAvitoSelfInfo(creds);
+    } catch (e: any) {
+      res.status(400).json({ error: `Некорректные авито-креды: ${e?.message}` });
+      return;
+    }
+
+    const salon = await prisma.salon.update({
+      where: { id: req.params.id },
+      data: {
+        avitoClientId: clientId,
+        avitoClientSecret: clientSecret,
+        avitoUserId: String(userId),
+      },
+    });
+
+    const callbackUrl = `${baseUrl}/webhook/avito/${salon.id}`;
+    try {
+      await subscribeAvitoWebhook(creds, callbackUrl);
+    } catch (e: any) {
+      res.status(400).json({ error: `Не удалось подписать webhook: ${e?.message}` });
+      return;
+    }
+
+    res.json({ ok: true, salonId: salon.id, account: info, webhookUrl: callbackUrl });
   })
 );
 

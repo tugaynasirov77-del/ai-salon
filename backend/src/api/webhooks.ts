@@ -60,6 +60,24 @@ router.post(
   })
 );
 
+// Avito Messenger webhook v3
+router.post(
+  '/avito/:salonId',
+  asyncHandler(async (req, res) => {
+    res.status(200).send('ok');
+    const body = req.body;
+    // Авито шлёт {payload: {type: 'message', value: {...}}} или legacy {value: {...}}
+    const type = body?.payload?.type || body?.type;
+    if (type && type !== 'message') return;
+    // Игнорируем эхо собственных исходящих
+    const v = body?.payload?.value || body?.value;
+    if (v?.flags?.includes?.('outgoing')) return;
+    messageRouter.handleIncoming('avito', body, req.params.salonId).catch((e) =>
+      console.error('[webhook/avito] error:', e)
+    );
+  })
+);
+
 // SMS callback (sms.ru / smsc — оба шлют form-encoded или JSON).
 // sms.ru входящие: https://sms.ru/?panel=settings&subpanel=callback (поля: phone, message, my_phone, time)
 // Привязываем к салону по pathparams.

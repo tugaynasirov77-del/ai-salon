@@ -126,6 +126,21 @@ export class MessageRouter {
             raw: rawData,
           };
         }
+        case 'avito': {
+          // Avito v3 webhook payload: {payload: {type: 'message', value: {id, chat_id, author_id, user_id, content: {text}, ...}}}
+          const v = rawData?.payload?.value || rawData?.value || rawData;
+          const authorId = v?.author_id;
+          const text = v?.content?.text;
+          const chatId = v?.chat_id;
+          // Игнорируем эхо собственных сообщений (когда author_id == userId владельца)
+          if (!authorId || !text) return null;
+          return {
+            channel,
+            externalUserId: String(authorId),
+            text: String(text),
+            raw: { chatId, ...rawData },
+          };
+        }
         case 'webchat': {
           const sessionId = rawData?.sessionId;
           const text = rawData?.text;
@@ -156,9 +171,19 @@ export class MessageRouter {
     else if (channel === 'vk') where.vkId = msg.externalUserId;
     else if (channel === 'sms') where.phone = msg.phone || msg.externalUserId;
     else if (channel === 'webchat') where.webchatId = msg.externalUserId;
+    else if (channel === 'avito') where.avitoUserId = msg.externalUserId;
 
     let client = await prisma.client.findFirst({ where });
-    if (client) return client;
+    if (client) {
+      // Avito: chat_id может меняться — обновим на актуальный
+      if (channel === 'avito' && msg.raw?.chatId && client.avitoChatId !== msg.raw.chatId) {
+        client = await prisma.client.update({
+          where: { id: client.id },
+          data: { avitoChatId: msg.raw.chatId },
+        });
+      }
+      return client;
+    }
 
     client = await prisma.client.create({
       data: {
@@ -169,6 +194,8 @@ export class MessageRouter {
         maxId: channel === 'max' ? msg.externalUserId : null,
         vkId: channel === 'vk' ? msg.externalUserId : null,
         webchatId: channel === 'webchat' ? msg.externalUserId : null,
+        avitoUserId: channel === 'avito' ? msg.externalUserId : null,
+        avitoChatId: channel === 'avito' ? (msg.raw?.chatId || null) : null,
         preferredChannel: channel,
       },
     });

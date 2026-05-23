@@ -8,7 +8,7 @@ import { AppointmentTimeline } from '@/components/dashboard/AppointmentTimeline'
 import { RecentConversations } from '@/components/dashboard/RecentConversations';
 import { ByDayChart } from '@/components/dashboard/ByDayChart';
 import { fetchAnalytics, fetchAppointments, fetchClients, fetchConversations } from '@/lib/api';
-import { SALON_ID } from '@/lib/config';
+import { useSalonId } from '@/lib/config';
 
 // Формат рубля: 1234567 → "1 234 567 ₽"
 function fmtRub(n: number) {
@@ -21,6 +21,7 @@ function isoToday() {
 }
 
 export default function DashboardHome() {
+  const SALON_ID = useSalonId();
   // Аналитика за последние 30 дней (дефолт бэка)
   const analytics = useQuery({ queryKey: ['analytics', SALON_ID, '30d'], queryFn: () => fetchAnalytics(SALON_ID) });
 

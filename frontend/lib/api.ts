@@ -1,6 +1,7 @@
-// Все запросы к live-бэку https://api.ailiva.ru
-// Источник правды по эндпоинтам — vault `06 Live Backend.md`.
+// Все запросы к live-бэку https://api.ailiva.ru через axios (lib/http.ts).
+// JWT подкладывается интерсептором автоматически.
 
+import { httpGet, httpPost, httpPut, httpDelete } from './http';
 import type {
   ISalon,
   IClient,
@@ -10,42 +11,15 @@ import type {
   AppointmentStatus,
 } from '@shared/types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ailiva.ru';
-
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(API_URL + path, {
-    ...init,
-    headers: { 'Content-Type': 'application/json', ...(init?.headers || {}) },
-  });
-  if (!res.ok) {
-    let msg = 'API error ' + res.status + ' on ' + path;
-    try {
-      const body = await res.json();
-      if (body?.error) msg += ': ' + body.error;
-    } catch {}
-    throw new Error(msg);
-  }
-  return res.json() as Promise<T>;
-}
-
-function qs(params: Record<string, string | number | undefined | null>): string {
-  const parts: string[] = [];
-  for (const [k, v] of Object.entries(params)) {
-    if (v === undefined || v === null || v === '') continue;
-    parts.push(encodeURIComponent(k) + '=' + encodeURIComponent(String(v)));
-  }
-  return parts.length ? '?' + parts.join('&') : '';
-}
-
 // ============================================================
-// Дополнительные типы (которых нет в @shared/types)
+// Дополнительные типы
 // ============================================================
 
 export interface IService {
   id: string;
   salonId: string;
   name: string;
-  price: number;            // ₽, int
+  price: number;
   durationMin?: number;
   isActive: boolean;
   createdAt: string;
@@ -66,8 +40,8 @@ export interface IWorkingHour {
   id: string;
   salonId: string;
   masterId: string | null;
-  weekday: number;          // 0=вс..6=сб
-  fromMin: number;          // минуты от 00:00
+  weekday: number;
+  fromMin: number;
   toMin: number;
 }
 
@@ -100,7 +74,7 @@ export interface IAnalytics {
   appointmentsInPeriod: number;
   messagesInPeriod: number;
   revenue: number;
-  conversion: number;       // 0..1
+  conversion: number;
   byStatus: Array<{ status: AppointmentStatus; count: number }>;
   byDay: Array<{ day: string; count: number }>;
 }
@@ -119,118 +93,54 @@ export interface ITestChatResponse {
   turns: number;
 }
 
-export interface IHealthStatus {
-  ok: boolean;
-  uptime?: number;
-}
-
 // ============================================================
 // Салон
 // ============================================================
 
-export function createSalon(data: Partial<ISalon> & { niche: NicheKey }): Promise<ISalon> {
-  return request<ISalon>('/api/salons', { method: 'POST', body: JSON.stringify(data) });
-}
+export const createSalon = (data: Partial<ISalon> & { niche: NicheKey }) => httpPost<ISalon>('/api/salons', data);
+export const fetchSalon = (id: string) => httpGet<ISalon>(`/api/salons/${id}`);
+export const updateSalon = (id: string, data: Partial<ISalon>) => httpPut<ISalon>(`/api/salons/${id}`, data);
 
-export function fetchSalon(id: string): Promise<ISalon> {
-  return request<ISalon>('/api/salons/' + id);
-}
-
-export function updateSalon(id: string, data: Partial<ISalon>): Promise<ISalon> {
-  return request<ISalon>('/api/salons/' + id, { method: 'PUT', body: JSON.stringify(data) });
-}
-
-export function connectTelegram(id: string, token: string): Promise<{ ok: boolean }> {
-  return request('/api/salons/' + id + '/telegram/connect', {
-    method: 'POST',
-    body: JSON.stringify({ token }),
-  });
-}
+export const connectTelegram = (id: string, token: string) => httpPost<{ ok: boolean }>(`/api/salons/${id}/telegram/connect`, { token });
+export const connectMax = (id: string, token: string) => httpPost<{ ok: boolean }>(`/api/salons/${id}/max/connect`, { token });
+export const connectAvito = (id: string, body: { clientId: string; clientSecret: string; userId: string }) =>
+  httpPost<{ ok: boolean }>(`/api/salons/${id}/avito/connect`, body);
 
 // ============================================================
-// Услуги
+// Услуги, мастера, расписание, FAQ
 // ============================================================
 
-export function fetchServices(salonId: string): Promise<IService[]> {
-  return request('/api/salons/' + salonId + '/services');
-}
+export const fetchServices = (salonId: string) => httpGet<IService[]>(`/api/salons/${salonId}/services`);
+export const createService = (salonId: string, data: { name: string; price: number; durationMin?: number; masterIds?: string[] }) =>
+  httpPost<IService>(`/api/salons/${salonId}/services`, data);
+export const updateService = (salonId: string, serviceId: string, data: Partial<IService> & { masterIds?: string[] }) =>
+  httpPut<IService>(`/api/salons/${salonId}/services/${serviceId}`, data);
+export const deleteService = (salonId: string, serviceId: string) =>
+  httpDelete<{ ok: boolean }>(`/api/salons/${salonId}/services/${serviceId}`);
 
-export function createService(
-  salonId: string,
-  data: { name: string; price: number; durationMin?: number; masterIds?: string[] },
-): Promise<IService> {
-  return request('/api/salons/' + salonId + '/services', { method: 'POST', body: JSON.stringify(data) });
-}
+export const fetchMasters = (salonId: string) => httpGet<IMaster[]>(`/api/salons/${salonId}/masters`);
+export const createMaster = (salonId: string, data: { name: string; phone?: string; serviceIds?: string[] }) =>
+  httpPost<IMaster>(`/api/salons/${salonId}/masters`, data);
+export const updateMaster = (salonId: string, masterId: string, data: Partial<IMaster> & { serviceIds?: string[] }) =>
+  httpPut<IMaster>(`/api/salons/${salonId}/masters/${masterId}`, data);
+export const deleteMaster = (salonId: string, masterId: string) =>
+  httpDelete<{ ok: boolean }>(`/api/salons/${salonId}/masters/${masterId}`);
 
-export function updateService(salonId: string, serviceId: string, data: Partial<IService> & { masterIds?: string[] }): Promise<IService> {
-  return request('/api/salons/' + salonId + '/services/' + serviceId, { method: 'PUT', body: JSON.stringify(data) });
-}
-
-export function deleteService(salonId: string, serviceId: string): Promise<{ ok: boolean }> {
-  return request('/api/salons/' + salonId + '/services/' + serviceId, { method: 'DELETE' });
-}
-
-// ============================================================
-// Мастера
-// ============================================================
-
-export function fetchMasters(salonId: string): Promise<IMaster[]> {
-  return request('/api/salons/' + salonId + '/masters');
-}
-
-export function createMaster(
-  salonId: string,
-  data: { name: string; phone?: string; serviceIds?: string[] },
-): Promise<IMaster> {
-  return request('/api/salons/' + salonId + '/masters', { method: 'POST', body: JSON.stringify(data) });
-}
-
-export function updateMaster(salonId: string, masterId: string, data: Partial<IMaster> & { serviceIds?: string[] }): Promise<IMaster> {
-  return request('/api/salons/' + salonId + '/masters/' + masterId, { method: 'PUT', body: JSON.stringify(data) });
-}
-
-export function deleteMaster(salonId: string, masterId: string): Promise<{ ok: boolean }> {
-  return request('/api/salons/' + salonId + '/masters/' + masterId, { method: 'DELETE' });
-}
-
-// ============================================================
-// Расписание (working hours)
-// ============================================================
-
-export function fetchWorkingHours(salonId: string, masterId: string | null = null): Promise<IWorkingHour[]> {
-  return request('/api/salons/' + salonId + '/working-hours' + qs({ masterId: masterId === null ? 'null' : masterId }));
-}
-
-export function saveWorkingHours(
+export const fetchWorkingHours = (salonId: string, masterId: string | null = null) =>
+  httpGet<IWorkingHour[]>(`/api/salons/${salonId}/working-hours`, { masterId: masterId === null ? 'null' : masterId });
+export const saveWorkingHours = (
   salonId: string,
   masterId: string | null,
   hours: Array<{ weekday: number; fromMin: number; toMin: number }>,
-): Promise<{ ok: boolean }> {
-  return request('/api/salons/' + salonId + '/working-hours', {
-    method: 'PUT',
-    body: JSON.stringify({ masterId, hours }),
-  });
-}
+) => httpPut<{ ok: boolean }>(`/api/salons/${salonId}/working-hours`, { masterId, hours });
 
-// ============================================================
-// FAQ
-// ============================================================
-
-export function fetchFaqs(salonId: string): Promise<IFaq[]> {
-  return request('/api/salons/' + salonId + '/faqs');
-}
-
-export function createFaq(salonId: string, data: { question: string; answer: string; order?: number }): Promise<IFaq> {
-  return request('/api/salons/' + salonId + '/faqs', { method: 'POST', body: JSON.stringify(data) });
-}
-
-export function updateFaq(salonId: string, faqId: string, data: Partial<IFaq>): Promise<IFaq> {
-  return request('/api/salons/' + salonId + '/faqs/' + faqId, { method: 'PUT', body: JSON.stringify(data) });
-}
-
-export function deleteFaq(salonId: string, faqId: string): Promise<{ ok: boolean }> {
-  return request('/api/salons/' + salonId + '/faqs/' + faqId, { method: 'DELETE' });
-}
+export const fetchFaqs = (salonId: string) => httpGet<IFaq[]>(`/api/salons/${salonId}/faqs`);
+export const createFaq = (salonId: string, data: { question: string; answer: string; order?: number }) =>
+  httpPost<IFaq>(`/api/salons/${salonId}/faqs`, data);
+export const updateFaq = (salonId: string, faqId: string, data: Partial<IFaq>) =>
+  httpPut<IFaq>(`/api/salons/${salonId}/faqs/${faqId}`, data);
+export const deleteFaq = (salonId: string, faqId: string) =>
+  httpDelete<{ ok: boolean }>(`/api/salons/${salonId}/faqs/${faqId}`);
 
 // ============================================================
 // Записи
@@ -238,89 +148,61 @@ export function deleteFaq(salonId: string, faqId: string): Promise<{ ok: boolean
 
 export interface AppointmentsFilter {
   status?: AppointmentStatus;
-  from?: string;            // ISO
+  from?: string;
   to?: string;
   masterId?: string;
   serviceId?: string;
   clientId?: string;
 }
 
-export function fetchAppointments(salonId: string, filter: AppointmentsFilter = {}): Promise<IAppointment[]> {
-  return request('/api/salons/' + salonId + '/appointments' + qs(filter as any));
-}
+export const fetchAppointments = (salonId: string, filter: AppointmentsFilter = {}) =>
+  httpGet<IAppointment[]>(`/api/salons/${salonId}/appointments`, filter);
 
-export function createAppointment(
-  data: { salonId: string; clientId: string; service: string; datetime: string; master?: string },
-): Promise<IAppointment> {
-  return request('/api/appointments', { method: 'POST', body: JSON.stringify(data) });
-}
+export const createAppointment = (data: { salonId: string; clientId: string; service: string; datetime: string; master?: string }) =>
+  httpPost<IAppointment>('/api/appointments', data);
 
-export function updateAppointment(
+export const updateAppointment = (
   id: string,
   data: { service?: string; master?: string; serviceId?: string; masterId?: string; datetime?: string; status?: AppointmentStatus },
-): Promise<IAppointment> {
-  return request('/api/appointments/' + id, { method: 'PUT', body: JSON.stringify(data) });
-}
+) => httpPut<IAppointment>(`/api/appointments/${id}`, data);
 
-export function updateAppointmentStatus(id: string, status: AppointmentStatus): Promise<IAppointment> {
-  return request('/api/appointments/' + id + '/status', { method: 'PUT', body: JSON.stringify({ status }) });
-}
+export const updateAppointmentStatus = (id: string, status: AppointmentStatus) =>
+  httpPut<IAppointment>(`/api/appointments/${id}/status`, { status });
 
-export function deleteAppointment(id: string): Promise<{ ok: boolean }> {
-  return request('/api/appointments/' + id, { method: 'DELETE' });
-}
+export const deleteAppointment = (id: string) => httpDelete<{ ok: boolean }>(`/api/appointments/${id}`);
 
 // ============================================================
-// Диалоги (Conversations)
+// Диалоги
 // ============================================================
 
-export function fetchConversations(salonId: string): Promise<IConversationItem[]> {
-  return request('/api/salons/' + salonId + '/conversations');
-}
-
-export function fetchConversationDetail(salonId: string, clientId: string): Promise<IConversationDetail> {
-  return request('/api/salons/' + salonId + '/conversations/' + clientId);
-}
-
-export function fetchClients(salonId: string): Promise<IClient[]> {
-  return request('/api/salons/' + salonId + '/clients');
-}
-
-export function fetchMessages(salonId: string, clientId?: string): Promise<IMessage[]> {
-  return request('/api/salons/' + salonId + '/messages' + qs({ clientId }));
-}
+export const fetchConversations = (salonId: string) =>
+  httpGet<IConversationItem[]>(`/api/salons/${salonId}/conversations`);
+export const fetchConversationDetail = (salonId: string, clientId: string) =>
+  httpGet<IConversationDetail>(`/api/salons/${salonId}/conversations/${clientId}`);
+export const fetchClients = (salonId: string) => httpGet<IClient[]>(`/api/salons/${salonId}/clients`);
+export const fetchMessages = (salonId: string, clientId?: string) =>
+  httpGet<IMessage[]>(`/api/salons/${salonId}/messages`, { clientId });
 
 // ============================================================
-// Аналитика и расход токенов
+// Аналитика
 // ============================================================
 
-export function fetchAnalytics(salonId: string, range?: { from?: string; to?: string }): Promise<IAnalytics> {
-  return request('/api/salons/' + salonId + '/analytics' + qs(range || {}));
-}
-
-export function fetchUsage(salonId: string, range?: { from?: string; to?: string }): Promise<IUsage> {
-  return request('/api/salons/' + salonId + '/usage' + qs(range || {}));
-}
+export const fetchAnalytics = (salonId: string, range?: { from?: string; to?: string }) =>
+  httpGet<IAnalytics>(`/api/salons/${salonId}/analytics`, range);
+export const fetchUsage = (salonId: string, range?: { from?: string; to?: string }) =>
+  httpGet<IUsage>(`/api/salons/${salonId}/usage`, range);
 
 // ============================================================
-// Тестовый чат (редактор бота)
+// Тестовый чат
 // ============================================================
 
-export function sendTestChat(salonId: string, text: string, sessionId?: string): Promise<ITestChatResponse> {
-  return request('/api/salons/' + salonId + '/test-chat', {
-    method: 'POST',
-    body: JSON.stringify({ text, sessionId }),
-  });
-}
-
-export function resetTestChat(salonId: string, sessionId: string): Promise<{ ok: boolean }> {
-  return request('/api/salons/' + salonId + '/test-chat/' + sessionId, { method: 'DELETE' });
-}
+export const sendTestChat = (salonId: string, text: string, sessionId?: string) =>
+  httpPost<ITestChatResponse>(`/api/salons/${salonId}/test-chat`, { text, sessionId });
+export const resetTestChat = (salonId: string, sessionId: string) =>
+  httpDelete<{ ok: boolean }>(`/api/salons/${salonId}/test-chat/${sessionId}`);
 
 // ============================================================
 // Health
 // ============================================================
 
-export function checkHealth(): Promise<IHealthStatus> {
-  return request('/health');
-}
+export const checkHealth = () => httpGet<{ status: string; services?: any }>('/health');

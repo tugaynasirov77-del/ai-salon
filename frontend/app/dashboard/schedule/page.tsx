@@ -18,7 +18,7 @@ import {
   updateAppointment,
   deleteAppointment,
 } from '@/lib/api';
-import { SALON_ID } from '@/lib/config';
+import { useSalonId } from '@/lib/config';
 import { cn, startOfWeek, addDays, toISODate, fmtDayMonth, fmtWeekday } from '@/lib/utils';
 import type { IAppointment, AppointmentStatus } from '@shared/types';
 
@@ -45,6 +45,7 @@ function sameDay(a: Date | string, b: Date): boolean {
 }
 
 export default function SchedulePage() {
+  const SALON_ID = useSalonId();
   const qc = useQueryClient();
   const [weekStart, setWeekStart] = useState(() => startOfWeek(new Date()));
   const [masterFilter, setMasterFilter] = useState<string>('all');
@@ -215,6 +216,7 @@ export default function SchedulePage() {
 
       {/* Модалка создания */}
       <CreateAppointmentModal
+        salonId={SALON_ID}
         slot={createSlot}
         onClose={() => setCreateSlot(null)}
         onCreated={() => {
@@ -244,6 +246,7 @@ export default function SchedulePage() {
 // ============================================================
 
 function CreateAppointmentModal({
+  salonId,
   slot,
   onClose,
   onCreated,
@@ -251,6 +254,7 @@ function CreateAppointmentModal({
   services,
   clients,
 }: {
+  salonId: string;
   slot: { date: Date; minute: number } | null;
   onClose: () => void;
   onCreated: () => void;
@@ -286,7 +290,7 @@ function CreateAppointmentModal({
       const dt = new Date(slot.date);
       dt.setHours(h || 0, m || 0, 0, 0);
       return createAppointment({
-        salonId: SALON_ID,
+        salonId,
         clientId,
         service: service.trim(),
         datetime: dt.toISOString(),

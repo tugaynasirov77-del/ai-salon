@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
 import { fetchClients, fetchAppointments, fetchMessages } from '@/lib/api';
-import { SALON_ID } from '@/lib/config';
+import { useSalonId } from '@/lib/config';
 import { cn, timeAgo } from '@/lib/utils';
 import type { IClient, IAppointment, IMessage, Channel } from '@shared/types';
 
@@ -31,6 +31,7 @@ const CHANNEL_LABEL: Record<Channel, string> = {
 type ChannelFilter = 'all' | Channel;
 
 export default function ClientsPage() {
+  const SALON_ID = useSalonId();
   const clientsQ = useQuery({ queryKey: ['clients', SALON_ID], queryFn: () => fetchClients(SALON_ID) });
   const apptsQ = useQuery({ queryKey: ['appointments', SALON_ID, 'all'], queryFn: () => fetchAppointments(SALON_ID) });
   const messagesQ = useQuery({ queryKey: ['messages', SALON_ID], queryFn: () => fetchMessages(SALON_ID) });

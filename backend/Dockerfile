@@ -5,12 +5,17 @@ WORKDIR /app
 # OpenSSL для корректной детекции Prisma engine
 RUN apk add --no-cache openssl
 
-# Зеркало npm — registry.npmjs.org нестабилен из РФ
-RUN npm config set registry https://registry.npmmirror.com
-
-# Копируем манифесты и ставим зависимости
+# Копируем манифесты и ставим зависимости.
+# Зеркало npmmirror используется как основное (registry.npmjs.org нестабилен из РФ),
+# но если ci упал на нём (новый пакет ещё не реплицировался) — fallback на npmjs + retries.
 COPY backend/package*.json ./
-RUN npm ci
+RUN npm config set registry https://registry.npmmirror.com \
+ && npm config set fetch-retries 5 \
+ && npm config set fetch-retry-mintimeout 20000 \
+ && (npm ci --no-audit --no-fund \
+     || (echo '[build] npmmirror не сработал, fallback на npmjs.org'; \
+         npm config set registry https://registry.npmjs.org \
+         && npm ci --no-audit --no-fund))
 
 # Копируем исходники бэка и shared
 COPY backend/ ./

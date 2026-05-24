@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI-администратор для барбершопов, СТО и салонов красоты. Отвечает клиентам в Telegram, Авито, на сайте 24/7. Записывает на услуги, шлёт напоминания.">
+<title>Liva AI — AI-администратор для вашего бизнеса</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: { 500: '#7C3AED', 600: '#6D28D9', 700: '#5B21B6' },
+          accent: '#EC4899',
+        },
+        fontFamily: {
+          sans: ['-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Inter','sans-serif'],
+        },
+      },
+    },
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  .gradient-bg { background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%); }
+  .gradient-text { background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .card-hover { transition: transform .2s, box-shadow .2s; }
+  .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -10px rgba(124,58,237,.25); }
+  .chat-bubble-in { background:#f3f0ff; border-bottom-left-radius:4px; }
+  .chat-bubble-out { background:#7C3AED; color:#fff; border-bottom-right-radius:4px; }
+  @keyframes fadeUp { from {opacity:0;transform:translateY(20px)} to {opacity:1;transform:translateY(0)} }
+  .fade-up { animation: fadeUp .6s ease-out both; }
+</style>
+</head>
+<body class="bg-white text-gray-900 font-sans antialiased">
+
+<!-- NAV -->
+<nav class="fixed top-0 inset-x-0 z-50 bg-white/85 backdrop-blur border-b border-gray-100">
+  <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-xl gradient-bg flex items-center justify-center text-white font-bold">L</div>
+      <span class="font-bold text-lg">Liva AI</span>
+    </a>
+    <div class="hidden md:flex items-center gap-7 text-sm font-medium text-gray-700">
+      <a href="#how" class="hover:text-brand-500">Как работает</a>
+      <a href="#pricing" class="hover:text-brand-500">Тарифы</a>
+      <a href="#demo" class="hover:text-brand-500">Демо</a>
+      <a href="#faq" class="hover:text-brand-500">FAQ</a>
+    </div>
+    <a href="#cta" class="px-5 py-2 rounded-xl gradient-bg text-white text-sm font-semibold hover:opacity-90 transition">Подключить</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="pt-32 pb-20 px-5">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+    <div class="fade-up">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-500/10 rounded-full text-brand-600 text-sm font-semibold mb-6">
+        🚀 Уже работает в Ростове и Краснодаре
+      </div>
+      <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6">
+        AI-администратор<br>
+        <span class="gradient-text">отвечает за вас</span>
+      </h1>
+      <p class="text-xl text-gray-600 mb-8 leading-relaxed">
+        Отвечает клиентам в Telegram, Авито и на вашем сайте за 5 секунд. Записывает на услугу, напоминает за день и за 2 часа. Работает 24/7 без обедов и выходных.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <a href="#cta" class="px-7 py-4 rounded-xl gradient-bg text-white font-semibold text-center hover:opacity-90 transition">
+          Подключить за 5 минут
+        </a>
+        <a href="#demo" class="px-7 py-4 rounded-xl border-2 border-gray-200 font-semibold text-center hover:border-brand-500 transition">
+          Попробовать демо
+        </a>
+      </div>
+      <div class="mt-8 flex items-center gap-6 text-sm text-gray-500">
+        <div class="flex items-center gap-2">
+          <span class="text-green-500">✓</span> Первый месяц бесплатно
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-green-500">✓</span> Без обязательств
+        </div>
+      </div>
+    </div>
+
+    <!-- Mock chat -->
+    <div class="fade-up bg-gradient-to-br from-gray-50 to-purple-50 rounded-3xl p-6 shadow-2xl">
+      <div class="bg-white rounded-2xl p-5 shadow-sm">
+        <div class="flex items-center gap-3 pb-4 border-b border-gray-100">
+          <div class="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-white font-bold text-sm">L</div>
+          <div>
+            <div class="font-semibold text-sm">AI-администратор</div>
+            <div class="text-xs text-green-600 flex items-center gap-1.5"><span class="w-2 h-2 bg-green-500 rounded-full"></span>онлайн, отвечает за секунды</div>
+          </div>
+        </div>
+        <div class="py-4 space-y-2.5 text-sm">
+          <div class="flex justify-end">
+            <div class="chat-bubble-out px-3.5 py-2 rounded-2xl max-w-[80%]">Привет, шиномонтаж на завтра возможен?</div>
+          </div>
+          <div class="chat-bubble-in px-3.5 py-2 rounded-2xl max-w-[80%]">Здравствуйте! Скажите марку машины и размер шин, подберу время.</div>
+          <div class="flex justify-end">
+            <div class="chat-bubble-out px-3.5 py-2 rounded-2xl max-w-[80%]">Камри 2018, R17</div>
+          </div>
+          <div class="chat-bubble-in px-3.5 py-2 rounded-2xl max-w-[80%]">Завтра свободно в 10:00 и 14:30. Шиномонтаж 4 колеса — 2000₽. Какое время удобнее?</div>
+          <div class="flex justify-end">
+            <div class="chat-bubble-out px-3.5 py-2 rounded-2xl max-w-[80%]">Давайте на 10</div>
+          </div>
+          <div class="chat-bubble-in px-3.5 py-2 rounded-2xl max-w-[80%]">✅ Записал. Завтра в 10:00, шиномонтаж R17. Напомню за 2 часа. Ждём!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ПРОБЛЕМА -->
+<section class="py-20 bg-gray-50 px-5">
+  <div class="max-w-5xl mx-auto text-center">
+    <h2 class="text-4xl font-bold mb-12">Сколько клиентов вы теряете прямо сейчас?</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white p-7 rounded-2xl text-left">
+        <div class="text-5xl mb-3">⏱️</div>
+        <h3 class="font-bold text-lg mb-2">30% уходят за 10 минут</h3>
+        <p class="text-gray-600">Клиент пишет в Авито — пока админ не ответит, он уже договорился с конкурентом.</p>
+      </div>
+      <div class="bg-white p-7 rounded-2xl text-left">
+        <div class="text-5xl mb-3">🌙</div>
+        <h3 class="font-bold text-lg mb-2">Вечер и выходные — мёртвая зона</h3>
+        <p class="text-gray-600">Админ ушёл, а клиенты продолжают писать. На утро половина уже у других.</p>
+      </div>
+      <div class="bg-white p-7 rounded-2xl text-left">
+        <div class="text-5xl mb-3">📵</div>
+        <h3 class="font-bold text-lg mb-2">Пропущенные напоминания</h3>
+        <p class="text-gray-600">Клиент забыл, не пришёл — потеря времени мастера и денег.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- КАК РАБОТАЕТ -->
+<section id="how" class="py-20 px-5">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-4xl font-bold text-center mb-4">Как это работает</h2>
+    <p class="text-xl text-gray-600 text-center mb-14 max-w-2xl mx-auto">Подключаем за 5 минут к вашим каналам и AI начинает отвечать клиентам за вас</p>
+    <div class="grid md:grid-cols-4 gap-6">
+      <div class="card-hover bg-white border border-gray-100 p-7 rounded-2xl">
+        <div class="w-12 h-12 rounded-xl gradient-bg text-white font-bold text-xl flex items-center justify-center mb-4">1</div>
+        <h3 class="font-bold text-lg mb-2">Подключаем каналы</h3>
+        <p class="text-gray-600 text-sm">Telegram-бот, виджет на сайт, Авито-чат — в несколько кликов</p>
+      </div>
+      <div class="card-hover bg-white border border-gray-100 p-7 rounded-2xl">
+        <div class="w-12 h-12 rounded-xl gradient-bg text-white font-bold text-xl flex items-center justify-center mb-4">2</div>
+        <h3 class="font-bold text-lg mb-2">Учим вашему прайсу</h3>
+        <p class="text-gray-600 text-sm">Загружаем услуги, цены, мастеров, расписание, FAQ — AI знает ваш бизнес</p>
+      </div>
+      <div class="card-hover bg-white border border-gray-100 p-7 rounded-2xl">
+        <div class="w-12 h-12 rounded-xl gradient-bg text-white font-bold text-xl flex items-center justify-center mb-4">3</div>
+        <h3 class="font-bold text-lg mb-2">AI ведёт диалог</h3>
+        <p class="text-gray-600 text-sm">Отвечает на «сколько стоит», «когда есть окно», уточняет детали и записывает</p>
+      </div>
+      <div class="card-hover bg-white border border-gray-100 p-7 rounded-2xl">
+        <div class="w-12 h-12 rounded-xl gradient-bg text-white font-bold text-xl flex items-center justify-center mb-4">4</div>
+        <h3 class="font-bold text-lg mb-2">Вы в дашборде</h3>
+        <p class="text-gray-600 text-sm">Видите все диалоги, записи, аналитику. В сложных случаях AI зовёт вас в Telegram</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ФИЧИ -->
+<section class="py-20 bg-gradient-to-b from-purple-50/40 to-white px-5">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-4xl font-bold text-center mb-14">Что получаете</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white p-7 rounded-2xl shadow-sm">
+        <div class="text-3xl mb-3">⚡</div>
+        <h3 class="font-bold mb-2">Ответ за 5 секунд</h3>
+        <p class="text-gray-600 text-sm">Без сна, выходных, обедов. Клиент не успевает уйти к конкуренту.</p>
+      </div>
+      <div class="bg-white p-7 rounded-2xl shadow-sm">
+        <div class="text-3xl mb-3">🧠</div>
+        <h3 class="font-bold mb-2">Понимает живой русский</h3>
+        <p class="text-gray-600 text-sm">«Хочу записаться на завтра вечером с Аней» — разбирает и оформляет</p>
+      </div>
+      <div class="bg-white p-7 rounded-2xl shadow-sm">
+        <div class="text-3xl mb-3">📲</div>
+        <h3 class="font-bold mb-2">Все каналы сразу</h3>
+        <p class="text-gray-600 text-sm">Telegram, Авито, виджет на сайте — единая база клиентов и записей</p>
+      </div>
+      <div class="bg-white p-7 rounded-2xl shadow-sm">
+        <div class="text-3xl mb-3">🔔</div>
+        <h3 class="font-bold mb-2">Авто-напоминания</h3>
+        <p class="text-gray-600 text-sm">За 24 часа и за 2 часа до записи — клиент не забудет</p>
+      </div>
+      <div class="bg-white p-7 rounded-2xl shadow-sm">
+        <div class="text-3xl mb-3">🙋</div>
+        <h3 class="font-bold mb-2">Эскалация владельцу</h3>
+        <p class="text-gray-600 text-sm">Если AI не справился или клиент просит человека — пинг вам в Telegram</p>
+      </div>
+      <div class="bg-white p-7 rounded-2xl shadow-sm">
+        <div class="text-3xl mb-3">📊</div>
+        <h3 class="font-bold mb-2">Аналитика</h3>
+        <p class="text-gray-600 text-sm">Выручка, конверсия, нагрузка по дням, расход на AI — всё в дашборде</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ТАРИФЫ -->
+<section id="pricing" class="py-20 px-5">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-4xl font-bold text-center mb-4">Два формата подключения</h2>
+    <p class="text-xl text-gray-600 text-center mb-14">Цена одинаковая, отличается только кто настраивает</p>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Self-Start -->
+      <div class="bg-white border-2 border-gray-200 rounded-3xl p-8 card-hover">
+        <div class="flex items-baseline justify-between mb-4">
+          <h3 class="text-2xl font-bold">Self-Start</h3>
+          <span class="text-xs font-semibold bg-gray-100 px-3 py-1 rounded-full">Для тех кто сам</span>
+        </div>
+        <div class="mb-6">
+          <div class="text-5xl font-bold mb-2">0 ₽<span class="text-lg text-gray-500 font-normal"> подключение</span></div>
+          <div class="text-gray-600">+ 2 500 ₽/мес <span class="text-green-600 font-semibold">· первый месяц бесплатно</span></div>
+        </div>
+        <ul class="space-y-3 mb-8 text-sm">
+          <li class="flex gap-2"><span class="text-green-500">✓</span> Сами регистрируетесь и настраиваете</li>
+          <li class="flex gap-2"><span class="text-green-500">✓</span> Пошаговый визард 30-60 минут</li>
+          <li class="flex gap-2"><span class="text-green-500">✓</span> Telegram-бот + виджет на сайт</li>
+          <li class="flex gap-2"><span class="text-green-500">✓</span> Поддержка в чате</li>
+          <li class="flex gap-2 text-gray-400"><span>—</span> Авито подключается отдельно</li>
+        </ul>
+        <a href="#cta" class="block text-center px-6 py-3 rounded-xl border-2 border-gray-200 font-semibold hover:border-brand-500 transition">Начать бесплатно</a>
+      </div>
+
+      <!-- Под ключ -->
+      <div class="bg-gradient-to-br from-brand-500 to-accent rounded-3xl p-8 text-white relative card-hover overflow-hidden">
+        <div class="absolute top-5 right-5 bg-white/20 backdrop-blur px-3 py-1 rounded-full text-xs font-semibold">🔥 Выбирают чаще</div>
+        <h3 class="text-2xl font-bold mb-4">Под ключ</h3>
+        <div class="mb-6">
+          <div class="text-5xl font-bold mb-2">5 000 ₽<span class="text-lg text-white/70 font-normal"> разово</span></div>
+          <div class="text-white/90">+ 2 500 ₽/мес</div>
+        </div>
+        <ul class="space-y-3 mb-8 text-sm">
+          <li class="flex gap-2"><span>✓</span> Мы делаем всё за вас</li>
+          <li class="flex gap-2"><span>✓</span> Работающий бот через 24 часа</li>
+          <li class="flex gap-2"><span>✓</span> Подключим Telegram, сайт, Авито</li>
+          <li class="flex gap-2"><span>✓</span> Загрузим прайс с фото/таблицы</li>
+          <li class="flex gap-2"><span>✓</span> Личный куратор первые 2 недели</li>
+          <li class="flex gap-2"><span>✓</span> Гарантия запуска или возврат</li>
+        </ul>
+        <a href="#cta" class="block text-center px-6 py-3 rounded-xl bg-white text-brand-600 font-semibold hover:bg-white/90 transition">Подключить под ключ</a>
+      </div>
+    </div>
+
+    <div class="mt-10 text-center text-sm text-gray-500">
+      Без долгосрочных контрактов · Отмена в один клик · Безлимит сообщений и записей
+    </div>
+  </div>
+</section>
+
+<!-- ДЕМО -->
+<section id="demo" class="py-20 bg-gray-50 px-5">
+  <div class="max-w-3xl mx-auto text-center">
+    <h2 class="text-4xl font-bold mb-4">Попробуйте прямо сейчас</h2>
+    <p class="text-xl text-gray-600 mb-8">Нажмите кнопку чата справа внизу и поговорите с реальным AI. Это демо настроено на «Тестовый салон» с прайсом маникюра/педикюра/стрижки.</p>
+    <div class="inline-flex items-center gap-2 px-5 py-3 bg-brand-500/10 text-brand-600 rounded-full font-semibold animate-pulse">
+      <span class="text-2xl">👉</span> Кнопка чата внизу справа
+    </div>
+  </div>
+</section>
+
+<!-- CTA / ФОРМА -->
+<section id="cta" class="py-20 px-5">
+  <div class="max-w-2xl mx-auto">
+    <div class="bg-white border border-gray-200 rounded-3xl p-8 md:p-10 shadow-xl">
+      <h2 class="text-3xl font-bold mb-2">Оставьте заявку</h2>
+      <p class="text-gray-600 mb-7">Перезвоним в течение часа, расскажем как подключим именно вам.</p>
+
+      <form id="leadForm" class="space-y-4">
+        <input type="text" name="honeypot" class="hidden" tabindex="-1" autocomplete="off" />
+
+        <div>
+          <label class="block text-sm font-semibold mb-1.5">Ваше имя</label>
+          <input name="name" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none" placeholder="Иван">
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1.5">Телефон / Telegram</label>
+          <input name="phone" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none" placeholder="+7 928 ...">
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1.5">Что у вас за бизнес?</label>
+          <input name="business" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none" placeholder="СТО / Барбершоп / Салон ...">
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1.5">Тариф</label>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="cursor-pointer">
+              <input type="radio" name="plan" value="Self-Start" class="peer sr-only" checked>
+              <div class="px-4 py-3 border-2 border-gray-200 rounded-xl peer-checked:border-brand-500 peer-checked:bg-brand-500/5 transition">
+                <div class="font-semibold text-sm">Self-Start</div>
+                <div class="text-xs text-gray-500">0₽ · сам</div>
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="plan" value="Под ключ" class="peer sr-only">
+              <div class="px-4 py-3 border-2 border-gray-200 rounded-xl peer-checked:border-brand-500 peer-checked:bg-brand-500/5 transition">
+                <div class="font-semibold text-sm">Под ключ</div>
+                <div class="text-xs text-gray-500">5000₽ · за вас</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold mb-1.5">Комментарий <span class="text-gray-400 font-normal">(необязательно)</span></label>
+          <textarea name="message" rows="3" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none resize-none" placeholder="Что важно учесть"></textarea>
+        </div>
+
+        <button type="submit" id="submitBtn" class="w-full px-6 py-4 rounded-xl gradient-bg text-white font-semibold text-lg hover:opacity-90 transition disabled:opacity-50">
+          Отправить заявку
+        </button>
+
+        <p class="text-xs text-gray-500 text-center">
+          Нажимая «Отправить», вы соглашаетесь с обработкой данных по нашей политике конфиденциальности
+        </p>
+      </form>
+
+      <div id="leadOk" class="hidden text-center py-8">
+        <div class="text-6xl mb-3">✅</div>
+        <h3 class="text-2xl font-bold mb-2">Заявка получена!</h3>
+        <p class="text-gray-600">Перезвоним в течение часа.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="py-20 bg-gray-50 px-5">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="text-4xl font-bold text-center mb-12">Частые вопросы</h2>
+    <div class="space-y-3">
+      <details class="bg-white rounded-2xl p-6 group">
+        <summary class="font-semibold cursor-pointer list-none flex justify-between items-center">Не заменит ли AI моего администратора?<span class="text-brand-500 group-open:rotate-45 transition">+</span></summary>
+        <p class="mt-3 text-gray-600">Не заменит, дополнит. AI берёт на себя рутину — ответы на «сколько стоит», «когда есть запись». Сложные ситуации, личные вопросы — эскалирует владельцу. Админ занимается клиентами в зале, а не в телефоне.</p>
+      </details>
+      <details class="bg-white rounded-2xl p-6 group">
+        <summary class="font-semibold cursor-pointer list-none flex justify-between items-center">Клиенты поймут что это бот?<span class="text-brand-500 group-open:rotate-45 transition">+</span></summary>
+        <p class="mt-3 text-gray-600">99% не отличают. AI понимает живой русский, шутит, уточняет детали как человек. По статистике клиенты быстрее получают ответ от AI чем от живого админа — им это нравится.</p>
+      </details>
+      <details class="bg-white rounded-2xl p-6 group">
+        <summary class="font-semibold cursor-pointer list-none flex justify-between items-center">У нас уже YClients / Альтегио<span class="text-brand-500 group-open:rotate-45 transition">+</span></summary>
+        <p class="mt-3 text-gray-600">Отлично, мы их дополняем. YClients ведёт календарь и базу. Мы отвечаем там где они не отвечают — в Telegram, Авито, в чате на сайте. Запись от AI попадает к вам в дашборд Liva AI.</p>
+      </details>
+      <details class="bg-white rounded-2xl p-6 group">
+        <summary class="font-semibold cursor-pointer list-none flex justify-between items-center">А если AI ошибётся?<span class="text-brand-500 group-open:rotate-45 transition">+</span></summary>
+        <p class="mt-3 text-gray-600">Если AI 3 раза подряд не справляется или клиент явно просит человека — система пишет владельцу в его Telegram. Вы дописываете лично, AI учится на этом случае.</p>
+      </details>
+      <details class="bg-white rounded-2xl p-6 group">
+        <summary class="font-semibold cursor-pointer list-none flex justify-between items-center">Есть ли лимиты по сообщениям?<span class="text-brand-500 group-open:rotate-45 transition">+</span></summary>
+        <p class="mt-3 text-gray-600">Нет, в обоих тарифах безлимит сообщений, записей и каналов. Платите фиксированно 2 500₽/мес независимо от объёма.</p>
+      </details>
+      <details class="bg-white rounded-2xl p-6 group">
+        <summary class="font-semibold cursor-pointer list-none flex justify-between items-center">Что если не понравится?<span class="text-brand-500 group-open:rotate-45 transition">+</span></summary>
+        <p class="mt-3 text-gray-600">Первый месяц бесплатный — посмотрите как работает. На тарифе «Под ключ» если за 48 часов не запустим работающего бота — вернём 5 000 ₽. Никаких длинных контрактов, отмена в один клик.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-10 px-5 border-t border-gray-100">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+    <div class="flex items-center gap-2">
+      <div class="w-7 h-7 rounded-lg gradient-bg flex items-center justify-center text-white font-bold text-xs">L</div>
+      <span>© 2026 Liva AI</span>
+    </div>
+    <div class="flex gap-6">
+      <a href="mailto:hello@ailiva.ru" class="hover:text-brand-500">hello@ailiva.ru</a>
+      <a href="https://api.ailiva.ru/widget-demo.html" class="hover:text-brand-500">Демо-страница</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Чат-виджет -->
+<script src="https://api.ailiva.ru/widget.js?salon=cmpfhd7ha00001s7ud34xwfmw" async></script>
+
+<!-- Lead-форма -->
+<script>
+  const form = document.getElementById('leadForm');
+  const ok = document.getElementById('leadOk');
+  const btn = document.getElementById('submitBtn');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.textContent = 'Отправляем...';
+    const data = Object.fromEntries(new FormData(form));
+    try {
+      const res = await fetch('https://api.ailiva.ru/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error('fail');
+      form.style.display = 'none';
+      ok.classList.remove('hidden');
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Отправить заявку';
+      alert('Не удалось отправить. Напишите нам в Telegram: @ailiva_support');
+    }
+  });
+</script>
+
+</body>
+</html>

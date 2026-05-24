@@ -14,6 +14,7 @@ import appointmentsRouter from './api/appointments';
 import crmRouter from './api/crm';
 import testChatRouter from './api/testChat';
 import widgetRouter from './api/widget';
+import leadsRouter from './api/leads';
 import healthRouter from './api/health';
 import { attachUser, requireAuth, requireSalonAccess } from './middleware/auth';
 import path from 'path';
@@ -42,6 +43,7 @@ app.use('/webhook', webhookLimiter, webhooksRouter);
 // Публичные API: auth (register/login) и widget (для виджета на сайтах салонов)
 app.use('/api/auth', apiLimiter, authRouter);
 app.use('/api/widget', apiLimiter, widgetRouter);
+app.use('/api/leads', apiLimiter, leadsRouter);
 
 // Защищённые API: требуют JWT, и доступ к salonId в URL должен совпадать с user.salonId
 app.use('/api/salons/:id', apiLimiter, requireAuth, requireSalonAccess);

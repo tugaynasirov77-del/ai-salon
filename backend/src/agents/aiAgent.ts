@@ -244,8 +244,22 @@ export class AIAgent {
         text: finalText || 'Извините, не могу сейчас ответить. Перезвоните нам.',
         usage,
       };
-    } catch (err) {
+    } catch (err: any) {
       console.error('[aiAgent.process] error:', err);
+      // Алёрт владельцу платформы — LLM или БД упала, клиент не получает ответ
+      import('../utils/alerter').then(({ alertError }) =>
+        alertError(
+          'AI Agent сбой',
+          {
+            salonId: salon.id,
+            salon: salon.name,
+            clientText: message.text.slice(0, 200),
+            error: err?.message || String(err),
+            stack: err?.stack?.split('\n').slice(0, 4).join('\n'),
+          },
+          `aiagent:${err?.status || err?.code || 'unknown'}`
+        )
+      );
       return { text: 'Извините, произошла ошибка. Попробуйте написать ещё раз.', usage };
     }
   }

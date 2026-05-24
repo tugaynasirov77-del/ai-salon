@@ -41,6 +41,20 @@ export class CascadeSender {
       }
     }
 
+    // Полный провал доставки — алёрт владельцу платформы
+    import('../utils/alerter').then(({ alertError }) =>
+      alertError(
+        'Сообщение НЕ доставлено',
+        {
+          clientId: client.id,
+          salonId: salon?.id,
+          attempted,
+          preferredChannel: client.preferredChannel,
+          textPreview: text.slice(0, 150),
+        },
+        `delivery-fail:${client.preferredChannel}`
+      )
+    );
     return {
       success: false,
       attemptedChannels: attempted,

@@ -97,6 +97,16 @@ export function startReminderWorker(): Worker<ReminderJobData> {
 
   worker.on('failed', (job, err) => {
     console.error(`[reminder-worker] job ${job?.id} failed:`, err.message);
+    // Алёрт только когда исчерпаны все попытки
+    if (job && job.attemptsMade >= (job.opts?.attempts || 1)) {
+      import('../utils/alerter').then(({ alertError }) =>
+        alertError(
+          'Reminder не доставлен',
+          { jobId: job.id, type: job.data?.type, appointmentId: job.data?.appointmentId, error: err.message },
+          `reminder-fail:${job.data?.appointmentId}:${job.data?.type}`
+        )
+      );
+    }
   });
 
   return worker;

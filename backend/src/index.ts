@@ -5,7 +5,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 
 import { apiLimiter, webhookLimiter } from './middleware/rateLimit';
-import { errorHandler } from './middleware/errors';
+import { errorHandler, setupGlobalErrorHandlers } from './middleware/errors';
+import { alertInfo, alertError } from './utils/alerter';
 
 import webhooksRouter from './api/webhooks';
 import authRouter from './api/auth';
@@ -61,18 +62,31 @@ app.use('/health', healthRouter);
 // Глобальный обработчик ошибок (последний)
 app.use(errorHandler);
 
+setupGlobalErrorHandlers();
+
 app.listen(PORT, () => {
   console.log(`[server] запущен на порту ${PORT}`);
+  alertInfo('Backend стартовал', { port: PORT, env: process.env.NODE_ENV || 'dev' }, 'startup').catch(() => {});
 
   // Инициализируем интеграции — поднимаем webhook'и всех салонов с подключённым ботом
-  initAllSalonBots().catch((e) => console.error('[startup] telegram init error:', e));
-  initAllMaxBots().catch((e) => console.error('[startup] max init error:', e));
-  initAllAvitoBots().catch((e) => console.error('[startup] avito init error:', e));
+  initAllSalonBots().catch((e) => {
+    console.error('[startup] telegram init error:', e);
+    alertError('Telegram init failed', String(e), 'tg-init');
+  });
+  initAllMaxBots().catch((e) => {
+    console.error('[startup] max init error:', e);
+    alertError('Max init failed', String(e), 'max-init');
+  });
+  initAllAvitoBots().catch((e) => {
+    console.error('[startup] avito init error:', e);
+    alertError('Avito init failed', String(e), 'avito-init');
+  });
 
   try {
     startReminderWorker();
     console.log('[server] reminder worker запущен');
   } catch (e) {
     console.error('[startup] reminder worker error:', e);
+    alertError('Reminder worker failed to start', String(e), 'reminder-start');
   }
 });

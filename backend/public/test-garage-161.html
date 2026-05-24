@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Тестовое СТО «Гараж 161» — демо AI</title>
+<style>
+  body { font-family:-apple-system,BlinkMacSystemFont,sans-serif; max-width:780px; margin:40px auto; padding:0 20px; color:#222; line-height:1.6; }
+  h1 { color:#7C3AED; }
+  .badge { background:#7C3AED; color:#fff; padding:2px 8px; border-radius:4px; font-size:13px; }
+  .note { background:#f3f0ff; padding:14px 18px; border-radius:10px; border-left:3px solid #7C3AED; margin:20px 0; }
+  table { border-collapse:collapse; width:100%; margin:14px 0; }
+  th, td { border-bottom:1px solid #e5e5e5; padding:8px 10px; text-align:left; font-size:14px; }
+  th { background:#f5f5f5; }
+  code { background:#f3f0ff; padding:2px 6px; border-radius:4px; font-size:13px; }
+  .tip { background:#fff8e1; padding:12px 16px; border-radius:8px; border-left:3px solid #fbc02d; margin:18px 0; font-size:14px; }
+</style>
+</head><body>
+
+<h1>🔧 Гараж 161 — демо AI-администратора</h1>
+
+<p>Это <strong>вымышленное СТО в Ростове-на-Дону</strong>, созданное через <code>onboardClient.ts</code> за 5 секунд. AI знает их прайс, расписание, мастеров и FAQ.</p>
+
+<div class="note">
+  👉 <strong>Нажми на фиолетовую кнопку чата справа внизу</strong> — поговори с AI как реальный клиент.
+</div>
+
+<h2>Что попробовать спросить</h2>
+<ul>
+  <li>«Сколько стоит шиномонтаж на R18?» — AI должен дать точную цену</li>
+  <li>«Можно записаться на диагностику завтра?» — учтёт расписание (вс — выходной)</li>
+  <li>«Где вы находитесь?» — мгновенный ответ через FAQ (без обращения к Claude)</li>
+  <li>«У меня BMW X5, что-то стучит снизу. Что делать?» — AI спросит детали, предложит диагностику</li>
+  <li>«Запиши меня к Сергею на замену передних колодок» — AI знает что Сергей этим занимается</li>
+</ul>
+
+<h2>Услуги (как они хранятся в БД)</h2>
+<table>
+  <tr><th>Услуга</th><th>Цена</th><th>Время</th><th>Мастера</th></tr>
+  <tr><td>Шиномонтаж R13-R15</td><td>1600₽</td><td>30 мин</td><td>любой</td></tr>
+  <tr><td>Шиномонтаж R16-R18</td><td>2000₽</td><td>40 мин</td><td>любой</td></tr>
+  <tr><td>Шиномонтаж R19+</td><td>2800₽</td><td>50 мин</td><td>любой</td></tr>
+  <tr><td>Замена масла + фильтр</td><td>1200₽</td><td>30 мин</td><td>любой</td></tr>
+  <tr><td>Компьютерная диагностика</td><td>1500₽</td><td>60 мин</td><td>Сергей</td></tr>
+  <tr><td>Развал-схождение</td><td>1800₽</td><td>60 мин</td><td>Андрей</td></tr>
+  <tr><td>Замена колодок (передние)</td><td>2500₽</td><td>90 мин</td><td>Сергей</td></tr>
+  <tr><td>Замена колодок (задние)</td><td>2300₽</td><td>90 мин</td><td>Сергей</td></tr>
+  <tr><td>Замена аккумулятора</td><td>800₽</td><td>20 мин</td><td>любой</td></tr>
+  <tr><td>Кузовной ремонт</td><td>от 5000₽</td><td>—</td><td>Андрей</td></tr>
+  <tr><td>Хранение шин (сезон)</td><td>1500₽</td><td>—</td><td>—</td></tr>
+</table>
+
+<p><strong>Расписание:</strong> Пн-Пт 9:00-19:00, Сб 10:00-17:00, Вс — выходной.</p>
+
+<div class="tip">
+  💡 Записи которые ты оформишь через виджет реально попадают в БД и видны в админке.
+  Чтобы стереть тестовые данные потом — скажи мне, удалю по salon_id.
+</div>
+
+<h2>Данные для входа в админку</h2>
+<table>
+  <tr><th>Поле</th><th>Значение</th></tr>
+  <tr><td>URL</td><td><code>https://ailiva.ru/login</code> (когда друг задеплоит)</td></tr>
+  <tr><td>Email</td><td><code>ivanov@garage161.test</code></td></tr>
+  <tr><td>Пароль</td><td><code>Garage161!Test</code></td></tr>
+  <tr><td>Salon ID</td><td><code>cmpihgjp100014g87h7kjet2r</code></td></tr>
+</table>
+
+<!-- Подключаем виджет тестового СТО -->
+<script src="/widget.js?salon=cmpihgjp100014g87h7kjet2r" async></script>
+</body></html>

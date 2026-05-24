@@ -1,0 +1,63 @@
+{
+  "_comment": "Шаблон для онбординга. Скопируй файл, переименуй (например cto-ivanov.json), заполни данные клиента, запусти: npx tsx scripts/onboardClient.ts scripts/configs/cto-ivanov.json",
+
+  "owner": {
+    "email": "owner@example.com",
+    "password": "СгенерируйСильныйПароль",
+    "name": "Иван Иванов",
+    "phone": "+79280000000"
+  },
+
+  "salon": {
+    "name": "СТО Иванов",
+    "niche": "auto_service",
+    "address": "Краснодар, ул. Ленина, 1",
+    "city": "Краснодар",
+    "plan": "starter"
+  },
+
+  "ownerChatId": "123456789",
+  "_ownerChatId_help": "Узнать chat_id: владелец пишет /start своему боту, потом GET https://api.telegram.org/bot<TOKEN>/getUpdates",
+
+  "telegramBotToken": "1234567890:AAEabc...",
+  "_telegramBotToken_help": "Создать в Telegram через @BotFather → /newbot",
+
+  "maxBotToken": "",
+  "_maxBotToken_help": "Пусто = не подключаем. Иначе токен из @MasterBot в Max (нужно ИП).",
+
+  "avito": null,
+  "_avito_help": "Объект {clientId, clientSecret, userId} из Авито-кабинета. Или null если не подключаем.",
+
+  "services": [
+    { "name": "Шиномонтаж R13-R15 (4 колеса)", "price": 1600, "durationMin": 30 },
+    { "name": "Шиномонтаж R16-R18 (4 колеса)", "price": 2000, "durationMin": 40 },
+    { "name": "Шиномонтаж R19+ (4 колеса)",   "price": 2800, "durationMin": 50 },
+    { "name": "Замена масла + фильтр",         "price": 1200, "durationMin": 30 },
+    { "name": "Компьютерная диагностика",      "price": 1500, "durationMin": 60 },
+    { "name": "Замена тормозных колодок",      "price": 2500, "durationMin": 90, "masters": ["Сергей"] }
+  ],
+
+  "masters": [
+    { "name": "Сергей", "phone": "+79280000001" },
+    { "name": "Андрей", "phone": "+79280000002" }
+  ],
+
+  "workingHours": {
+    "default": [
+      { "weekday": 1, "fromMin": 540, "toMin": 1140 },
+      { "weekday": 2, "fromMin": 540, "toMin": 1140 },
+      { "weekday": 3, "fromMin": 540, "toMin": 1140 },
+      { "weekday": 4, "fromMin": 540, "toMin": 1140 },
+      { "weekday": 5, "fromMin": 540, "toMin": 1140 },
+      { "weekday": 6, "fromMin": 600, "toMin": 1080 }
+    ],
+    "_help": "weekday: 0=вс, 1=пн, ..., 6=сб. fromMin/toMin — минуты от 00:00. Пример 9:00-19:00 = 540-1140."
+  },
+
+  "faqs": [
+    { "question": "Какой у вас адрес и как доехать?",     "answer": "Краснодар, ул. Ленина, 1. Заезд со стороны двора, есть указатель «СТО Иванов»." },
+    { "question": "Принимаете ли вы оплату картой?",       "answer": "Да, картой и наличными. По безналу — через счёт для юрлиц." },
+    { "question": "Делаете ли диагностику на месте?",      "answer": "Компьютерная диагностика входит в услуги, занимает до 1 часа. Записать?" },
+    { "question": "Гарантия на работы есть?",              "answer": "Гарантия 3 месяца или 5 000 км пробега — что наступит раньше." }
+  ]
+}

@@ -43,7 +43,9 @@ export default function LandingPage() {
           <Logo size={32} variant="light" />
           <nav className="hidden gap-8 text-sm text-slate-300 sm:flex">
             <a href="#features" className="transition-colors hover:text-white">Возможности</a>
+            <a href="#how" className="transition-colors hover:text-white">Как это работает</a>
             <a href="#pricing" className="transition-colors hover:text-white">Тарифы</a>
+            <a href="#faq" className="transition-colors hover:text-white">FAQ</a>
             <a href="#demo" className="transition-colors hover:text-white">Демо</a>
           </nav>
           <div className="flex items-center gap-3">
@@ -163,8 +165,82 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* === How it works === */}
+      <section id="how" className="relative py-24">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="text-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-300">Как это работает</span>
+            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+              От регистрации <br /> до первой записи — 15 минут
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-slate-400">
+              Никакого программирования. Всё через простую админку с подсказками.
+            </p>
+          </div>
+
+          <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3">
+            <Step
+              num="01"
+              title="Зарегистрируйтесь"
+              text="Создайте салон за 2 минуты: email, телефон, ниша. Вы сразу попадаете в дашборд."
+            />
+            <Step
+              num="02"
+              title="Подключите Telegram-бота"
+              text="Создайте бота через @BotFather (3 клика, инструкция в админке), вставьте токен."
+            />
+            <Step
+              num="03"
+              title="Загрузите услуги"
+              text="Добавьте прайс, мастеров и расписание. AI начнёт принимать заявки и записывать клиентов."
+            />
+          </div>
+        </div>
+      </section>
+
       {/* === Pricing === */}
       <PricingSection />
+
+      {/* === FAQ === */}
+      <section id="faq" className="relative py-24">
+        <div className="mx-auto max-w-3xl px-4">
+          <div className="text-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-violet-300">Частые вопросы</span>
+            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+              Отвечаем заранее
+            </h2>
+          </div>
+          <div className="mt-12 space-y-3">
+            <FaqItem q="Нужны ли технические навыки?">
+              Нет. Подключение бота — 3 клика по инструкции. Заносить услуги и мастеров можно как в Excel, через простые формы.
+            </FaqItem>
+            <FaqItem q="Подойдёт ли мне, если у меня не салон, а кафе или СТО?">
+              Подойдёт. Liva ai из коробки настроена под 9 ниш: салоны красоты, барбершопы, фитнес-клубы, медцентры, СТО, рестораны, юристы, репетиторы и др. AI адаптируется под ваш прайс и расписание.
+            </FaqItem>
+            <FaqItem q="Можно ли отменить подписку?">
+              Да, в любой момент через кнопку в админке. Никаких долгосрочных контрактов. Деньги за неиспользованный период не сгорают.
+            </FaqItem>
+            <FaqItem q="А если AI ответит неправильно?">
+              Когда AI не уверен — он сразу пишет вам в Telegram, чтобы вы ответили лично. Все диалоги вы видите в админке, можете вмешаться в любой момент.
+            </FaqItem>
+            <FaqItem q="Сколько стоят сообщения сверх лимита?">
+              На тарифе Self-Start: 1000 сообщений в месяц включено. Сверх — обсуждаем индивидуально, обычно дешевле смены тарифа. На «Под ключ» первые 3 месяца — безлимит.
+            </FaqItem>
+            <FaqItem q="Как подключить YClients?">
+              На «Под ключ» — менеджер сделает всё за вас. На Self-Start — введёте логин/пароль YClients в админке, выберете филиал, и Liva ai сама синхронизирует услуги и мастеров.
+            </FaqItem>
+            <FaqItem q="Где хранятся данные клиентов?">
+              На наших серверах в РФ. Не передаются третьим лицам. Клиентам не звоним и не пишем без вашего согласия.
+            </FaqItem>
+          </div>
+          <p className="mt-10 text-center text-sm text-slate-400">
+            Другой вопрос? Напишите{' '}
+            <a href="mailto:hello@ailiva.ru" className="text-violet-300 hover:text-white">
+              hello@ailiva.ru
+            </a>
+          </p>
+        </div>
+      </section>
 
       {/* === Demo === */}
       <section id="demo" className="relative py-24">
@@ -232,7 +308,9 @@ export default function LandingPage() {
             <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">Продукт</div>
             <ul className="mt-4 space-y-2 text-sm text-slate-300">
               <li><a href="#features" className="hover:text-white">Возможности</a></li>
+              <li><a href="#how" className="hover:text-white">Как это работает</a></li>
               <li><a href="#pricing" className="hover:text-white">Тарифы</a></li>
+              <li><a href="#faq" className="hover:text-white">FAQ</a></li>
               <li><a href="#demo" className="hover:text-white">Демо</a></li>
             </ul>
           </div>
@@ -280,6 +358,38 @@ const CHANNEL_TONES: Record<string, string> = {
   orange: 'border-orange-400/30 bg-orange-500/10 text-orange-200',
   cyan: 'border-cyan-400/30 bg-cyan-500/10 text-cyan-200',
 };
+
+function Step({ num, title, text }: { num: string; title: string; text: string }) {
+  return (
+    <div className="relative rounded-2xl border border-white/10 bg-white/[0.025] p-7 backdrop-blur-sm transition-colors hover:bg-white/[0.04]">
+      <div
+        className="bg-gradient-to-br from-indigo-400 via-violet-400 to-fuchsia-400 bg-clip-text font-semibold text-transparent"
+        style={{ fontSize: 56, lineHeight: 1 }}
+      >
+        {num}
+      </div>
+      <h3 className="mt-4 text-lg font-semibold text-white">{title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-slate-400">{text}</p>
+    </div>
+  );
+}
+
+function FaqItem({ q, children }: { q: string; children: React.ReactNode }) {
+  return (
+    <details className="group rounded-2xl border border-white/10 bg-white/[0.025] backdrop-blur-sm transition-colors open:bg-white/[0.04]">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-left">
+        <span className="text-base font-medium text-white">{q}</span>
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/15 text-slate-400 transition-transform group-open:rotate-45 group-open:border-violet-400 group-open:text-violet-300">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+        </span>
+      </summary>
+      <div className="px-5 pb-4 text-sm leading-relaxed text-slate-300">{children}</div>
+    </details>
+  );
+}
 
 function Channel({ icon, label, tone = 'indigo' }: { icon: React.ReactNode; label: string; tone?: string }) {
   return (

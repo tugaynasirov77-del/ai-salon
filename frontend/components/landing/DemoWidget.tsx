@@ -13,11 +13,30 @@ const FLAG = '__ailivaDemoWidgetLoaded';
  * вешаем фейковый <script> с нужным src и выполняем eval — currentScript указывает
  * на наш тег, скрипт корректно парсит salon из URL.
  */
+// Override-стили: на лендинге Tailwind/dark scheme делает input полупрозрачным
+// или с белым цветом текста — текст в виджете не видно. Заставляем явные цвета.
+const OVERRIDE_CSS = `
+  .ailiva-input { color: #0f172a !important; background: #fff !important; -webkit-text-fill-color: #0f172a !important; }
+  .ailiva-input::placeholder { color: #94a3b8 !important; opacity: 1 !important; }
+  .ailiva-msg.in { color: #0f172a !important; background: #ffffff !important; }
+  .ailiva-msgs { background: #f7f7f9 !important; }
+  .ailiva-form { background: #ffffff !important; border-top-color: #eee !important; }
+  .ailiva-panel { background: #ffffff !important; color: #0f172a !important; }
+`;
+
 export function DemoWidget() {
   useEffect(() => {
     const w = window as any;
     if (w[FLAG]) return;
     w[FLAG] = true;
+
+    // Стиль-override ставим один раз, до загрузки скрипта — чтобы overwrite дефолтных правил из widget.js
+    if (!document.getElementById('ailiva-demo-override')) {
+      const style = document.createElement('style');
+      style.id = 'ailiva-demo-override';
+      style.textContent = OVERRIDE_CSS;
+      document.head.appendChild(style);
+    }
 
     const url = `${API_BASE}/widget.js?salon=${DEMO_SALON_ID}`;
     fetch(url)

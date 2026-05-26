@@ -71,17 +71,23 @@ export function Logo({
   size?: number;
   className?: string;
   wordmark?: boolean;
-  variant?: 'light' | 'dark';
+  // 'light' = белый текст (для тёмного фона)
+  // 'dark' = тёмный текст (для светлого фона)
+  // 'auto' = подстраивается под dark mode через Tailwind
+  variant?: 'light' | 'dark' | 'auto';
 }) {
+  const textColor =
+    variant === 'light'
+      ? 'text-white'
+      : variant === 'dark'
+        ? 'text-slate-900'
+        : 'text-slate-900 dark:text-white';
   return (
     <div className={`inline-flex items-center gap-2 ${className}`}>
       <LogoMark size={size} />
       {wordmark && (
         <span
-          className={
-            'font-semibold tracking-tight ' +
-            (variant === 'light' ? 'text-white' : 'text-slate-900')
-          }
+          className={`font-semibold tracking-tight ${textColor}`}
           style={{ fontSize: Math.round(size * 0.55) }}
         >
           Liva<span className="opacity-60"> ai</span>

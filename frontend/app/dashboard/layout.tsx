@@ -23,6 +23,7 @@ import {
 import { cn } from '@/lib/utils';
 import { ChannelStatus } from '@/components/dashboard/ChannelStatus';
 import { apiMe, apiLogout, hasToken, useAuthStore } from '@/lib/auth';
+import { Logo } from '@/components/landing/Logo';
 
 const NAV = [
   { href: '/dashboard', label: 'Главная', icon: LayoutDashboard, exact: true },
@@ -76,7 +77,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 md:hidden dark:border-slate-800 dark:bg-slate-900">
-        <div className="font-bold text-slate-900 dark:text-slate-100">Liva ai</div>
+        <Logo size={26} variant="auto" />
         <button onClick={() => setMobileOpen(!mobileOpen)} aria-label="Меню">
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -91,8 +92,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       >
         <div className="flex h-full flex-col">
           <div className="border-b border-slate-100 px-5 py-5 dark:border-slate-800">
-            <div className="text-lg font-bold text-slate-900 dark:text-slate-100">Liva ai</div>
-            <div className="mt-2 text-sm font-medium text-slate-700 dark:text-slate-300">
+            <Logo size={28} variant="auto" />
+            <div className="mt-3 text-sm font-medium text-slate-700 dark:text-slate-300">
               {salon?.name || '—'}
             </div>
             <div className="text-xs text-slate-500">Тариф: {salon?.plan || 'free'}</div>

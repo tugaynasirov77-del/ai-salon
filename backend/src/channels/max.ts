@@ -56,6 +56,16 @@ export async function getBotInfo(token: string): Promise<{ user_id: number; name
   return maxRequest(token, 'GET', '/me');
 }
 
+// Снять подписку при disconnect
+export async function removeWebhook(token: string, callbackUrl: string): Promise<void> {
+  try {
+    await maxRequest(token, 'DELETE', `/subscriptions?url=${encodeURIComponent(callbackUrl)}`);
+    console.log(`[max] webhook снят: ${callbackUrl}`);
+  } catch (err) {
+    console.warn('[max.removeWebhook] error:', err);
+  }
+}
+
 // Инициализация всех ботов на старте — переустанавливаем webhook'и
 export async function initAllSalonBots(): Promise<void> {
   const baseUrl = process.env.BASE_URL;

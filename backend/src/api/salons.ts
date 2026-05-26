@@ -1,14 +1,16 @@
 import { Router } from 'express';
 import prisma from '../db/prisma';
 import { asyncHandler } from '../middleware/errors';
-import { setWebhookForSalon } from '../channels/telegram';
+import { setWebhookForSalon, removeWebhook as removeTelegramWebhook } from '../channels/telegram';
 import {
   setWebhookForSalon as setMaxWebhook,
   getBotInfo as getMaxBotInfo,
+  removeWebhook as removeMaxWebhook,
 } from '../channels/max';
 import {
   getSelfInfo as getAvitoSelfInfo,
   subscribeWebhook as subscribeAvitoWebhook,
+  unsubscribeWebhook as unsubscribeAvitoWebhook,
 } from '../channels/avito';
 import {
   authUser as yclientsAuthUser,
@@ -119,27 +121,31 @@ router.post(
     }
 
     // Шаг 1: companyId не передан — отдаём список филиалов
+    let companiesList: Array<{ id: number; title: string }> = [];
+    try {
+      companiesList = await yclientsGetCompanies({ companyId: '0', userToken: auth.user_token });
+    } catch (e: any) {
+      res.status(400).json({ error: `Не удалось получить список филиалов: ${e?.message}` });
+      return;
+    }
     if (!companyId) {
-      try {
-        const companies = await yclientsGetCompanies({ companyId: '0', userToken: auth.user_token });
-        res.json({
-          step: 'select_company',
-          userToken: auth.user_token,
-          companies: companies.map((c) => ({ id: c.id, title: c.title })),
-        });
-        return;
-      } catch (e: any) {
-        res.status(400).json({ error: `Не удалось получить список филиалов: ${e?.message}` });
-        return;
-      }
+      res.json({
+        step: 'select_company',
+        userToken: auth.user_token,
+        companies: companiesList.map((c) => ({ id: c.id, title: c.title })),
+      });
+      return;
     }
 
     // Шаг 2: финальное подключение
+    const chosen = companiesList.find((c) => String(c.id) === String(companyId));
     const salon = await prisma.salon.update({
       where: { id: req.params.id },
       data: {
         yclientsCompanyId: String(companyId),
+        yclientsCompanyTitle: chosen?.title || null,
         yclientsUserToken: auth.user_token,
+        yclientsLastSyncAt: new Date(),
       },
     });
 
@@ -158,10 +164,88 @@ router.post(
       ok: true,
       salonId: salon.id,
       companyId,
+      companyTitle: chosen?.title || null,
       mapping,
       note: `Сопоставили ${mapping.servicesMatched} услуг и ${mapping.staffMatched} мастеров. ` +
             `Если что-то не сопоставилось — поправь названия в одной из систем чтобы совпадали.`,
     });
+  })
+);
+
+// ───── DISCONNECT-эндпоинты ─────
+// POST /api/salons/:id/telegram/disconnect — снимает webhook у TG + чистит токен
+router.post(
+  '/:id/telegram/disconnect',
+  asyncHandler(async (req, res) => {
+    const salon = await prisma.salon.findUnique({ where: { id: req.params.id } });
+    if (salon?.telegramBotToken) {
+      await removeTelegramWebhook(salon.telegramBotToken);
+    }
+    await prisma.salon.update({
+      where: { id: req.params.id },
+      data: { telegramBotToken: null },
+    });
+    res.json({ ok: true });
+  })
+);
+
+// POST /api/salons/:id/max/disconnect
+router.post(
+  '/:id/max/disconnect',
+  asyncHandler(async (req, res) => {
+    const baseUrl = process.env.BASE_URL!;
+    const salon = await prisma.salon.findUnique({ where: { id: req.params.id } });
+    if (salon?.maxBotToken) {
+      await removeMaxWebhook(salon.maxBotToken, `${baseUrl}/webhook/max/${salon.id}`);
+    }
+    await prisma.salon.update({
+      where: { id: req.params.id },
+      data: { maxBotToken: null },
+    });
+    res.json({ ok: true });
+  })
+);
+
+// POST /api/salons/:id/avito/disconnect
+router.post(
+  '/:id/avito/disconnect',
+  asyncHandler(async (req, res) => {
+    const baseUrl = process.env.BASE_URL!;
+    const salon = await prisma.salon.findUnique({ where: { id: req.params.id } });
+    if (salon?.avitoClientId && salon.avitoClientSecret && salon.avitoUserId) {
+      await unsubscribeAvitoWebhook(
+        {
+          clientId: salon.avitoClientId,
+          clientSecret: salon.avitoClientSecret,
+          userId: salon.avitoUserId,
+        },
+        `${baseUrl}/webhook/avito/${salon.id}`
+      );
+    }
+    await prisma.salon.update({
+      where: { id: req.params.id },
+      data: { avitoClientId: null, avitoClientSecret: null, avitoUserId: null },
+    });
+    res.json({ ok: true });
+  })
+);
+
+// POST /api/salons/:id/yclients/disconnect
+router.post(
+  '/:id/yclients/disconnect',
+  asyncHandler(async (req, res) => {
+    await prisma.salon.update({
+      where: { id: req.params.id },
+      data: {
+        yclientsCompanyId: null,
+        yclientsCompanyTitle: null,
+        yclientsUserToken: null,
+        yclientsServiceMap: undefined,
+        yclientsStaffMap: undefined,
+        yclientsLastSyncAt: null,
+      },
+    });
+    res.json({ ok: true });
   })
 );
 

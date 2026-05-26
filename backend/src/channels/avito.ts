@@ -89,7 +89,12 @@ export async function subscribeWebhook(creds: AvitoCreds, callbackUrl: string): 
 }
 
 export async function unsubscribeWebhook(creds: AvitoCreds, callbackUrl: string): Promise<void> {
-  await avitoRequest(creds, 'POST', '/messenger/v1/webhook/unsubscribe', { url: callbackUrl }).catch(() => {});
+  try {
+    await avitoRequest(creds, 'POST', '/messenger/v1/webhook/unsubscribe', { url: callbackUrl });
+    console.log(`[avito] webhook снят: ${callbackUrl}`);
+  } catch (err) {
+    console.warn('[avito.unsubscribeWebhook] error:', err);
+  }
 }
 
 // ───── Init на старте: переподписать webhook'и всех подключённых салонов ─────

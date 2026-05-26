@@ -21,10 +21,12 @@ model Salon {
   avitoClientId    String?
   avitoClientSecret String?
   avitoUserId      String?
-  yclientsCompanyId String?
-  yclientsUserToken String?
-  yclientsServiceMap Json?
-  yclientsStaffMap   Json?
+  yclientsCompanyId    String?
+  yclientsCompanyTitle String?
+  yclientsUserToken    String?
+  yclientsServiceMap   Json?
+  yclientsStaffMap     Json?
+  yclientsLastSyncAt   DateTime?
   settings         Json?
   isActive         Boolean        @default(true)
   createdAt        DateTime       @default(now())

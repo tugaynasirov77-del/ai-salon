@@ -27,6 +27,18 @@ export async function setWebhookForSalon(
   console.log(`[telegram] webhook установлен для салона ${salonId}: ${url}`);
 }
 
+// Удалить webhook у Telegram (вызывается при disconnect)
+export async function removeWebhook(token: string): Promise<void> {
+  try {
+    const bot = getBot(token);
+    await bot.deleteWebHook();
+    bots.delete(token);
+    console.log(`[telegram] webhook удалён`);
+  } catch (err) {
+    console.warn('[telegram.removeWebhook] error:', err);
+  }
+}
+
 // Отправка сообщения через бот конкретного салона
 export async function sendMessage(token: string, chatId: string | number, text: string): Promise<boolean> {
   try {

@@ -10,6 +10,11 @@ import {
   getSelfInfo as getAvitoSelfInfo,
   subscribeWebhook as subscribeAvitoWebhook,
 } from '../channels/avito';
+import {
+  authUser as yclientsAuthUser,
+  getUserCompanies as yclientsGetCompanies,
+  autoMapSalon as yclientsAutoMap,
+} from '../channels/yclients';
 
 const router = Router();
 
@@ -90,6 +95,73 @@ router.post(
     }
 
     res.json({ ok: true, salonId: salon.id, webhookUrl: `${baseUrl}/webhook/telegram/${salon.id}` });
+  })
+);
+
+// POST /api/salons/:id/yclients/connect — подключение YClients
+// Шаг 1: только login+password → возвращаем список филиалов владельца, чтобы он выбрал нужный.
+// Шаг 2: login+password+companyId → сохраняем, авто-маппим услуги и мастеров.
+router.post(
+  '/:id/yclients/connect',
+  asyncHandler(async (req, res) => {
+    const { login, password, companyId } = req.body;
+    if (!login || !password) {
+      res.status(400).json({ error: 'login, password обязательны' });
+      return;
+    }
+
+    let auth;
+    try {
+      auth = await yclientsAuthUser(String(login), String(password));
+    } catch (e: any) {
+      res.status(400).json({ error: `Не удалось авторизоваться в YClients: ${e?.message}` });
+      return;
+    }
+
+    // Шаг 1: companyId не передан — отдаём список филиалов
+    if (!companyId) {
+      try {
+        const companies = await yclientsGetCompanies({ companyId: '0', userToken: auth.user_token });
+        res.json({
+          step: 'select_company',
+          userToken: auth.user_token,
+          companies: companies.map((c) => ({ id: c.id, title: c.title })),
+        });
+        return;
+      } catch (e: any) {
+        res.status(400).json({ error: `Не удалось получить список филиалов: ${e?.message}` });
+        return;
+      }
+    }
+
+    // Шаг 2: финальное подключение
+    const salon = await prisma.salon.update({
+      where: { id: req.params.id },
+      data: {
+        yclientsCompanyId: String(companyId),
+        yclientsUserToken: auth.user_token,
+      },
+    });
+
+    // Автомаппинг услуг и мастеров
+    let mapping = { servicesMatched: 0, staffMatched: 0 };
+    try {
+      mapping = await yclientsAutoMap(salon.id, {
+        companyId: String(companyId),
+        userToken: auth.user_token,
+      });
+    } catch (e: any) {
+      console.warn('[yclients.connect] автомаппинг провалился:', e?.message);
+    }
+
+    res.json({
+      ok: true,
+      salonId: salon.id,
+      companyId,
+      mapping,
+      note: `Сопоставили ${mapping.servicesMatched} услуг и ${mapping.staffMatched} мастеров. ` +
+            `Если что-то не сопоставилось — поправь названия в одной из систем чтобы совпадали.`,
+    });
   })
 );
 

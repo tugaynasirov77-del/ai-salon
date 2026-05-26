@@ -359,10 +359,80 @@ export class AIAgent {
     });
     await scheduleReminders(appointment as unknown as IAppointment);
     console.log(`[aiAgent] создана запись ${appointment.id} для ${client.id}`);
+
+    // YClients sync (если салон подключил) — async, не блокирует ответ клиенту
+    this.syncToYClients(appointment.id, salon.id, client, datetime, input, serviceRef, masterRef).catch((e) =>
+      console.error('[aiAgent.syncToYClients] error:', e?.message)
+    );
+
     return {
       content: `Запись создана. ID: ${appointment.id}. ${input.service}, ${datetime.toLocaleString('ru-RU')}.`,
       isError: false,
     };
+  }
+
+  // Дублирующая запись в YClients если салон подключил интеграцию.
+  // Async, ошибки не блокируют основной поток (запись в нашей БД остаётся).
+  private async syncToYClients(
+    appointmentId: string,
+    salonId: string,
+    client: IClient,
+    datetime: Date,
+    input: { service: string; master?: string },
+    serviceRef: any,
+    masterRef: any
+  ): Promise<void> {
+    const { getSalonCreds, createRecord } = await import('../channels/yclients');
+    const creds = await getSalonCreds(salonId);
+    if (!creds) return; // YClients не подключён — ок, выходим тихо
+
+    const salonFull = await prisma.salon.findUnique({
+      where: { id: salonId },
+      select: { yclientsServiceMap: true, yclientsStaffMap: true },
+    });
+    const serviceMap = (salonFull?.yclientsServiceMap as Record<string, number>) || {};
+    const staffMap = (salonFull?.yclientsStaffMap as Record<string, number>) || {};
+
+    const yServiceId = serviceRef ? serviceMap[serviceRef.id] : null;
+    const yStaffId = masterRef ? staffMap[masterRef.id] : null;
+    if (!yServiceId || !yStaffId) {
+      console.warn(
+        `[yclients-sync] нет маппинга service/staff для appointment=${appointmentId}: ` +
+        `service=${serviceRef?.name} (${yServiceId}), master=${masterRef?.name} (${yStaffId})`
+      );
+      const { alertWarn } = await import('../utils/alerter');
+      alertWarn(
+        'YClients sync пропущен (нет маппинга)',
+        { salonId, service: input.service, master: input.master },
+        `yclients-no-map:${salonId}`
+      );
+      return;
+    }
+
+    // Формат YClients datetime: ISO 8601 с таймзоной
+    const isoDate = datetime.toISOString().replace('Z', '+00:00');
+
+    try {
+      const result = await createRecord(creds, {
+        staff_id: yStaffId,
+        services: [{ id: yServiceId }],
+        client: {
+          phone: client.phone || '',
+          name: client.name || 'Клиент',
+        },
+        datetime: isoDate,
+        api_id: appointmentId, // для трекинга
+      });
+      console.log(`[yclients-sync] создана запись в YClients id=${result.id} (наша=${appointmentId})`);
+    } catch (e: any) {
+      console.error(`[yclients-sync] ошибка для appointment=${appointmentId}:`, e?.message);
+      const { alertError } = await import('../utils/alerter');
+      alertError(
+        'YClients sync FAIL',
+        { salonId, appointmentId, error: e?.message },
+        `yclients-fail:${salonId}`
+      );
+    }
   }
 
   private async toolCancelAppointment(

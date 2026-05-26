@@ -6,11 +6,12 @@ interface ChannelInfo {
   ok: boolean;
 }
 
+// Только каналы которые мы реально предлагаем клиентам:
+// Telegram, Авито, YClients (CRM), веб-чат на сайт. MAX/VK/SMS убраны из UI.
 const DEFAULT_CHANNELS: ChannelInfo[] = [
   { key: 'TG', label: 'Telegram', ok: true },
-  { key: 'MAX', label: 'MAX', ok: false },
-  { key: 'VK', label: 'ВКонтакте', ok: false },
-  { key: 'SMS', label: 'SMS', ok: true },
+  { key: 'AV', label: 'Авито', ok: false },
+  { key: 'YC', label: 'YClients', ok: false },
   { key: 'WEB', label: 'Веб-чат', ok: true },
 ];
 

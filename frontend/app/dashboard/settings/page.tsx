@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import {
-  Send, MessagesSquare, Briefcase, Globe, Copy, Check, Loader2, Bell, Lock,
-  AlertTriangle, Settings as SettingsIcon, User as UserIcon, Calendar as CalendarIcon,
+  Send, Briefcase, Globe, Copy, Check, Loader2, Bell, Lock,
+  User as UserIcon, Calendar as CalendarIcon,
   Palette, LinkIcon, Unlink,
 } from 'lucide-react';
 import { PageHeader } from '@/components/shared/PageHeader';
@@ -12,8 +12,8 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input, Textarea, Label } from '@/components/ui/input';
 import {
-  connectTelegram, connectMax, connectAvito, connectYclients,
-  disconnectTelegram, disconnectMax, disconnectAvito, disconnectYclients,
+  connectTelegram, connectAvito, connectYclients,
+  disconnectTelegram, disconnectAvito, disconnectYclients,
   updateSalon,
   type IYclientsStep1,
 } from '@/lib/api';
@@ -133,11 +133,9 @@ interface TabProps {
 
 function ChannelsTab({ salonId, salon, refetch, notify }: TabProps) {
   const [tgToken, setTgToken] = useState('');
-  const [maxToken, setMaxToken] = useState('');
   const [avito, setAvito] = useState({ clientId: '', clientSecret: '', userId: '' });
 
   const tgOn = !!salon?.telegramBotToken;
-  const maxOn = !!salon?.maxBotToken;
 
   const tgConnect = useMutation({
     mutationFn: () => connectTelegram(salonId, tgToken.trim()),
@@ -147,16 +145,6 @@ function ChannelsTab({ salonId, salon, refetch, notify }: TabProps) {
   const tgDisconnect = useMutation({
     mutationFn: () => disconnectTelegram(salonId),
     onSuccess: async () => { await refetch(); notify('ok', 'Telegram отключён'); },
-    onError: (e: any) => notify('err', e?.message || 'Не удалось отключить'),
-  });
-  const maxConnect = useMutation({
-    mutationFn: () => connectMax(salonId, maxToken.trim()),
-    onSuccess: async () => { setMaxToken(''); await refetch(); notify('ok', 'MAX подключён'); },
-    onError: (e: any) => notify('err', e?.message || 'Не удалось подключить MAX'),
-  });
-  const maxDisconnect = useMutation({
-    mutationFn: () => disconnectMax(salonId),
-    onSuccess: async () => { await refetch(); notify('ok', 'MAX отключён'); },
     onError: (e: any) => notify('err', e?.message || 'Не удалось отключить'),
   });
   const avMut = useMutation({
@@ -197,33 +185,6 @@ function ChannelsTab({ salonId, salon, refetch, notify }: TabProps) {
             </div>
             <Button onClick={() => tgConnect.mutate()} disabled={!tgToken.trim() || tgConnect.isPending}>
               {tgConnect.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
-              Подключить
-            </Button>
-          </div>
-        )}
-      </div>
-
-      {/* MAX */}
-      <div className="mb-5 rounded-lg border border-slate-200 p-4 dark:border-slate-800">
-        <ChannelHeader icon={MessagesSquare} title="MAX (TamTam)" status={<StatusPill ok={maxOn} />} />
-        <p className="mb-3 text-xs text-slate-500">
-          Создайте бота через <code className="rounded bg-slate-100 px-1 dark:bg-slate-800">@MasterBot</code> в MAX.
-        </p>
-        {maxOn ? (
-          <div className="flex justify-end">
-            <Button variant="outline" onClick={() => maxDisconnect.mutate()} disabled={maxDisconnect.isPending}>
-              {maxDisconnect.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Unlink className="h-4 w-4" />}
-              Отключить
-            </Button>
-          </div>
-        ) : (
-          <div className="flex flex-wrap items-end gap-2">
-            <div className="flex-1 min-w-[260px]">
-              <Label htmlFor="max-token">Токен бота</Label>
-              <Input id="max-token" type="password" value={maxToken} onChange={(e) => setMaxToken(e.target.value)} placeholder="MAX token..." />
-            </div>
-            <Button onClick={() => maxConnect.mutate()} disabled={!maxToken.trim() || maxConnect.isPending}>
-              {maxConnect.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
               Подключить
             </Button>
           </div>
@@ -272,14 +233,6 @@ function ChannelsTab({ salonId, salon, refetch, notify }: TabProps) {
 
       {/* YClients */}
       <YclientsCard salonId={salonId} salon={salon} refetch={refetch} notify={notify} />
-
-      {/* VK / SMS — заблокированы */}
-      <div className="mt-5 rounded-lg border border-dashed border-slate-200 p-4 text-xs text-slate-500 dark:border-slate-800">
-        <div className="flex items-center gap-2">
-          <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />
-          <span>ВКонтакте и SMS пока заблокированы внешними факторами (ИП). Появятся позже.</span>
-        </div>
-      </div>
     </Card>
   );
 }

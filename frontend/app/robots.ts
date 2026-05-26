@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: ['/', '/login', '/register'],
+        allow: ['/', '/login', '/register', '/privacy', '/terms'],
         // Закрываем админку и аккаунт-страницы — это персональный кабинет, не для индексации.
         disallow: ['/dashboard', '/dashboard/*', '/api/*'],
       },

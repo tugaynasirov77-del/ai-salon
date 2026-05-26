@@ -340,8 +340,12 @@ export default function LandingPage() {
             </ul>
           </div>
         </div>
-        <div className="mx-auto mt-8 max-w-6xl border-t border-white/[0.06] px-4 pt-6 text-center text-xs text-slate-500 sm:text-left">
-          © {new Date().getFullYear()} Liva ai — AI-администратор для малого бизнеса
+        <div className="mx-auto mt-8 flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-white/[0.06] px-4 pt-6 text-center text-xs text-slate-500 sm:flex-row sm:text-left">
+          <div>© {new Date().getFullYear()} Liva ai — AI-администратор для малого бизнеса</div>
+          <div className="flex gap-4">
+            <Link href="/privacy" className="hover:text-white">Конфиденциальность</Link>
+            <Link href="/terms" className="hover:text-white">Оферта</Link>
+          </div>
         </div>
       </footer>
     </div>

@@ -24,6 +24,12 @@ const OVERRIDE_CSS = `
   .ailiva-panel { background: #ffffff !important; color: #0f172a !important; }
 `;
 
+function removeWidget() {
+  document.querySelectorAll('.ailiva-btn, .ailiva-panel').forEach((el) => el.remove());
+  document.getElementById('ailiva-demo-override')?.remove();
+  delete (window as any)[FLAG];
+}
+
 export function DemoWidget() {
   useEffect(() => {
     const w = window as any;
@@ -67,6 +73,10 @@ export function DemoWidget() {
         // eslint-disable-next-line no-console
         console.error('[demo-widget] fetch error', e);
       });
+
+    // Cleanup при размонтировании (например при переходе с лендинга на /login через client-side роутинг).
+    // Виджет вставляет кнопку и панель в document.body — без очистки они «прилипают» к следующей странице.
+    return removeWidget;
   }, []);
   return null;
 }

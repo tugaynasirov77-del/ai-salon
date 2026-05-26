@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
@@ -9,7 +9,7 @@ import { Input, Label } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { apiLogin, apiMe, useAuthStore } from '@/lib/auth';
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
   const setSession = useAuthStore((s) => s.setSession);
@@ -36,41 +36,50 @@ export default function LoginPage() {
   }
 
   return (
+    <form onSubmit={onSubmit} className="mt-6 space-y-4">
+      <div>
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          type="email"
+          autoComplete="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="owner@ailiva.ru"
+        />
+      </div>
+      <div>
+        <Label htmlFor="password">Пароль</Label>
+        <Input
+          id="password"
+          type="password"
+          autoComplete="current-password"
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
+      {error && <div className="text-sm text-red-600">{error}</div>}
+      <Button type="submit" disabled={submitting} className="w-full">
+        {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
+        Войти
+      </Button>
+    </form>
+  );
+}
+
+// useSearchParams() требует Suspense-границу для статической оптимизации Next.js.
+export default function LoginPage() {
+  return (
     <Card>
       <CardContent>
         <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Вход</h1>
         <p className="mt-1 text-sm text-slate-500">Войдите в админку Liva ai.</p>
 
-        <form onSubmit={onSubmit} className="mt-6 space-y-4">
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              autoComplete="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="owner@ailiva.ru"
-            />
-          </div>
-          <div>
-            <Label htmlFor="password">Пароль</Label>
-            <Input
-              id="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          {error && <div className="text-sm text-red-600">{error}</div>}
-          <Button type="submit" disabled={submitting} className="w-full">
-            {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
-            Войти
-          </Button>
-        </form>
+        <Suspense fallback={<div className="mt-6 text-sm text-slate-400">Загрузка…</div>}>
+          <LoginForm />
+        </Suspense>
 
         <p className="mt-4 text-center text-sm text-slate-500">
           Нет аккаунта?{' '}

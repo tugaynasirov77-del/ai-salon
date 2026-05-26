@@ -9,139 +9,244 @@ import {
   Bot,
   Globe,
   Send,
+  ArrowRight,
+  Sparkles,
 } from 'lucide-react';
 import { PricingSection } from '@/components/landing/PricingSection';
 import { DemoWidget } from '@/components/landing/DemoWidget';
+import { Logo } from '@/components/landing/Logo';
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950">
-      {/* Header */}
-      <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/85 backdrop-blur dark:border-slate-800 dark:bg-slate-950/85">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <div className="text-lg font-bold text-slate-900 dark:text-slate-100">Liva ai</div>
-          <nav className="hidden gap-6 text-sm text-slate-600 sm:flex dark:text-slate-300">
-            <a href="#features" className="hover:text-blue-600">Возможности</a>
-            <a href="#pricing" className="hover:text-blue-600">Тарифы</a>
-            <a href="#demo" className="hover:text-blue-600">Демо</a>
+    <div className="relative min-h-screen overflow-hidden bg-slate-950 text-slate-100">
+      {/* === Backgrоund-noise + ambient blobs (фиксированные) === */}
+      <div className="pointer-events-none fixed inset-0 -z-10">
+        <div className="absolute -top-32 -left-40 h-[520px] w-[520px] rounded-full bg-indigo-600/30 blur-[140px]" />
+        <div className="absolute top-[18%] -right-32 h-[480px] w-[480px] rounded-full bg-fuchsia-600/25 blur-[140px]" />
+        <div className="absolute top-[60%] left-1/3 h-[420px] w-[420px] rounded-full bg-violet-600/20 blur-[140px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(99,102,241,0.08),transparent_60%)]" />
+        {/* Grid noise */}
+        <div
+          className="absolute inset-0 opacity-[0.025]"
+          style={{
+            backgroundImage:
+              'linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)',
+            backgroundSize: '56px 56px',
+            maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 80%)',
+          }}
+        />
+      </div>
+
+      {/* === Header === */}
+      <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-slate-950/70 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+          <Logo size={32} variant="light" />
+          <nav className="hidden gap-8 text-sm text-slate-300 sm:flex">
+            <a href="#features" className="transition-colors hover:text-white">Возможности</a>
+            <a href="#pricing" className="transition-colors hover:text-white">Тарифы</a>
+            <a href="#demo" className="transition-colors hover:text-white">Демо</a>
           </nav>
-          <div className="flex items-center gap-2">
-            <Link href="/login" className="text-sm font-medium text-slate-700 hover:text-blue-600 dark:text-slate-300">
+          <div className="flex items-center gap-3">
+            <Link href="/login" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">
               Войти
             </Link>
             <Link
               href="/register"
-              className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+              className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-lg bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_rgba(139,92,246,0.45)] transition-transform hover:scale-[1.02]"
             >
+              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
               Регистрация
             </Link>
           </div>
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-transparent dark:from-blue-950/20" />
-        <div className="relative mx-auto max-w-6xl px-4 py-20 text-center sm:py-28">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 dark:border-blue-900 dark:bg-blue-950/50 dark:text-blue-300">
-            <Zap className="h-3.5 w-3.5" />
-            AI-администратор для малого бизнеса
-          </span>
-          <h1 className="mt-6 text-4xl font-bold leading-tight text-slate-900 sm:text-6xl dark:text-slate-100">
-            Бот, который записывает<br /> клиентов <span className="text-blue-600">за вас</span>
+      {/* === Hero === */}
+      <section className="relative">
+        <div className="mx-auto max-w-6xl px-4 pt-24 pb-28 text-center sm:pt-32 sm:pb-36">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-medium text-slate-300 backdrop-blur">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-fuchsia-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-fuchsia-500" />
+            </span>
+            <span>AI-администратор для малого бизнеса</span>
+          </div>
+
+          <h1 className="mx-auto mt-8 max-w-4xl bg-gradient-to-b from-white via-white to-white/60 bg-clip-text text-5xl font-semibold tracking-tight text-transparent sm:text-7xl">
+            Бот, который записывает <br className="hidden sm:block" />
+            <span className="relative">
+              клиентов{' '}
+              <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
+                за вас
+              </span>
+            </span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-600 dark:text-slate-400">
+
+          <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-slate-400">
             Liva ai отвечает на сообщения в Telegram, Авито и на сайте 24/7,
             подбирает время и записывает на услугу. Вы видите дашборд с диалогами,
             записями и аналитикой.
           </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+
+          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/register"
-              className="rounded-lg bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-700"
+              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-transform hover:scale-[1.02]"
             >
+              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
               Начать бесплатно
+              <ArrowRight className="h-4 w-4" />
             </Link>
             <a
               href="#pricing"
-              className="rounded-lg border border-slate-300 bg-white px-6 py-3 text-base font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-7 py-3.5 text-base font-medium text-slate-200 backdrop-blur transition-colors hover:bg-white/[0.08] hover:text-white"
             >
               Подключить под ключ
             </a>
           </div>
-          <p className="mt-3 text-xs text-slate-500">Без карты. Подключение за 1 день.</p>
+          <p className="mt-4 text-xs text-slate-500">Без карты. Подключение за 1 день.</p>
+
+          {/* Bullet badges */}
+          <div className="mx-auto mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs text-slate-400">
+            <BulletBadge>Запуск за 15 минут</BulletBadge>
+            <BulletBadge>Отмена в любой момент</BulletBadge>
+            <BulletBadge>Поддержка на русском</BulletBadge>
+            <BulletBadge>Платёж в рублях</BulletBadge>
+          </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section id="features" className="border-y border-slate-100 bg-slate-50 py-20 dark:border-slate-800 dark:bg-slate-900/30">
+      {/* === Features === */}
+      <section id="features" className="relative py-24">
         <div className="mx-auto max-w-6xl px-4">
-          <h2 className="text-center text-3xl font-bold text-slate-900 dark:text-slate-100">
-            Что умеет Liva ai
-          </h2>
-          <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="text-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-300">Возможности</span>
+            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+              Всё, что нужно <br /> для автоматизации записи
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-slate-400">
+              Один AI-агент закрывает работу администратора: переписка, запись, напоминания, аналитика.
+            </p>
+          </div>
+          <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:grid-cols-3">
             <Feature
-              icon={<MessageSquare className="h-6 w-6" />}
+              icon={<MessageSquare className="h-5 w-5" />}
               title="Принимает заявки везде"
-              text="Telegram, MAX, Авито, ВКонтакте, виджет на сайте. Все диалоги в одном окне."
+              text="Telegram, Авито, YClients, виджет на сайте. Все диалоги в одном окне."
             />
             <Feature
-              icon={<Calendar className="h-6 w-6" />}
+              icon={<Calendar className="h-5 w-5" />}
               title="Записывает на услугу"
               text="AI понимает контекст, подбирает свободное время и мастера, отправляет напоминания за 24 и 2 часа."
             />
             <Feature
-              icon={<TrendingUp className="h-6 w-6" />}
+              icon={<TrendingUp className="h-5 w-5" />}
               title="Считает деньги"
-              text="Дашборд с конверсией, выручкой за период, топ-услугами и расходом токенов на AI."
+              text="Конверсия, выручка за период, топ-услуги и расход токенов на AI — в одном дашборде."
             />
             <Feature
-              icon={<Bot className="h-6 w-6" />}
-              title="Учится вашим услугам"
+              icon={<Bot className="h-5 w-5" />}
+              title="Учится вашему бизнесу"
               text="Загрузите прайс, расписание и FAQ — бот настроится под вашу нишу автоматически."
             />
             <Feature
-              icon={<Briefcase className="h-6 w-6" />}
+              icon={<Briefcase className="h-5 w-5" />}
               title="9 ниш из коробки"
               text="Салоны красоты, барбершопы, фитнес, клиники, СТО, рестораны, юристы, репетиторы."
             />
             <Feature
-              icon={<Check className="h-6 w-6" />}
+              icon={<Sparkles className="h-5 w-5" />}
               title="Эскалация владельцу"
-              text="Когда AI не уверен в ответе — присылает вам уведомление в Telegram, чтобы вы ответили лично."
+              text="Когда AI не уверен в ответе — пишет вам в Telegram, чтобы вы ответили лично."
             />
           </div>
         </div>
       </section>
 
-      {/* Pricing */}
+      {/* === Pricing === */}
       <PricingSection />
 
-      {/* Demo widget */}
-      <section id="demo" className="border-t border-slate-100 bg-slate-50 py-20 dark:border-slate-800 dark:bg-slate-900/30">
+      {/* === Demo === */}
+      <section id="demo" className="relative py-24">
         <div className="mx-auto max-w-4xl px-4 text-center">
-          <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Попробуйте прямо сейчас</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-slate-500">
-            Виджет демо-салона работает на этой странице. Нажмите на кружок в правом нижнем углу и напишите боту.
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-fuchsia-300">Демо</span>
+          <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+            Попробуйте прямо <br /> сейчас
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-slate-400">
+            Виджет демо-салона работает на этой странице. Нажмите на кружок справа внизу и напишите боту любой вопрос — он ответит как живой администратор.
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-500">
-            <Channel icon={<Send className="h-4 w-4 text-blue-500" />} label="Telegram" />
-            <Channel icon={<Globe className="h-4 w-4 text-emerald-500" />} label="Веб-чат" />
-            <Channel icon={<Briefcase className="h-4 w-4 text-orange-500" />} label="Авито" />
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3 text-xs">
+            <Channel icon={<Send className="h-4 w-4" />} label="Telegram" tone="indigo" />
+            <Channel icon={<Globe className="h-4 w-4" />} label="Веб-чат" tone="emerald" />
+            <Channel icon={<Briefcase className="h-4 w-4" />} label="Авито" tone="orange" />
+            <Channel icon={<Calendar className="h-4 w-4" />} label="YClients" tone="cyan" />
           </div>
         </div>
         <DemoWidget />
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-100 py-8 dark:border-slate-800">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 text-sm text-slate-500 sm:flex-row">
-          <div>© {new Date().getFullYear()} Liva ai</div>
-          <div className="flex gap-4">
-            <Link href="/login" className="hover:text-blue-600">Войти</Link>
-            <Link href="/register" className="hover:text-blue-600">Регистрация</Link>
-            <a href="mailto:hello@ailiva.ru" className="hover:text-blue-600">hello@ailiva.ru</a>
+      {/* === CTA === */}
+      <section className="relative py-20">
+        <div className="mx-auto max-w-4xl px-4">
+          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-indigo-900/40 via-violet-900/30 to-fuchsia-900/40 p-10 text-center sm:p-14">
+            <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-[300px] w-[600px] rounded-full bg-fuchsia-500/20 blur-[100px]" />
+            <div className="relative">
+              <h2 className="bg-gradient-to-b from-white to-white/70 bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl">
+                Запустите AI-администратора <br /> уже сегодня
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-slate-300">
+                15 минут на регистрацию, подключение Telegram и загрузку услуг — и бот начинает отвечать клиентам.
+              </p>
+              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <Link
+                  href="/register"
+                  className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-transform hover:scale-[1.02]"
+                >
+                  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                  Зарегистрироваться
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <a
+                  href="#pricing"
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-7 py-3.5 text-base font-medium text-slate-200 transition-colors hover:bg-white/[0.08]"
+                >
+                  Оставить заявку
+                </a>
+              </div>
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* === Footer === */}
+      <footer className="border-t border-white/[0.06] py-12">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 sm:grid-cols-4">
+          <div className="col-span-2 sm:col-span-2">
+            <Logo size={28} variant="light" />
+            <p className="mt-4 max-w-xs text-sm text-slate-400">
+              AI-администратор для малого бизнеса. Отвечает клиентам и записывает на услугу 24/7.
+            </p>
+          </div>
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">Продукт</div>
+            <ul className="mt-4 space-y-2 text-sm text-slate-300">
+              <li><a href="#features" className="hover:text-white">Возможности</a></li>
+              <li><a href="#pricing" className="hover:text-white">Тарифы</a></li>
+              <li><a href="#demo" className="hover:text-white">Демо</a></li>
+            </ul>
+          </div>
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">Аккаунт</div>
+            <ul className="mt-4 space-y-2 text-sm text-slate-300">
+              <li><Link href="/login" className="hover:text-white">Войти</Link></li>
+              <li><Link href="/register" className="hover:text-white">Регистрация</Link></li>
+              <li><a href="mailto:hello@ailiva.ru" className="hover:text-white">hello@ailiva.ru</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="mx-auto mt-8 max-w-6xl border-t border-white/[0.06] px-4 pt-6 text-center text-xs text-slate-500 sm:text-left">
+          © {new Date().getFullYear()} Liva ai — AI-администратор для малого бизнеса
         </div>
       </footer>
     </div>
@@ -150,19 +255,35 @@ export default function LandingPage() {
 
 function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
   return (
-    <div className="rounded-xl bg-white p-6 shadow-sm dark:bg-slate-900">
-      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 text-blue-600 dark:bg-blue-950 dark:text-blue-300">
+    <div className="group relative bg-slate-950/50 p-7 transition-colors hover:bg-white/[0.04]">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500/20 to-fuchsia-500/20 text-indigo-300 ring-1 ring-inset ring-white/10">
         {icon}
       </div>
-      <h3 className="mt-4 font-semibold text-slate-900 dark:text-slate-100">{title}</h3>
-      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{text}</p>
+      <h3 className="mt-5 text-base font-semibold text-white">{title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-slate-400">{text}</p>
     </div>
   );
 }
 
-function Channel({ icon, label }: { icon: React.ReactNode; label: string }) {
+function BulletBadge({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 shadow-sm dark:bg-slate-900">
+    <span className="inline-flex items-center gap-1.5">
+      <Check className="h-3.5 w-3.5 text-emerald-400" />
+      {children}
+    </span>
+  );
+}
+
+const CHANNEL_TONES: Record<string, string> = {
+  indigo: 'border-indigo-400/30 bg-indigo-500/10 text-indigo-200',
+  emerald: 'border-emerald-400/30 bg-emerald-500/10 text-emerald-200',
+  orange: 'border-orange-400/30 bg-orange-500/10 text-orange-200',
+  cyan: 'border-cyan-400/30 bg-cyan-500/10 text-cyan-200',
+};
+
+function Channel({ icon, label, tone = 'indigo' }: { icon: React.ReactNode; label: string; tone?: string }) {
+  return (
+    <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 ${CHANNEL_TONES[tone]}`}>
       {icon}
       {label}
     </span>

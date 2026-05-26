@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { Check, X, Loader2, Briefcase, UserCog } from 'lucide-react';
+import { Check, X, Loader2, Briefcase, UserCog, ArrowRight } from 'lucide-react';
 import { submitLead } from '@/lib/api';
 import { formatPhone } from '@/lib/utils';
 import { NICHES } from '@shared/niches';
@@ -10,93 +10,115 @@ import { NICHES } from '@shared/niches';
 export function PricingSection() {
   const [open, setOpen] = useState(false);
   return (
-    <section id="pricing" className="py-20">
+    <section id="pricing" className="relative py-24">
       <div className="mx-auto max-w-5xl px-4">
-        <h2 className="text-center text-3xl font-bold text-slate-900 dark:text-slate-100">Тарифы</h2>
-        <p className="mt-2 text-center text-slate-500">
-          Выберите как удобнее: подключить самостоятельно или с нашей помощью.
-        </p>
+        <div className="text-center">
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-violet-300">Тарифы</span>
+          <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+            Подключите как удобно
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-slate-400">
+            Зарегистрироваться самому за 15 минут — или передать всю настройку нашему менеджеру.
+          </p>
+        </div>
 
-        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2">
           {/* === SELF-START === */}
-          <div className="relative flex flex-col rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
+          <div className="relative flex flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-sm">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
               <UserCog className="h-3.5 w-3.5" />
               Самостоятельно
             </div>
-            <div className="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">Self-Start</div>
-            <p className="mt-2 text-sm text-slate-500">
+            <div className="mt-2 text-2xl font-semibold text-white">Self-Start</div>
+            <p className="mt-3 text-sm text-slate-400">
               Регистрируетесь сами, подключаете Telegram и настраиваете бота через админку. Готово за 15–30 минут.
             </p>
 
-            <div className="mt-5">
-              <span className="text-4xl font-bold text-slate-900 dark:text-slate-100">2 500 ₽</span>
-              <span className="ml-2 text-sm text-slate-500">в месяц</span>
+            <div className="mt-6 flex items-baseline gap-2">
+              <span className="text-4xl font-semibold text-white">2 500 ₽</span>
+              <span className="text-sm text-slate-400">/месяц</span>
             </div>
-            <div className="mt-1 text-sm text-slate-500">Подключение — бесплатно, без setup-платы</div>
+            <div className="mt-1 text-sm text-slate-500">Подключение — бесплатно</div>
 
-            <ul className="mt-6 flex-1 space-y-2 text-sm text-slate-700 dark:text-slate-300">
-              <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" />Вы сами подключаете Telegram-бота (инструкция в админке)</li>
-              <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" />Вы сами заносите услуги, мастеров и расписание</li>
-              <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" />Веб-чат на сайт за один скрипт</li>
-              <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" />Дашборд, аналитика и тест-чат для проверки бота</li>
-              <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" />До 1000 сообщений в месяц</li>
-              <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" />Поддержка по email</li>
-              <li className="flex items-start gap-2 text-slate-400"><X className="mt-0.5 h-4 w-4 flex-shrink-0" />Без подключения Авито и YClients</li>
-              <li className="flex items-start gap-2 text-slate-400"><X className="mt-0.5 h-4 w-4 flex-shrink-0" />Без персонального менеджера</li>
+            <ul className="mt-6 flex-1 space-y-2.5 text-sm text-slate-300">
+              <Feat>Сами подключаете Telegram-бота (инструкция в админке)</Feat>
+              <Feat>Сами заносите услуги, мастеров и расписание</Feat>
+              <Feat>Веб-чат на сайт за один скрипт</Feat>
+              <Feat>Дашборд, аналитика и тест-чат</Feat>
+              <Feat>До 1000 сообщений в месяц</Feat>
+              <Feat>Поддержка по email</Feat>
+              <Feat off>Без подключения Авито и YClients</Feat>
+              <Feat off>Без персонального менеджера</Feat>
             </ul>
 
             <Link
               href="/register"
-              className="mt-8 rounded-lg border border-slate-300 px-6 py-3 text-center text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+              className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-6 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-white/[0.08]"
             >
               Зарегистрироваться самому
+              <ArrowRight className="h-4 w-4" />
             </Link>
-            <div className="mt-2 text-center text-xs text-slate-400">Готово за 15–30 минут</div>
+            <div className="mt-2 text-center text-xs text-slate-500">Готово за 15–30 минут</div>
           </div>
 
           {/* === TURNKEY === */}
-          <div className="relative flex flex-col rounded-2xl border-2 border-blue-600 bg-blue-50 p-8 shadow-lg dark:bg-blue-950/30">
-            <div className="absolute -top-3 left-8 rounded-full bg-blue-600 px-3 py-0.5 text-xs font-semibold uppercase tracking-wider text-white">
+          <div className="relative flex flex-col overflow-hidden rounded-2xl border border-violet-400/30 bg-gradient-to-b from-violet-900/30 via-violet-900/10 to-transparent p-8 backdrop-blur-sm shadow-[0_0_60px_rgba(139,92,246,0.15)]">
+            <div className="absolute -top-px left-8 right-8 h-px bg-gradient-to-r from-transparent via-violet-400/60 to-transparent" />
+            <div className="absolute -top-3 left-8 rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-3 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white shadow-lg">
               Рекомендуем
             </div>
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-blue-700 dark:text-blue-300">
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-violet-300">
               <Briefcase className="h-3.5 w-3.5" />
               Под ключ
             </div>
-            <div className="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">Мы всё настроим за вас</div>
-            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+            <div className="mt-2 text-2xl font-semibold text-white">Мы всё настроим за вас</div>
+            <p className="mt-3 text-sm text-slate-300">
               Оставьте заявку — наш менеджер свяжется в течение дня и проведёт вас от подключения до первого клиента.
             </p>
 
-            <div className="mt-5">
-              <span className="text-4xl font-bold text-slate-900 dark:text-slate-100">2 500 ₽</span>
-              <span className="ml-2 text-sm text-slate-500">в месяц</span>
+            <div className="mt-6 flex items-baseline gap-2">
+              <span className="text-4xl font-semibold text-white">2 500 ₽</span>
+              <span className="text-sm text-slate-400">/месяц</span>
             </div>
-            <div className="mt-1 text-sm text-slate-600 dark:text-slate-300">+ 5 000 ₽ единоразовая настройка</div>
+            <div className="mt-1 text-sm text-slate-400">+ 5 000 ₽ единоразовая настройка</div>
 
-            <ul className="mt-6 flex-1 space-y-2 text-sm text-slate-700 dark:text-slate-300">
-              <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" />Всё из Self-Start</li>
-              <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" />Менеджер сам подключит Telegram, Авито и YClients</li>
-              <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" />Перенесём ваш прайс и расписание</li>
-              <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" />Адаптируем тон бота под ваш бизнес</li>
-              <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" />Персональный менеджер на связи</li>
-              <li className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" />Безлимит сообщений в первые 3 месяца</li>
+            <ul className="mt-6 flex-1 space-y-2.5 text-sm text-slate-200">
+              <Feat>Всё из Self-Start</Feat>
+              <Feat>Менеджер сам подключит Telegram, Авито и YClients</Feat>
+              <Feat>Перенесём ваш прайс и расписание</Feat>
+              <Feat>Адаптируем тон бота под ваш бизнес</Feat>
+              <Feat>Персональный менеджер на связи</Feat>
+              <Feat>Безлимит сообщений в первые 3 месяца</Feat>
             </ul>
 
             <button
               onClick={() => setOpen(true)}
-              className="mt-8 rounded-lg bg-blue-600 px-6 py-3 text-center text-sm font-semibold text-white hover:bg-blue-700"
+              className="group relative mt-8 inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-3 text-center text-sm font-semibold text-white shadow-[0_0_30px_rgba(139,92,246,0.4)] transition-transform hover:scale-[1.02]"
             >
+              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
               Оставить заявку
+              <ArrowRight className="h-4 w-4" />
             </button>
-            <div className="mt-2 text-center text-xs text-slate-500">Менеджер свяжется в течение дня</div>
+            <div className="mt-2 text-center text-xs text-slate-400">Менеджер свяжется в течение дня</div>
           </div>
         </div>
       </div>
 
       <LeadModal open={open} onClose={() => setOpen(false)} />
     </section>
+  );
+}
+
+function Feat({ children, off }: { children: React.ReactNode; off?: boolean }) {
+  return (
+    <li className={`flex items-start gap-2 ${off ? 'text-slate-500' : ''}`}>
+      {off ? (
+        <X className="mt-0.5 h-4 w-4 flex-shrink-0 text-slate-600" />
+      ) : (
+        <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-emerald-400" />
+      )}
+      {children}
+    </li>
   );
 }
 
@@ -143,11 +165,11 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={reset}>
-      <div className="absolute inset-0 bg-black/50" />
-      <div onClick={(e) => e.stopPropagation()} className="relative w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-xl dark:bg-slate-900">
-        <header className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-slate-800">
-          <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">Заявка «Под ключ»</h3>
-          <button onClick={reset} aria-label="Закрыть" className="text-slate-400 hover:text-slate-600">
+      <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" />
+      <div onClick={(e) => e.stopPropagation()} className="relative w-full max-w-md overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-2xl">
+        <header className="flex items-center justify-between border-b border-white/10 px-5 py-4">
+          <h3 className="text-base font-semibold text-white">Заявка «Под ключ»</h3>
+          <button onClick={reset} aria-label="Закрыть" className="text-slate-400 transition-colors hover:text-white">
             <X className="h-5 w-5" />
           </button>
         </header>
@@ -155,89 +177,96 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
         <div className="p-5">
           {state === 'sent' ? (
             <div className="text-center">
-              <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-green-100 dark:bg-green-950/30">
-                <Check className="h-7 w-7 text-green-600" />
+              <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/20">
+                <Check className="h-7 w-7 text-emerald-400" />
               </div>
-              <div className="mb-2 text-base font-semibold text-slate-900 dark:text-slate-100">Заявка отправлена!</div>
-              <p className="mb-4 text-sm text-slate-500">Менеджер свяжется с вами в течение дня.</p>
-              <button onClick={reset} className="rounded-lg bg-blue-600 px-6 py-2 text-sm font-semibold text-white hover:bg-blue-700">
+              <div className="mb-2 text-base font-semibold text-white">Заявка отправлена!</div>
+              <p className="mb-4 text-sm text-slate-400">Менеджер свяжется с вами в течение дня.</p>
+              <button onClick={reset} className="rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-2 text-sm font-semibold text-white">
                 Закрыть
               </button>
             </div>
           ) : (
             <div className="space-y-3">
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-slate-400">
                 Менеджер свяжется в течение дня. Подключит всё за вас и проведёт по первым шагам.
               </p>
-              <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Как вас зовут *</label>
+              <ModalField label="Как вас зовут *">
                 <input
                   value={form.name}
                   onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                   placeholder="Иван Петров"
-                  className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                  className={modalInputCls}
                 />
-              </div>
-              <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Телефон *</label>
+              </ModalField>
+              <ModalField label="Телефон *">
                 <input
                   type="tel"
                   value={form.phone}
                   onChange={(e) => setForm((f) => ({ ...f, phone: formatPhone(e.target.value) }))}
                   placeholder="+7 (___) ___-__-__"
-                  className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                  className={modalInputCls}
                 />
-              </div>
+              </ModalField>
               <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Ниша</label>
+                <ModalField label="Ниша">
                   <select
                     value={form.niche}
                     onChange={(e) => setForm((f) => ({ ...f, niche: e.target.value }))}
-                    className="h-10 w-full rounded-lg border border-slate-300 bg-white px-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                    className={modalInputCls + ' px-2'}
                   >
                     <option value="">— Не указано —</option>
                     {Object.entries(NICHES).map(([key, n]: any) => (
                       <option key={key} value={key}>{n.emoji} {n.label}</option>
                     ))}
                   </select>
-                </div>
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Город</label>
+                </ModalField>
+                <ModalField label="Город">
                   <input
                     value={form.city}
                     onChange={(e) => setForm((f) => ({ ...f, city: e.target.value }))}
                     placeholder="Москва"
-                    className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                    className={modalInputCls}
                   />
-                </div>
+                </ModalField>
               </div>
-              <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Комментарий</label>
+              <ModalField label="Комментарий">
                 <textarea
                   rows={2}
                   value={form.comment}
                   onChange={(e) => setForm((f) => ({ ...f, comment: e.target.value }))}
                   placeholder="Что важно учесть, какие каналы используете…"
-                  className="w-full resize-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                  className={modalInputCls + ' resize-none py-2'}
                 />
-              </div>
-              {err && <div className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950/30 dark:text-red-300">{err}</div>}
+              </ModalField>
+              {err && <div className="rounded-lg bg-red-500/20 px-3 py-2 text-sm text-red-300">{err}</div>}
               <button
                 onClick={submit}
                 disabled={state === 'sending'}
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:bg-blue-300"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-2.5 text-sm font-semibold text-white shadow-[0_0_30px_rgba(139,92,246,0.4)] transition-transform hover:scale-[1.01] disabled:opacity-60"
               >
                 {state === 'sending' && <Loader2 className="h-4 w-4 animate-spin" />}
                 Отправить заявку
               </button>
-              <p className="text-center text-[11px] text-slate-400">
+              <p className="text-center text-[11px] text-slate-500">
                 Отправляя форму, вы соглашаетесь, что мы свяжемся с вами по указанному телефону.
               </p>
             </div>
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+const modalInputCls =
+  'h-10 w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 text-sm text-white placeholder:text-slate-500 focus:border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-400/30';
+
+function ModalField({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label className="mb-1 block text-xs font-medium uppercase tracking-wider text-slate-400">{label}</label>
+      {children}
     </div>
   );
 }

@@ -90,7 +90,7 @@ export interface ITestChatResponse {
   sessionId: string;
   reply: string;
   usage: { inputTokens: number; outputTokens: number; cacheReadTokens: number; cacheCreateTokens: number };
-  turns: number;
+  turns: Array<{ role: 'user' | 'assistant'; text: string }>;
 }
 
 // ============================================================
@@ -105,6 +105,24 @@ export const connectTelegram = (id: string, token: string) => httpPost<{ ok: boo
 export const connectMax = (id: string, token: string) => httpPost<{ ok: boolean }>(`/api/salons/${id}/max/connect`, { token });
 export const connectAvito = (id: string, body: { clientId: string; clientSecret: string; userId: string }) =>
   httpPost<{ ok: boolean }>(`/api/salons/${id}/avito/connect`, body);
+
+// YClients двухшаговый: без companyId → step:'select_company', с companyId → {ok, mapping}
+export interface IYclientsStep1 {
+  step: 'select_company';
+  companies: Array<{ id: number; title: string }>;
+}
+export interface IYclientsStep2 {
+  ok: true;
+  mapping: { servicesMatched: number; staffMatched: number };
+}
+export const connectYclients = (id: string, body: { login: string; password: string; companyId?: number }) =>
+  httpPost<IYclientsStep1 | IYclientsStep2>(`/api/salons/${id}/yclients/connect`, body);
+
+// Отключение каналов через отдельные endpoints — бэк сам снимает webhook + чистит креды.
+export const disconnectTelegram = (id: string) => httpPost<{ ok: boolean }>(`/api/salons/${id}/telegram/disconnect`, {});
+export const disconnectMax = (id: string) => httpPost<{ ok: boolean }>(`/api/salons/${id}/max/disconnect`, {});
+export const disconnectAvito = (id: string) => httpPost<{ ok: boolean }>(`/api/salons/${id}/avito/disconnect`, {});
+export const disconnectYclients = (id: string) => httpPost<{ ok: boolean }>(`/api/salons/${id}/yclients/disconnect`, {});
 
 // ============================================================
 // Услуги, мастера, расписание, FAQ

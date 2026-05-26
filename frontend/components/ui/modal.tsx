@@ -34,24 +34,25 @@ export function Modal({ open, onClose, title, children, footer, maxWidth = 'md' 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm" />
       <div
         onClick={(e) => e.stopPropagation()}
         className={cn(
-          'relative w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-900',
+          'relative w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl',
+          'dark:border-white/10 dark:bg-slate-900 dark:shadow-[0_0_60px_rgba(139,92,246,0.15)]',
           WIDTH[maxWidth],
         )}
       >
         {title && (
-          <header className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-slate-800">
+          <header className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-white/10">
             <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">{title}</h3>
-            <button onClick={onClose} aria-label="Закрыть" className="text-slate-400 hover:text-slate-600">
+            <button onClick={onClose} aria-label="Закрыть" className="text-slate-400 transition-colors hover:text-slate-600 dark:hover:text-white">
               <X className="h-5 w-5" />
             </button>
           </header>
         )}
         <div className="max-h-[70vh] overflow-y-auto p-5">{children}</div>
-        {footer && <footer className="border-t border-slate-100 px-5 py-3 dark:border-slate-800">{footer}</footer>}
+        {footer && <footer className="border-t border-slate-100 px-5 py-3 dark:border-white/10">{footer}</footer>}
       </div>
     </div>
   );

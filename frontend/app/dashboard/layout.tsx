@@ -75,8 +75,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
-      <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 md:hidden dark:border-slate-800 dark:bg-slate-900">
+    <div className="relative min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+      {/* Ambient glow для премиальной атмосферы (только в dark) */}
+      <div className="pointer-events-none fixed inset-0 -z-10 hidden dark:block">
+        <div className="absolute -top-40 -left-32 h-[500px] w-[500px] rounded-full bg-indigo-600/15 blur-[140px]" />
+        <div className="absolute bottom-[-200px] right-[-100px] h-[480px] w-[480px] rounded-full bg-fuchsia-600/10 blur-[140px]" />
+      </div>
+
+      <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 md:hidden dark:border-white/[0.06] dark:bg-slate-950/80 dark:backdrop-blur-xl">
         <Logo size={26} variant="auto" />
         <button onClick={() => setMobileOpen(!mobileOpen)} aria-label="Меню">
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -85,13 +91,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-40 w-60 border-r border-slate-200 bg-white transition-transform dark:border-slate-800 dark:bg-slate-900',
+          'fixed inset-y-0 left-0 z-40 w-60 border-r border-slate-200 bg-white transition-transform',
+          'dark:border-white/[0.06] dark:bg-slate-950/80 dark:backdrop-blur-xl',
           'md:translate-x-0',
           mobileOpen ? 'translate-x-0' : '-translate-x-full',
         )}
       >
         <div className="flex h-full flex-col">
-          <div className="border-b border-slate-100 px-5 py-5 dark:border-slate-800">
+          <div className="border-b border-slate-100 px-5 py-5 dark:border-white/[0.06]">
             <Logo size={28} variant="auto" />
             <div className="mt-3 text-sm font-medium text-slate-700 dark:text-slate-300">
               {salon?.name || '—'}
@@ -109,31 +116,34 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   href={item.href}
                   onClick={() => setMobileOpen(false)}
                   className={cn(
-                    'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                    'group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all',
                     active
-                      ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300'
-                      : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800',
+                      ? 'bg-gradient-to-r from-indigo-500/20 via-violet-500/15 to-fuchsia-500/10 text-white shadow-[inset_0_0_0_1px_rgba(139,92,246,0.25)] dark:text-white'
+                      : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/[0.04] dark:hover:text-slate-200',
                   )}
                 >
-                  <Icon className="h-4 w-4" />
+                  {active && (
+                    <span className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-indigo-400 via-violet-400 to-fuchsia-400" />
+                  )}
+                  <Icon className={cn('h-4 w-4', active && 'text-violet-300')} />
                   {item.label}
                 </Link>
               );
             })}
           </nav>
 
-          <div className="border-t border-slate-100 px-5 py-3 dark:border-slate-800">
+          <div className="border-t border-slate-100 px-5 py-3 dark:border-white/[0.06]">
             <ChannelStatus />
           </div>
 
-          <div className="flex items-center gap-3 border-t border-slate-100 px-5 py-3 dark:border-slate-800">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
+          <div className="flex items-center gap-3 border-t border-slate-100 px-5 py-3 dark:border-white/[0.06]">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 via-violet-500 to-fuchsia-500 text-sm font-semibold text-white">
               {(salon?.ownerName || user.email || '?').charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 truncate text-sm font-medium text-slate-700 dark:text-slate-300">
               {salon?.ownerName || user.email}
             </div>
-            <button onClick={logout} className="text-slate-400 hover:text-red-500" aria-label="Выход">
+            <button onClick={logout} className="text-slate-400 transition-colors hover:text-red-400" aria-label="Выход">
               <LogOut className="h-4 w-4" />
             </button>
           </div>

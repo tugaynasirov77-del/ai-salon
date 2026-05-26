@@ -5,9 +5,10 @@ export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
   return (
     <div
       className={cn(
-        // Дефолтный p-5 — чтобы текст не прижимался к краю.
-        // Переопределяется через className (например `p-0` для таблиц, `p-4` для плотных карточек) — tailwind-merge берёт последний.
-        'rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900',
+        // Premium glass-стиль: тонкий border, subtle background, дефолтный p-5.
+        // Переопределение через className (p-0 для таблиц, p-4 для плотных карточек) — tailwind-merge.
+        'rounded-2xl border border-slate-200 bg-white p-5 shadow-sm',
+        'dark:border-white/[0.08] dark:bg-white/[0.025] dark:backdrop-blur-sm dark:shadow-none',
         className,
       )}
       {...props}

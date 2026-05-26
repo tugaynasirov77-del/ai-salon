@@ -236,6 +236,20 @@ export const resetTestChat = (salonId: string, sessionId: string) =>
   httpDelete<{ ok: boolean }>(`/api/salons/${salonId}/test-chat/${sessionId}`);
 
 // ============================================================
+// Заявки с лендинга (тариф «Под ключ»)
+// ============================================================
+
+export interface ILeadPayload {
+  name: string;
+  phone: string;
+  niche?: string;
+  city?: string;
+  comment?: string;
+  source?: string; // 'landing-pricing-turnkey' и т.п.
+}
+export const submitLead = (data: ILeadPayload) => httpPost<{ ok: boolean }>('/api/leads', data);
+
+// ============================================================
 // Health
 // ============================================================
 

@@ -10,8 +10,8 @@ import {
   Bot,
   Globe,
   Send,
-  Phone,
 } from 'lucide-react';
+import { PricingSection } from '@/components/landing/PricingSection';
 
 export default function LandingPage() {
   return (
@@ -115,48 +115,7 @@ export default function LandingPage() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="py-20">
-        <div className="mx-auto max-w-5xl px-4">
-          <h2 className="text-center text-3xl font-bold text-slate-900 dark:text-slate-100">Тарифы</h2>
-          <p className="mt-2 text-center text-slate-500">Без скрытых платежей. Отменить можно в любой момент.</p>
-
-          <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-            <PricingCard
-              name="Self-Start"
-              badge="Самостоятельно"
-              price="2 500 ₽"
-              period="в месяц"
-              setup="Подключение — бесплатно"
-              features={[
-                'Подключение Telegram и веб-чата',
-                'Загрузка услуг, мастеров, расписания',
-                'Дашборд и аналитика',
-                'До 1000 сообщений в месяц',
-                'Поддержка по email',
-              ]}
-              cta={{ label: 'Начать бесплатно', href: '/register' }}
-              variant="default"
-            />
-            <PricingCard
-              name="Под ключ"
-              badge="Рекомендуем"
-              price="2 500 ₽"
-              period="в месяц"
-              setup="Setup — 5 000 ₽ единоразово"
-              features={[
-                'Всё из Self-Start',
-                'Настройка всех каналов под вас',
-                'Перенос вашего прайса и расписания',
-                'Подключение Авито, MAX, ВКонтакте',
-                'Персональный менеджер',
-                'Безлимит сообщений в первые 3 месяца',
-              ]}
-              cta={{ label: 'Подключить', href: '/register' }}
-              variant="featured"
-            />
-          </div>
-        </div>
-      </section>
+      <PricingSection />
 
       {/* Demo widget */}
       <section id="demo" className="border-t border-slate-100 bg-slate-50 py-20 dark:border-slate-800 dark:bg-slate-900/30">
@@ -168,7 +127,7 @@ export default function LandingPage() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-500">
             <Channel icon={<Send className="h-4 w-4 text-blue-500" />} label="Telegram" />
             <Channel icon={<Globe className="h-4 w-4 text-emerald-500" />} label="Веб-чат" />
-            <Channel icon={<Phone className="h-4 w-4 text-slate-500" />} label="SMS" />
+            <Channel icon={<Briefcase className="h-4 w-4 text-orange-500" />} label="Авито" />
           </div>
         </div>
         <Script
@@ -200,58 +159,6 @@ function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; 
       </div>
       <h3 className="mt-4 font-semibold text-slate-900 dark:text-slate-100">{title}</h3>
       <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{text}</p>
-    </div>
-  );
-}
-
-function PricingCard({
-  name, badge, price, period, setup, features, cta, variant,
-}: {
-  name: string;
-  badge: string;
-  price: string;
-  period: string;
-  setup: string;
-  features: string[];
-  cta: { label: string; href: string };
-  variant: 'default' | 'featured';
-}) {
-  const featured = variant === 'featured';
-  return (
-    <div
-      className={
-        'relative flex flex-col rounded-2xl border p-8 shadow-sm ' +
-        (featured
-          ? 'border-blue-600 bg-blue-50 dark:bg-blue-950/30'
-          : 'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900')
-      }
-    >
-      <div className="text-xs font-semibold uppercase tracking-wider text-blue-600">{badge}</div>
-      <div className="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">{name}</div>
-      <div className="mt-4">
-        <span className="text-4xl font-bold text-slate-900 dark:text-slate-100">{price}</span>
-        <span className="ml-2 text-sm text-slate-500">{period}</span>
-      </div>
-      <div className="mt-1 text-sm text-slate-500">{setup}</div>
-      <ul className="mt-6 flex-1 space-y-2 text-sm text-slate-700 dark:text-slate-300">
-        {features.map((f) => (
-          <li key={f} className="flex items-start gap-2">
-            <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-green-600" />
-            {f}
-          </li>
-        ))}
-      </ul>
-      <Link
-        href={cta.href}
-        className={
-          'mt-8 rounded-lg px-6 py-3 text-center text-sm font-semibold ' +
-          (featured
-            ? 'bg-blue-600 text-white hover:bg-blue-700'
-            : 'border border-slate-300 text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200')
-        }
-      >
-        {cta.label}
-      </Link>
     </div>
   );
 }

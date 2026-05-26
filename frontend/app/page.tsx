@@ -16,6 +16,7 @@ import { PricingSection } from '@/components/landing/PricingSection';
 import { DemoWidget } from '@/components/landing/DemoWidget';
 import { Logo } from '@/components/landing/Logo';
 import { SavingsCalculator } from '@/components/landing/SavingsCalculator';
+import { StickyCta } from '@/components/landing/StickyCta';
 
 export default function LandingPage() {
   return (
@@ -304,6 +305,8 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      <StickyCta />
 
       {/* === Footer === */}
       <footer className="border-t border-white/[0.06] py-12">

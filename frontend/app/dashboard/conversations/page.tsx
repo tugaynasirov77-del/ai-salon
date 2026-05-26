@@ -1,16 +1,19 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Search, Send, Phone, MessagesSquare, Globe, Users as UsersIcon,
-  MailX, Calendar, MessageSquare,
+  MailX, Calendar, MessageSquare, Bot, User as UserIcon, Loader2, AlertCircle,
 } from 'lucide-react';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
-import { fetchConversations, fetchConversationDetail } from '@/lib/api';
+import {
+  fetchConversations, fetchConversationDetail,
+  sendOwnerMessage, markConversationRead,
+} from '@/lib/api';
 import { useSalonId } from '@/lib/config';
 import { cn, timeAgo, fmtDayMonth } from '@/lib/utils';
 import type { Channel, AppointmentStatus } from '@shared/types';
@@ -51,13 +54,14 @@ function initials(name?: string | null) {
 
 export default function ConversationsPage() {
   const SALON_ID = useSalonId();
+  const qc = useQueryClient();
   const [search, setSearch] = useState('');
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const listQ = useQuery({
     queryKey: ['conversations', SALON_ID],
     queryFn: () => fetchConversations(SALON_ID),
-    refetchInterval: 15_000, // обновляемся каждые 15 секунд — для «live» ощущения
+    refetchInterval: 15_000,
   });
 
   // Авто-выбор первого диалога при загрузке
@@ -72,6 +76,28 @@ export default function ConversationsPage() {
     queryFn: () => fetchConversationDetail(SALON_ID, selectedId!),
     enabled: !!selectedId,
     refetchInterval: 10_000,
+  });
+
+  // Авто-mark read при выборе диалога с непрочитанными
+  const markReadMut = useMutation({
+    mutationFn: (clientId: string) => markConversationRead(SALON_ID, clientId),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['conversations', SALON_ID] }),
+  });
+  useEffect(() => {
+    if (!selectedId) return;
+    const item = listQ.data?.find((it) => it.client.id === selectedId);
+    if (item && (item.unreadCount || 0) > 0) {
+      markReadMut.mutate(selectedId);
+    }
+  }, [selectedId, listQ.data]);
+
+  // Ручная отправка владельцем
+  const sendMut = useMutation({
+    mutationFn: ({ clientId, text }: { clientId: string; text: string }) => sendOwnerMessage(SALON_ID, clientId, text),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['conversation', SALON_ID, selectedId] });
+      qc.invalidateQueries({ queryKey: ['conversations', SALON_ID] });
+    },
   });
 
   const filtered = useMemo(() => {
@@ -151,14 +177,25 @@ export default function ConversationsPage() {
                               )}
                             </div>
                             <div className="mt-0.5 flex items-center gap-2">
-                              <div className="min-w-0 flex-1 truncate text-xs text-slate-500 dark:text-slate-400">
+                              <div
+                                className={cn(
+                                  'min-w-0 flex-1 truncate text-xs',
+                                  (it.unreadCount || 0) > 0
+                                    ? 'font-semibold text-slate-900 dark:text-slate-100'
+                                    : 'text-slate-500 dark:text-slate-400',
+                                )}
+                              >
                                 {it.lastMessage?.text || 'Нет сообщений'}
                               </div>
-                              {it.messagesCount > 0 && (
+                              {(it.unreadCount || 0) > 0 ? (
+                                <span className="rounded-full bg-blue-600 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                                  {it.unreadCount}
+                                </span>
+                              ) : it.messagesCount > 0 ? (
                                 <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-500 dark:bg-slate-800">
                                   {it.messagesCount}
                                 </span>
-                              )}
+                              ) : null}
                             </div>
                           </div>
                         </button>
@@ -180,7 +217,12 @@ export default function ConversationsPage() {
             ) : detailQ.isLoading || !detailQ.data ? (
               <LoadingSpinner label="Загружаем переписку…" />
             ) : (
-              <ConversationDetail data={detailQ.data} />
+              <ConversationDetail
+                data={detailQ.data}
+                onSend={(text) => sendMut.mutateAsync({ clientId: selectedId!, text })}
+                sending={sendMut.isPending}
+                sendError={sendMut.error?.message || null}
+              />
             )}
           </section>
         </div>
@@ -195,18 +237,43 @@ export default function ConversationsPage() {
 
 function ConversationDetail({
   data,
+  onSend,
+  sending,
+  sendError,
 }: {
   data: { client: any; messages: any[]; appointments: any[] };
+  onSend: (text: string) => Promise<unknown>;
+  sending: boolean;
+  sendError: string | null;
 }) {
   const { client, messages, appointments } = data;
   const ch = client.preferredChannel as Channel;
   const Icon = CHANNEL_ICON[ch];
+  const [draft, setDraft] = useState('');
+  const draftRef = useRef<HTMLTextAreaElement | null>(null);
 
   // Авто-скролл к низу при смене диалога / прибытии нового сообщения
   const bottomRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'auto', block: 'end' });
   }, [client.id, messages.length]);
+
+  async function send() {
+    const text = draft.trim();
+    if (!text || sending) return;
+    try {
+      await onSend(text);
+      setDraft('');
+      draftRef.current?.focus();
+    } catch { /* ошибка показывается через sendError */ }
+  }
+
+  function onKey(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      send();
+    }
+  }
 
   return (
     <>
@@ -271,18 +338,26 @@ function ConversationDetail({
           <ul className="space-y-2">
             {messages.map((m: any) => {
               const out = m.direction === 'out';
+              const byOwner = !!m.sentByOwner;
               return (
                 <li key={m.id} className={cn('flex', out ? 'justify-end' : 'justify-start')}>
                   <div
                     className={cn(
                       'max-w-[80%] rounded-2xl px-3 py-2 text-sm',
-                      out
-                        ? 'rounded-br-md bg-blue-600 text-white'
-                        : 'rounded-bl-md bg-white text-slate-900 shadow-sm dark:bg-slate-800 dark:text-slate-100',
+                      out && byOwner
+                        ? 'rounded-br-md bg-emerald-600 text-white'
+                        : out
+                          ? 'rounded-br-md bg-blue-600 text-white'
+                          : 'rounded-bl-md bg-white text-slate-900 shadow-sm dark:bg-slate-800 dark:text-slate-100',
                     )}
                   >
+                    {out && (
+                      <div className={cn('mb-0.5 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider', byOwner ? 'text-emerald-100' : 'text-blue-100')}>
+                        {byOwner ? <><UserIcon className="h-2.5 w-2.5" /> Вы</> : <><Bot className="h-2.5 w-2.5" /> AI</>}
+                      </div>
+                    )}
                     <div className="whitespace-pre-wrap break-words">{m.text}</div>
-                    <div className={cn('mt-1 text-[10px]', out ? 'text-blue-100' : 'text-slate-400')}>
+                    <div className={cn('mt-1 text-[10px]', out ? (byOwner ? 'text-emerald-100' : 'text-blue-100') : 'text-slate-400')}>
                       {new Date(m.createdAt).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}
                       {m.intent && <span className="ml-1">· {m.intent}</span>}
                     </div>
@@ -295,9 +370,37 @@ function ConversationDetail({
         )}
       </div>
 
-      {/* Футер-подсказка вместо формы ввода */}
-      <footer className="border-t border-slate-200 bg-white px-5 py-3 text-center text-xs text-slate-500 dark:border-slate-800 dark:bg-slate-900">
-        AI отвечает клиенту автоматически. Ручные ответы — на следующем этапе.
+      {/* Форма ручного ответа */}
+      <footer className="border-t border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
+        {sendError && (
+          <div className="mb-2 flex items-center gap-2 rounded-md bg-red-50 px-3 py-1.5 text-xs text-red-700 dark:bg-red-950/30 dark:text-red-300">
+            <AlertCircle className="h-3.5 w-3.5" />
+            {sendError}
+          </div>
+        )}
+        <div className="flex items-end gap-2">
+          <textarea
+            ref={draftRef}
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={onKey}
+            placeholder={`Написать клиенту через ${CHANNEL_LABEL[ch] || 'канал клиента'}…`}
+            rows={1}
+            disabled={sending}
+            className="flex-1 resize-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-60 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+          />
+          <button
+            onClick={send}
+            disabled={sending || !draft.trim()}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-600 text-white transition-colors hover:bg-emerald-700 disabled:bg-emerald-300"
+            aria-label="Отправить"
+          >
+            {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+          </button>
+        </div>
+        <div className="mt-1.5 text-[10px] text-slate-400">
+          Enter — отправить, Shift+Enter — новая строка. Сообщение уйдёт через {CHANNEL_LABEL[ch] || ch}.
+        </div>
       </footer>
     </>
   );

@@ -58,6 +58,7 @@ export interface IConversationItem {
   client: IClient;
   lastMessage: IMessage | null;
   messagesCount: number;
+  unreadCount?: number;
 }
 
 export interface IConversationDetail {
@@ -77,6 +78,8 @@ export interface IAnalytics {
   conversion: number;
   byStatus: Array<{ status: AppointmentStatus; count: number }>;
   byDay: Array<{ day: string; count: number }>;
+  topServices: Array<{ name: string; count: number; revenue: number }>;
+  channelSources: Array<{ channel: string; count: number }>;
 }
 
 export interface IUsage {
@@ -197,6 +200,19 @@ export const fetchConversations = (salonId: string) =>
   httpGet<IConversationItem[]>(`/api/salons/${salonId}/conversations`);
 export const fetchConversationDetail = (salonId: string, clientId: string) =>
   httpGet<IConversationDetail>(`/api/salons/${salonId}/conversations/${clientId}`);
+
+// Ручной ответ владельца. Бэк отправит через cascadeSender по preferredChannel клиента,
+// сохранит Message с sentByOwner=true и автоматически пометит входящие как прочитанные.
+export interface ISendMessageResponse {
+  ok: boolean;
+  message: IMessage & { sentByOwner: boolean };
+  delivery: { channel: string; attempted: string[]; error: string | null };
+}
+export const sendOwnerMessage = (salonId: string, clientId: string, text: string) =>
+  httpPost<ISendMessageResponse>(`/api/salons/${salonId}/conversations/${clientId}/message`, { text });
+
+export const markConversationRead = (salonId: string, clientId: string) =>
+  httpPost<{ ok: boolean; marked: number }>(`/api/salons/${salonId}/conversations/${clientId}/read`, {});
 export const fetchClients = (salonId: string) => httpGet<IClient[]>(`/api/salons/${salonId}/clients`);
 export const fetchMessages = (salonId: string, clientId?: string) =>
   httpGet<IMessage[]>(`/api/salons/${salonId}/messages`, { clientId });

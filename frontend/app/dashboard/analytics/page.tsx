@@ -11,7 +11,7 @@ import { PageHeader } from '@/components/shared/PageHeader';
 import { Card } from '@/components/ui/card';
 import { MetricCard } from '@/components/dashboard/MetricCard';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
-import { fetchAnalytics, fetchAppointments, fetchClients } from '@/lib/api';
+import { fetchAnalytics } from '@/lib/api';
 import { useSalonId } from '@/lib/config';
 import { cn } from '@/lib/utils';
 import type { Channel } from '@shared/types';
@@ -68,40 +68,14 @@ export default function AnalyticsPage() {
     queryFn: () => fetchAnalytics(SALON_ID, range),
   });
 
-  // Бэк не отдаёт topServices и channelByDay — агрегируем на клиенте
-  const appointments = useQuery({
-    queryKey: ['appointments', SALON_ID, range.from, range.to],
-    queryFn: () => fetchAppointments(SALON_ID, { from: range.from, to: range.to }),
-  });
-  const clients = useQuery({
-    queryKey: ['clients', SALON_ID],
-    queryFn: () => fetchClients(SALON_ID),
-  });
-
-  // Топ-5 услуг по числу записей в периоде
-  const topServices = useMemo(() => {
-    const counts = new Map<string, number>();
-    (appointments.data || []).forEach((a: any) => {
-      const name = a.serviceRef?.name || a.service || '—';
-      counts.set(name, (counts.get(name) || 0) + 1);
-    });
-    return Array.from(counts.entries())
-      .map(([name, count]) => ({ name, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 5);
-  }, [appointments.data]);
-
-  // Каналы — по числу клиентов с этим preferredChannel
+  // Топ-5 услуг и источники приходят с бэка готовыми
+  const topServices = analytics.data?.topServices || [];
   const channelBreakdown = useMemo(() => {
-    const counts = new Map<Channel, number>();
-    (clients.data || []).forEach((c) => {
-      const ch = (c.preferredChannel || 'webchat') as Channel;
-      counts.set(ch, (counts.get(ch) || 0) + 1);
+    return (analytics.data?.channelSources || []).map((s) => {
+      const ch = s.channel as Channel;
+      return { channel: ch, name: CHANNEL_LABEL[ch] || s.channel, value: s.count };
     });
-    return Array.from(counts.entries())
-      .map(([channel, value]) => ({ channel, name: CHANNEL_LABEL[channel] || channel, value }))
-      .sort((a, b) => b.value - a.value);
-  }, [clients.data]);
+  }, [analytics.data?.channelSources]);
 
   // byDay в формате с подписями + 0 для дней без записей
   const byDayChart = useMemo(() => {
@@ -199,7 +173,7 @@ export default function AnalyticsPage() {
         {/* Топ-5 услуг */}
         <Card>
           <h3 className="mb-3 text-sm font-semibold text-slate-900 dark:text-slate-100">Топ-5 услуг</h3>
-          {appointments.isLoading ? (
+          {loading ? (
             <div className="py-12"><LoadingSpinner /></div>
           ) : topServices.length === 0 ? (
             <div className="py-12 text-center text-sm text-slate-400">Нет записей за период</div>
@@ -233,10 +207,10 @@ export default function AnalyticsPage() {
         {/* Pie каналов */}
         <Card>
           <h3 className="mb-3 text-sm font-semibold text-slate-900 dark:text-slate-100">Источники клиентов</h3>
-          {clients.isLoading ? (
+          {loading ? (
             <div className="py-12"><LoadingSpinner /></div>
           ) : totalChannels === 0 ? (
-            <div className="py-12 text-center text-sm text-slate-400">Нет клиентов</div>
+            <div className="py-12 text-center text-sm text-slate-400">Нет данных по источникам</div>
           ) : (
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
@@ -270,11 +244,6 @@ export default function AnalyticsPage() {
         </Card>
       </div>
 
-      <p className="mt-4 text-xs text-slate-400">
-        Доп. метрики (топ услуг, источники) считаются на клиенте из <code>/appointments</code> и <code>/clients</code>.
-        Когда бэк начнёт возвращать <code>topServices</code> и <code>channelSources</code> в <code>/analytics</code> —
-        переключим на серверный расчёт для больших салонов.
-      </p>
     </div>
   );
 }

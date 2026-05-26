@@ -72,9 +72,9 @@ export default function LandingPage() {
             <span>AI-администратор для малого бизнеса</span>
           </div>
 
-          <h1 className="mx-auto mt-8 max-w-4xl bg-gradient-to-b from-white via-white to-white/60 bg-clip-text text-5xl font-semibold tracking-tight text-transparent sm:text-7xl">
-            Бот, который записывает <br className="hidden sm:block" />
-            <span className="relative">
+          <h1 className="mx-auto mt-8 max-w-4xl bg-gradient-to-b from-white via-white to-white/60 bg-clip-text text-center text-5xl font-semibold tracking-tight text-transparent sm:text-7xl">
+            <span className="block">Бот, который записывает</span>
+            <span className="block">
               клиентов{' '}
               <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
                 за вас

@@ -5,7 +5,9 @@ export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
   return (
     <div
       className={cn(
-        'rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900',
+        // Дефолтный p-5 — чтобы текст не прижимался к краю.
+        // Переопределяется через className (например `p-0` для таблиц, `p-4` для плотных карточек) — tailwind-merge берёт последний.
+        'rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900',
         className,
       )}
       {...props}

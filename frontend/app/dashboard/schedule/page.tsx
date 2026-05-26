@@ -74,6 +74,27 @@ export default function SchedulePage() {
   const servicesQ = useQuery({ queryKey: ['services', SALON_ID], queryFn: () => fetchServices(SALON_ID) });
   const clientsQ = useQuery({ queryKey: ['clients', SALON_ID], queryFn: () => fetchClients(SALON_ID) });
 
+  // Длительность услуги — джойним на клиенте: бэк не отдаёт durationMin в Appointment.
+  // Сначала пробуем встроенный serviceRef (если бэк прислал), потом по id, потом по имени.
+  const serviceDurationByName = useMemo(() => {
+    const m = new Map<string, number>();
+    (servicesQ.data || []).forEach((s) => { if (s.durationMin) m.set(s.name, s.durationMin); });
+    return m;
+  }, [servicesQ.data]);
+  const serviceDurationById = useMemo(() => {
+    const m = new Map<string, number>();
+    (servicesQ.data || []).forEach((s) => { if (s.durationMin) m.set(s.id, s.durationMin); });
+    return m;
+  }, [servicesQ.data]);
+  function durationFor(a: IAppointment): number {
+    const ref = (a as any).serviceRef?.durationMin;
+    if (ref) return ref;
+    const byId = (a as any).serviceId ? serviceDurationById.get((a as any).serviceId) : undefined;
+    if (byId) return byId;
+    const byName = a.service ? serviceDurationByName.get(a.service) : undefined;
+    return byName ?? 60;
+  }
+
   function reload() {
     qc.invalidateQueries({ queryKey: ['appointments', SALON_ID] });
   }
@@ -174,7 +195,7 @@ export default function SchedulePage() {
                     {dayAppts.map((a) => {
                       const start = minutesOf(a.datetime);
                       if (start < DAY_START_MIN || start >= DAY_END_MIN) return null;
-                      const dur = 60; // мок: 60 мин (длительность бэк пока не отдаёт в Appointment)
+                      const dur = durationFor(a); // джойн через service.id/name (см. helper выше)
                       const top = ((start - DAY_START_MIN) / SLOT_MIN) * SLOT_HEIGHT;
                       const height = Math.max((dur / SLOT_MIN) * SLOT_HEIGHT - 2, 24);
                       const s = STATUS[a.status];

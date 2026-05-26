@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Script from 'next/script';
 import {
   MessageSquare,
   Calendar,
@@ -12,6 +11,7 @@ import {
   Send,
 } from 'lucide-react';
 import { PricingSection } from '@/components/landing/PricingSection';
+import { DemoWidget } from '@/components/landing/DemoWidget';
 
 export default function LandingPage() {
   return (
@@ -130,10 +130,7 @@ export default function LandingPage() {
             <Channel icon={<Briefcase className="h-4 w-4 text-orange-500" />} label="Авито" />
           </div>
         </div>
-        <Script
-          src="https://api.ailiva.ru/widget.js?salon=cmpfhd7ha00001s7ud34xwfmw"
-          strategy="afterInteractive"
-        />
+        <DemoWidget />
       </section>
 
       {/* Footer */}

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Liva AI — Platform Status</title>
+<style>
+  :root { --bg:#0b0f1a; --card:#141a2b; --muted:#6b7280; --text:#e5e7eb; --accent:#7c3aed; --green:#10b981; --red:#ef4444; --yellow:#f59e0b; --border:#1f2840; }
+  *{box-sizing:border-box}
+  body { font-family:-apple-system,BlinkMacSystemFont,'SF Pro',Inter,sans-serif; background:var(--bg); color:var(--text); margin:0; padding:24px; }
+  h1 { margin:0 0 4px; font-size:22px; }
+  .sub { color:var(--muted); font-size:13px; margin-bottom:24px; }
+  .grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; }
+  .card h2 { margin:0 0 10px; font-size:13px; text-transform:uppercase; color:var(--muted); letter-spacing:.5px; font-weight:600; }
+  .big { font-size:32px; font-weight:700; line-height:1; margin:6px 0; }
+  .sm { color:var(--muted); font-size:12px; }
+  .row { display:flex; justify-content:space-between; padding:5px 0; font-size:13px; }
+  .row span:last-child { font-weight:600; color:var(--text); }
+  .pill { display:inline-block; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; }
+  .ok { background:rgba(16,185,129,.18); color:var(--green); }
+  .err { background:rgba(239,68,68,.18); color:var(--red); }
+  .warn { background:rgba(245,158,11,.18); color:var(--yellow); }
+  .accent { color:var(--accent); }
+  .ts { color:var(--muted); font-size:11px; margin-top:20px; text-align:right; }
+  table { width:100%; border-collapse:collapse; font-size:12px; }
+  th,td { padding:6px 8px; text-align:left; border-bottom:1px solid var(--border); }
+  th { color:var(--muted); font-weight:500; }
+  .loading { opacity:.4 }
+  input { background:#0a0e1a; border:1px solid var(--border); color:var(--text); padding:8px 12px; border-radius:8px; font-size:13px; width:300px; }
+  button { background:var(--accent); border:0; color:#fff; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer; font-size:13px; }
+</style>
+</head>
+<body>
+
+<h1>🎛️ Liva AI — Platform Status</h1>
+<div class="sub" id="ts">подключаемся…</div>
+
+<div id="auth" style="margin-bottom:24px; display:none;">
+  <input id="token" type="password" placeholder="ADMIN_TOKEN" autocomplete="off">
+  <button onclick="setToken()">Войти</button>
+</div>
+
+<div id="content" style="display:none;">
+  <div class="grid">
+    <div class="card">
+      <h2>🏪 Салоны</h2>
+      <div class="big" id="salons-total">—</div>
+      <div class="row"><span>Активных</span><span id="salons-active">—</span></div>
+      <div class="row"><span>Новых за 24ч</span><span class="accent" id="salons-new24h">—</span></div>
+    </div>
+
+    <div class="card">
+      <h2>👤 Юзеры</h2>
+      <div class="big" id="users-total">—</div>
+      <div class="row"><span>Активных за 7 дней</span><span id="users-active7d">—</span></div>
+    </div>
+
+    <div class="card">
+      <h2>🔗 Каналы</h2>
+      <div class="row"><span>Telegram</span><span id="ch-telegram">—</span></div>
+      <div class="row"><span>Max</span><span id="ch-max">—</span></div>
+      <div class="row"><span>Авито</span><span id="ch-avito">—</span></div>
+      <div class="row"><span>YClients</span><span id="ch-yclients">—</span></div>
+    </div>
+
+    <div class="card">
+      <h2>👥 Клиенты</h2>
+      <div class="big" id="clients-total">—</div>
+      <div class="row"><span>Новых за 24ч</span><span class="accent" id="clients-new24h">—</span></div>
+    </div>
+
+    <div class="card">
+      <h2>📅 Записи</h2>
+      <div class="big" id="appts-total">—</div>
+      <div class="row"><span>За 24ч</span><span class="accent" id="appts-24h">—</span></div>
+      <div id="appts-status" style="margin-top:8px;"></div>
+    </div>
+
+    <div class="card">
+      <h2>💬 Сообщения 24ч</h2>
+      <div class="big" id="msgs-24h">—</div>
+      <div id="msgs-channels" style="margin-top:8px;"></div>
+    </div>
+
+    <div class="card">
+      <h2>🧠 LLM за 24ч</h2>
+      <div class="row"><span>Input tokens</span><span id="llm-in">—</span></div>
+      <div class="row"><span>Output tokens</span><span id="llm-out">—</span></div>
+      <div class="row"><span>Cache read</span><span id="llm-cache-read">—</span></div>
+      <div class="row"><span>Cache create</span><span id="llm-cache-create">—</span></div>
+      <div class="row"><span>Cost</span><span class="accent" id="llm-cost">—</span></div>
+      <div class="row"><span>Cache hit</span><span id="llm-cache-hit">—</span></div>
+    </div>
+
+    <div class="card">
+      <h2>🧠 LLM total</h2>
+      <div class="big accent" id="llm-cost-total">—</div>
+      <div class="row"><span>Cache hit</span><span id="llm-cache-hit-total">—</span></div>
+    </div>
+
+    <div class="card">
+      <h2>⏰ Reminder queue</h2>
+      <div class="row"><span>Waiting</span><span id="q-waiting">—</span></div>
+      <div class="row"><span>Active</span><span id="q-active">—</span></div>
+      <div class="row"><span>Delayed</span><span id="q-delayed">—</span></div>
+      <div class="row"><span>Failed</span><span class="err" id="q-failed">—</span></div>
+    </div>
+
+    <div class="card">
+      <h2>❤️ Health</h2>
+      <div class="row"><span>Postgres</span><span id="h-pg">—</span></div>
+      <div class="row"><span>Redis</span><span id="h-redis">—</span></div>
+      <div class="row"><span>Env</span><span id="h-env">—</span></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px;">
+    <h2>Последние салоны</h2>
+    <table id="salons-table">
+      <thead><tr><th>Создан</th><th>Название</th><th>Ниша</th><th>Каналы</th><th>Клиенты</th><th>Записи</th><th>Сообщения</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="ts" id="updated"></div>
+
+<script>
+const STORAGE_KEY = 'liva_admin_token';
+let token = localStorage.getItem(STORAGE_KEY);
+
+function setToken() {
+  const v = document.getElementById('token').value.trim();
+  if (!v) return;
+  token = v;
+  localStorage.setItem(STORAGE_KEY, v);
+  document.getElementById('auth').style.display = 'none';
+  document.getElementById('content').style.display = 'block';
+  load();
+}
+
+if (!token) {
+  document.getElementById('auth').style.display = 'block';
+  document.getElementById('ts').textContent = 'нужен ADMIN_TOKEN';
+} else {
+  document.getElementById('content').style.display = 'block';
+  load();
+  setInterval(load, 15000);
+}
+
+function fmt(n) { return (n ?? 0).toLocaleString('ru-RU'); }
+function pillHealth(ok) {
+  return `<span class="pill ${ok ? 'ok' : 'err'}">${ok ? 'up' : 'down'}</span>`;
+}
+
+async function load() {
+  document.body.classList.add('loading');
+  try {
+    const r = await fetch('/api/admin/status', { headers: { 'X-Admin-Token': token } });
+    if (r.status === 403) {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+      return;
+    }
+    const d = await r.json();
+
+    document.getElementById('ts').textContent = `обновляется каждые 15 сек · env ${d.health.env}`;
+    document.getElementById('updated').textContent = 'обновлено ' + new Date(d.timestamp).toLocaleTimeString('ru-RU');
+
+    document.getElementById('salons-total').textContent = fmt(d.salons.total);
+    document.getElementById('salons-active').textContent = fmt(d.salons.active);
+    document.getElementById('salons-new24h').textContent = '+' + fmt(d.salons.new24h);
+
+    document.getElementById('users-total').textContent = fmt(d.users.total);
+    document.getElementById('users-active7d').textContent = fmt(d.users.activeLast7d);
+
+    document.getElementById('ch-telegram').textContent = fmt(d.channels.telegram);
+    document.getElementById('ch-max').textContent = fmt(d.channels.max);
+    document.getElementById('ch-avito').textContent = fmt(d.channels.avito);
+    document.getElementById('ch-yclients').textContent = fmt(d.channels.yclients);
+
+    document.getElementById('clients-total').textContent = fmt(d.clients.total);
+    document.getElementById('clients-new24h').textContent = '+' + fmt(d.clients.new24h);
+
+    document.getElementById('appts-total').textContent = fmt(d.appointments.total);
+    document.getElementById('appts-24h').textContent = '+' + fmt(d.appointments.last24h);
+    document.getElementById('appts-status').innerHTML = d.appointments.byStatus
+      .map(s => `<div class="row"><span>${s.status}</span><span>${fmt(s.count)}</span></div>`).join('');
+
+    document.getElementById('msgs-24h').textContent = fmt(d.messages24h.total);
+    document.getElementById('msgs-channels').innerHTML = d.messages24h.byChannel
+      .map(c => `<div class="row"><span>${c.channel}</span><span>${fmt(c.count)}</span></div>`).join('');
+
+    const t = d.llm.last24h.tokens;
+    document.getElementById('llm-in').textContent = fmt(t.inputTokens);
+    document.getElementById('llm-out').textContent = fmt(t.outputTokens);
+    document.getElementById('llm-cache-read').textContent = fmt(t.cacheReadTokens);
+    document.getElementById('llm-cache-create').textContent = fmt(t.cacheCreateTokens);
+    document.getElementById('llm-cost').textContent = '$' + d.llm.last24h.estimatedCostUsd.toFixed(4);
+    document.getElementById('llm-cache-hit').textContent = (d.llm.last24h.cacheHitRate * 100).toFixed(1) + '%';
+    document.getElementById('llm-cost-total').textContent = '$' + d.llm.total.estimatedCostUsd.toFixed(2);
+    document.getElementById('llm-cache-hit-total').textContent = (d.llm.total.cacheHitRate * 100).toFixed(1) + '%';
+
+    const q = d.remindersQueue;
+    if (!q.error) {
+      document.getElementById('q-waiting').textContent = fmt(q.waiting);
+      document.getElementById('q-active').textContent = fmt(q.active);
+      document.getElementById('q-delayed').textContent = fmt(q.delayed);
+      document.getElementById('q-failed').textContent = fmt(q.failed);
+    }
+
+    document.getElementById('h-pg').innerHTML = pillHealth(d.health.postgres === 'up');
+    document.getElementById('h-redis').innerHTML = pillHealth(d.health.redis === 'up');
+    document.getElementById('h-env').textContent = d.health.env;
+
+    // Подгрузить список салонов
+    const sr = await fetch('/api/admin/salons?limit=20', { headers: { 'X-Admin-Token': token } });
+    const salons = await sr.json();
+    document.querySelector('#salons-table tbody').innerHTML = salons.map(s => `
+      <tr>
+        <td>${new Date(s.createdAt).toLocaleDateString('ru-RU')}</td>
+        <td><strong>${s.name}</strong>${s.isActive ? '' : ' <span class="pill err">off</span>'}</td>
+        <td>${s.niche}</td>
+        <td>${s.channels.telegram ? 'TG ' : ''}${s.channels.yclients ? 'YC' : ''}</td>
+        <td>${fmt(s.counts.clients)}</td>
+        <td>${fmt(s.counts.appointments)}</td>
+        <td>${fmt(s.counts.messages)}</td>
+      </tr>
+    `).join('');
+  } catch (e) {
+    document.getElementById('ts').textContent = 'ошибка: ' + e.message;
+  } finally {
+    document.body.classList.remove('loading');
+  }
+}
+</script>
+</body>
+</html>

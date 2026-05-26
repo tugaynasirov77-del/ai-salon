@@ -393,12 +393,11 @@ router.get(
   })
 );
 
-// GET /api/salons/:id/conversations — список клиентов с последним сообщением
+// GET /api/salons/:id/conversations — список клиентов с последним сообщением + unread
 router.get(
   '/:id/conversations',
   asyncHandler(async (req, res) => {
     const salonId = req.params.id;
-    // Берём последние 1000 сообщений и сворачиваем по clientId
     const recent = await prisma.message.findMany({
       where: { salonId },
       orderBy: { createdAt: 'desc' },
@@ -409,23 +408,26 @@ router.get(
         text: true,
         direction: true,
         channel: true,
+        readByOwner: true,
         createdAt: true,
       },
     });
-    const byClient = new Map<string, { last: typeof recent[number]; count: number }>();
+    const byClient = new Map<string, { last: typeof recent[number]; count: number; unread: number }>();
     for (const m of recent) {
       const entry = byClient.get(m.clientId);
-      if (!entry) byClient.set(m.clientId, { last: m, count: 1 });
-      else entry.count++;
+      const isUnread = m.direction === 'in' && !m.readByOwner;
+      if (!entry) byClient.set(m.clientId, { last: m, count: 1, unread: isUnread ? 1 : 0 });
+      else {
+        entry.count++;
+        if (isUnread) entry.unread++;
+      }
     }
     const clientIds = Array.from(byClient.keys());
     if (clientIds.length === 0) {
       res.json([]);
       return;
     }
-    const clients = await prisma.client.findMany({
-      where: { id: { in: clientIds } },
-    });
+    const clients = await prisma.client.findMany({ where: { id: { in: clientIds } } });
     const result = clients
       .map((c) => {
         const entry = byClient.get(c.id)!;
@@ -433,10 +435,80 @@ router.get(
           client: c,
           lastMessage: entry.last,
           messagesCount: entry.count,
+          unreadCount: entry.unread,
         };
       })
       .sort((a, b) => b.lastMessage.createdAt.getTime() - a.lastMessage.createdAt.getTime());
     res.json(result);
+  })
+);
+
+// POST /api/salons/:id/conversations/:clientId/read — пометить все входящие как прочитанные
+router.post(
+  '/:id/conversations/:clientId/read',
+  asyncHandler(async (req, res) => {
+    const { id: salonId, clientId } = req.params;
+    const r = await prisma.message.updateMany({
+      where: { salonId, clientId, direction: 'in', readByOwner: false },
+      data: { readByOwner: true },
+    });
+    res.json({ ok: true, marked: r.count });
+  })
+);
+
+// POST /api/salons/:id/conversations/:clientId/message — ручной ответ владельца клиенту
+// Отправляет через тот же канал что preferredChannel клиента (или conversation), пишет в БД,
+// автоматически помечает sentByOwner=true и readByOwner=true.
+router.post(
+  '/:id/conversations/:clientId/message',
+  asyncHandler(async (req, res) => {
+    const { id: salonId, clientId } = req.params;
+    const { text } = req.body;
+    if (!text || typeof text !== 'string' || !text.trim()) {
+      res.status(400).json({ error: 'text обязателен' });
+      return;
+    }
+    const [salon, client] = await Promise.all([
+      prisma.salon.findUnique({ where: { id: salonId } }),
+      prisma.client.findFirst({ where: { id: clientId, salonId } }),
+    ]);
+    if (!salon || !client) {
+      res.status(404).json({ error: 'Салон или клиент не найден' });
+      return;
+    }
+
+    // Отправляем через каскад каналов
+    const { cascadeSender } = await import('../channels/cascadeSender');
+    const result = await cascadeSender.send(
+      client as any,
+      text,
+      salon as any
+    );
+
+    // Сохраняем как исходящее (без LLM usage)
+    const message = await prisma.message.create({
+      data: {
+        salonId,
+        clientId,
+        channel: result.channel || client.preferredChannel,
+        direction: 'out',
+        text,
+        sentByOwner: true,
+        readByOwner: true,
+      },
+    });
+
+    // Заодно помечаем все входящие этого клиента как прочитанные — владелец явно вмешался
+    await prisma.message.updateMany({
+      where: { salonId, clientId, direction: 'in', readByOwner: false },
+      data: { readByOwner: true },
+    });
+
+    res.json({
+      ok: result.success,
+      message,
+      delivery: { channel: result.channel, attempted: result.attemptedChannels, error: result.error },
+    });
   })
 );
 
@@ -576,6 +648,43 @@ router.get(
       ORDER BY day ASC
     `;
 
+    // Топ услуг — по числу записей + выручка по completed
+    const topServicesAgg = await prisma.appointment.groupBy({
+      by: ['service'],
+      where: { salonId, createdAt: periodRange },
+      _count: { _all: true },
+      orderBy: { _count: { service: 'desc' } },
+      take: 5,
+    });
+    const topServiceNames = topServicesAgg.map((r) => r.service);
+    const revenueByService: Record<string, number> = {};
+    for (const a of completed) {
+      if (topServiceNames.includes(a.service)) {
+        revenueByService[a.service] = (revenueByService[a.service] || 0) + (a.serviceRef?.price ?? 0);
+      }
+    }
+    const topServices = topServicesAgg.map((r) => ({
+      name: r.service,
+      count: r._count._all,
+      revenue: revenueByService[r.service] || 0,
+    }));
+
+    // Каналы привлечения — первое сообщение каждого клиента
+    const channelSourcesRaw = await prisma.$queryRaw<Array<{ channel: string; count: bigint }>>`
+      SELECT channel, COUNT(*)::bigint AS count FROM (
+        SELECT DISTINCT ON ("clientId") channel
+        FROM "Message"
+        WHERE "salonId" = ${salonId}
+          AND "createdAt" >= ${fromDt}
+          AND "createdAt" <= ${toDt}
+          AND "direction" = 'in'
+        ORDER BY "clientId", "createdAt" ASC
+      ) AS first_msgs
+      GROUP BY channel
+      ORDER BY count DESC
+    `;
+    const channelSources = channelSourcesRaw.map((r) => ({ channel: r.channel, count: Number(r.count) }));
+
     res.json({
       period: { from: fromDt.toISOString(), to: toDt.toISOString() },
       clientsTotal,
@@ -587,6 +696,8 @@ router.get(
       conversion: Number(conversion.toFixed(3)),
       byStatus: byStatus.map((r) => ({ status: r.status, count: r._count._all })),
       byDay: byDay.map((r) => ({ day: r.day, count: Number(r.count) })),
+      topServices,
+      channelSources,
     });
   })
 );

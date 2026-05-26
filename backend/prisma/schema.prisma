@@ -110,6 +110,8 @@ model Message {
   direction         String
   text              String
   intent            String?
+  readByOwner       Boolean  @default(false)
+  sentByOwner       Boolean  @default(false)
   inputTokens       Int?
   outputTokens      Int?
   cacheReadTokens   Int?

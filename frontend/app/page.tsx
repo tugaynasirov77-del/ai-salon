@@ -16,6 +16,7 @@ import { PricingSection } from '@/components/landing/PricingSection';
 import { DemoWidget } from '@/components/landing/DemoWidget';
 import { Logo } from '@/components/landing/Logo';
 import { SavingsCalculator } from '@/components/landing/SavingsCalculator';
+import { ComparisonTable } from '@/components/landing/ComparisonTable';
 import { StickyCta } from '@/components/landing/StickyCta';
 
 export default function LandingPage() {
@@ -205,6 +206,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* === Comparison === */}
+      <ComparisonTable />
 
       {/* === Savings calculator === */}
       <SavingsCalculator />

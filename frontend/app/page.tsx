@@ -116,6 +116,12 @@ export default function LandingPage() {
             <BulletBadge>Платёж в рублях</BulletBadge>
           </div>
         </div>
+
+        {/* Dashboard mockup */}
+        <div className="relative mx-auto mt-12 max-w-5xl px-4">
+          <div className="absolute -inset-x-12 -inset-y-8 -z-10 rounded-[40px] bg-gradient-to-b from-violet-500/20 via-fuchsia-500/10 to-transparent blur-3xl" />
+          <DashboardMockup />
+        </div>
       </section>
 
       {/* === Features === */}
@@ -358,6 +364,138 @@ const CHANNEL_TONES: Record<string, string> = {
   orange: 'border-orange-400/30 bg-orange-500/10 text-orange-200',
   cyan: 'border-cyan-400/30 bg-cyan-500/10 text-cyan-200',
 };
+
+function DashboardMockup() {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-white/10 bg-slate-900/80 shadow-[0_30px_80px_-20px_rgba(99,102,241,0.4)] backdrop-blur-xl">
+      {/* Window chrome */}
+      <div className="flex items-center gap-2 border-b border-white/[0.06] bg-white/[0.02] px-4 py-3">
+        <span className="h-3 w-3 rounded-full bg-red-400/60" />
+        <span className="h-3 w-3 rounded-full bg-yellow-400/60" />
+        <span className="h-3 w-3 rounded-full bg-green-400/60" />
+        <div className="ml-3 hidden items-center gap-2 rounded-md bg-white/[0.04] px-2.5 py-1 text-[11px] text-slate-400 sm:flex">
+          <Globe className="h-3 w-3" />
+          ailiva.ru/dashboard
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-[200px_1fr]">
+        {/* Sidebar */}
+        <aside className="hidden border-r border-white/[0.06] bg-white/[0.015] px-3 py-4 md:block">
+          <div className="mb-4 px-2">
+            <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Liva ai</div>
+            <div className="mt-1 text-sm font-medium text-slate-200">Студия Грация</div>
+          </div>
+          <div className="space-y-1">
+            <MockNavItem active>Главная</MockNavItem>
+            <MockNavItem>Диалоги</MockNavItem>
+            <MockNavItem>Клиенты</MockNavItem>
+            <MockNavItem>Расписание</MockNavItem>
+            <MockNavItem>Аналитика</MockNavItem>
+          </div>
+        </aside>
+
+        {/* Main */}
+        <div className="p-5 sm:p-6">
+          <div className="text-sm font-semibold text-white">Главная</div>
+          <div className="mt-0.5 text-[11px] text-slate-500">Сводка за последние 30 дней</div>
+
+          {/* Metrics */}
+          <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
+            <MockMetric label="Записей" value="128" trend="+18%" tone="emerald" />
+            <MockMetric label="Выручка" value="247 500 ₽" trend="+24%" tone="emerald" />
+            <MockMetric label="Конверсия" value="42%" trend="+6%" tone="indigo" />
+            <MockMetric label="Сообщений" value="1 284" trend="" tone="violet" />
+          </div>
+
+          {/* Body row */}
+          <div className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-5">
+            {/* Chart */}
+            <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-4 lg:col-span-3">
+              <div className="text-[11px] font-medium text-slate-300">Записи по дням</div>
+              <svg viewBox="0 0 300 100" className="mt-3 h-24 w-full">
+                <defs>
+                  <linearGradient id="mock-grad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.5" />
+                    <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M0,75 C30,72 50,55 75,55 C100,55 120,68 150,52 C180,40 210,28 240,32 C270,38 290,22 300,18 L300,100 L0,100 Z"
+                  fill="url(#mock-grad)"
+                />
+                <path
+                  d="M0,75 C30,72 50,55 75,55 C100,55 120,68 150,52 C180,40 210,28 240,32 C270,38 290,22 300,18"
+                  stroke="#A78BFA"
+                  strokeWidth="2"
+                  fill="none"
+                />
+              </svg>
+            </div>
+
+            {/* Recent dialogs */}
+            <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-4 lg:col-span-2">
+              <div className="mb-3 text-[11px] font-medium text-slate-300">Последние диалоги</div>
+              <div className="space-y-2.5">
+                <MockDialog name="Анна К." channel="Telegram" text="Записаться на маникюр" time="2 мин" />
+                <MockDialog name="Мария В." channel="Авито" text="Сколько стоит стрижка?" time="14 мин" />
+                <MockDialog name="Дмитрий" channel="Веб-чат" text="Перенесите запись на завтра" time="42 мин" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MockNavItem({ children, active }: { children: React.ReactNode; active?: boolean }) {
+  return (
+    <div
+      className={
+        active
+          ? 'relative rounded-md bg-gradient-to-r from-indigo-500/20 via-violet-500/15 to-fuchsia-500/10 px-2.5 py-1.5 text-[11px] font-medium text-white'
+          : 'rounded-md px-2.5 py-1.5 text-[11px] font-medium text-slate-400'
+      }
+    >
+      {active && <span className="absolute left-0 top-1/2 h-3 w-0.5 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-indigo-400 via-violet-400 to-fuchsia-400" />}
+      {children}
+    </div>
+  );
+}
+
+function MockMetric({ label, value, trend, tone = 'indigo' }: { label: string; value: string; trend?: string; tone?: 'emerald' | 'indigo' | 'violet' }) {
+  const trendColor = tone === 'emerald' ? 'text-emerald-400' : tone === 'violet' ? 'text-fuchsia-300' : 'text-indigo-300';
+  return (
+    <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-3">
+      <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">{label}</div>
+      <div className="mt-1.5 flex items-baseline gap-1.5">
+        <div className="text-base font-semibold text-white">{value}</div>
+        {trend && <div className={`text-[10px] font-medium ${trendColor}`}>{trend}</div>}
+      </div>
+    </div>
+  );
+}
+
+function MockDialog({ name, channel, text, time }: { name: string; channel: string; text: string; time: string }) {
+  return (
+    <div className="flex items-start gap-2.5">
+      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500/40 to-fuchsia-500/40 text-[10px] font-semibold text-white">
+        {name.charAt(0)}
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center justify-between gap-2">
+          <div className="truncate text-[11px] font-medium text-slate-200">{name}</div>
+          <div className="shrink-0 text-[9px] text-slate-500">{time}</div>
+        </div>
+        <div className="mt-0.5 flex items-center gap-1.5">
+          <span className="text-[9px] uppercase tracking-wider text-violet-300">{channel}</span>
+          <span className="truncate text-[10px] text-slate-400">{text}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function Step({ num, title, text }: { num: string; title: string; text: string }) {
   return (

@@ -15,6 +15,7 @@ import {
 import { PricingSection } from '@/components/landing/PricingSection';
 import { DemoWidget } from '@/components/landing/DemoWidget';
 import { Logo } from '@/components/landing/Logo';
+import { SavingsCalculator } from '@/components/landing/SavingsCalculator';
 
 export default function LandingPage() {
   return (
@@ -41,12 +42,12 @@ export default function LandingPage() {
       <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-slate-950/70 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           <Logo size={32} variant="light" />
-          <nav className="hidden gap-8 text-sm text-slate-300 sm:flex">
+          <nav className="hidden gap-7 text-sm text-slate-300 lg:flex">
             <a href="#features" className="transition-colors hover:text-white">Возможности</a>
             <a href="#how" className="transition-colors hover:text-white">Как это работает</a>
+            <a href="#savings" className="transition-colors hover:text-white">Экономия</a>
             <a href="#pricing" className="transition-colors hover:text-white">Тарифы</a>
             <a href="#faq" className="transition-colors hover:text-white">FAQ</a>
-            <a href="#demo" className="transition-colors hover:text-white">Демо</a>
           </nav>
           <div className="flex items-center gap-3">
             <Link href="/login" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">
@@ -203,6 +204,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* === Savings calculator === */}
+      <SavingsCalculator />
 
       {/* === Pricing === */}
       <PricingSection />

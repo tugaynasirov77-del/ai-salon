@@ -15,10 +15,10 @@ export function PricingSection() {
         <div className="text-center">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-violet-300">Тарифы</span>
           <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
-            Подключите как удобно
+            Прозрачно. Без скрытых платежей.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-            Зарегистрироваться самому за 15 минут — или передать всю настройку нашему менеджеру.
+            Один и тот же AI-администратор. Разница только в том, кто проводит подключение — вы сами за 15 минут или наш менеджер за вас за 1 день.
           </p>
         </div>
 
@@ -27,38 +27,37 @@ export function PricingSection() {
           <div className="relative flex flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-sm">
             <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
               <UserCog className="h-3.5 w-3.5" />
-              Самостоятельно
+              Self-Start
             </div>
-            <div className="mt-2 text-2xl font-semibold text-white">Self-Start</div>
+            <div className="mt-2 text-2xl font-semibold text-white">Подключаете сами</div>
             <p className="mt-3 text-sm text-slate-400">
-              Регистрируетесь сами, подключаете Telegram и настраиваете бота через админку. Готово за 15–30 минут.
+              Для тех, кто хочет попробовать сам. Регистрация и подключение Telegram-бота — 15 минут по инструкции в админке.
             </p>
 
             <div className="mt-6 flex items-baseline gap-2">
               <span className="text-4xl font-semibold text-white">2 500 ₽</span>
               <span className="text-sm text-slate-400">/месяц</span>
             </div>
-            <div className="mt-1 text-sm text-slate-500">Подключение — бесплатно</div>
+            <div className="mt-1 text-sm text-slate-500">Подключение бесплатно</div>
 
             <ul className="mt-6 flex-1 space-y-2.5 text-sm text-slate-300">
-              <Feat>Сами подключаете Telegram-бота (инструкция в админке)</Feat>
-              <Feat>Сами заносите услуги, мастеров и расписание</Feat>
-              <Feat>Веб-чат на сайт за один скрипт</Feat>
-              <Feat>Дашборд, аналитика и тест-чат</Feat>
-              <Feat>До 1000 сообщений в месяц</Feat>
+              <Feat>Telegram-бот и веб-чат на сайт</Feat>
+              <Feat>1 000 сообщений в месяц</Feat>
+              <Feat>AI на Claude — отвечает как живой</Feat>
+              <Feat>Все 9 ниш и готовые пресеты</Feat>
+              <Feat>Дашборд, аналитика, тест-чат</Feat>
+              <Feat>Эскалация владельцу в Telegram</Feat>
               <Feat>Поддержка по email</Feat>
-              <Feat off>Без подключения Авито и YClients</Feat>
-              <Feat off>Без персонального менеджера</Feat>
             </ul>
 
             <Link
               href="/register"
               className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-6 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-white/[0.08]"
             >
-              Зарегистрироваться самому
+              Попробовать бесплатно
               <ArrowRight className="h-4 w-4" />
             </Link>
-            <div className="mt-2 text-center text-xs text-slate-500">Готово за 15–30 минут</div>
+            <div className="mt-2 text-center text-xs text-slate-500">Без карты · отмена в один клик</div>
           </div>
 
           {/* === TURNKEY === */}
@@ -72,24 +71,25 @@ export function PricingSection() {
                 Рекомендуем
               </span>
             </div>
-            <div className="mt-2 text-2xl font-semibold text-white">Мы всё настроим за вас</div>
+            <div className="mt-2 text-2xl font-semibold text-white">Подключим за вас</div>
             <p className="mt-3 text-sm text-slate-300">
-              Оставьте заявку — наш менеджер свяжется в течение дня и проведёт вас от подключения до первого клиента.
+              Мы всё настроим за 1 день: подключим каналы, перенесём прайс и расписание, доведём до первой записи.
             </p>
 
             <div className="mt-6 flex items-baseline gap-2">
               <span className="text-4xl font-semibold text-white">2 500 ₽</span>
               <span className="text-sm text-slate-400">/месяц</span>
             </div>
-            <div className="mt-1 text-sm text-slate-400">+ 5 000 ₽ единоразовая настройка</div>
+            <div className="mt-1 text-sm text-slate-400">+ 5 000 ₽ разово за подключение</div>
 
             <ul className="mt-6 flex-1 space-y-2.5 text-sm text-slate-200">
               <Feat>Всё из Self-Start</Feat>
-              <Feat>Менеджер сам подключит Telegram, Авито и YClients</Feat>
-              <Feat>Перенесём ваш прайс и расписание</Feat>
-              <Feat>Адаптируем тон бота под ваш бизнес</Feat>
-              <Feat>Персональный менеджер на связи</Feat>
-              <Feat>Безлимит сообщений в первые 3 месяца</Feat>
+              <Feat>Подключение Telegram, Авито и YClients под ключ</Feat>
+              <Feat>Перенос вашего прайса и расписания</Feat>
+              <Feat>Безлимит сообщений первые 3 месяца</Feat>
+              <Feat>Адаптация тона бота под ваш бизнес</Feat>
+              <Feat>Персональный менеджер на запуске</Feat>
+              <Feat>Приоритетная поддержка</Feat>
             </ul>
 
             <button
@@ -100,7 +100,7 @@ export function PricingSection() {
               Оставить заявку
               <ArrowRight className="h-4 w-4" />
             </button>
-            <div className="mt-2 text-center text-xs text-slate-400">Менеджер свяжется в течение дня</div>
+            <div className="mt-2 text-center text-xs text-slate-400">Менеджер свяжется с вами в течение дня</div>
           </div>
         </div>
       </div>

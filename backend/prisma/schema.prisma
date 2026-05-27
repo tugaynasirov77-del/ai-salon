@@ -88,6 +88,8 @@ model Appointment {
   master      String?
   datetime    DateTime
   status      String   @default("confirmed")
+  source      String   @default("ai")
+  yclientsRecordId String? @unique
   reminder24h Boolean  @default(false)
   reminder2h  Boolean  @default(false)
   createdAt   DateTime @default(now())

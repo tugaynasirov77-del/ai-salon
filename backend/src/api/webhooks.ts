@@ -1,8 +1,21 @@
 import { Router } from 'express';
 import { messageRouter } from '../channels/messageRouter';
 import { asyncHandler } from '../middleware/errors';
+import { handleYClientsEvent } from '../channels/yclientsSync';
 
 const router = Router();
+
+// YClients webhook — двусторонняя sync (их записи → к нам).
+// URL для регистрации в YClients: https://api.ailiva.ru/webhook/yclients
+router.post(
+  '/yclients',
+  asyncHandler(async (req, res) => {
+    res.status(200).json({ ok: true }); // YClients ждёт быстрый 200
+    handleYClientsEvent(req.body).catch((e) =>
+      console.error('[webhook/yclients] error:', e?.message)
+    );
+  })
+);
 
 // Telegram webhook для конкретного салона (multi-tenant)
 router.post(

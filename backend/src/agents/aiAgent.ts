@@ -423,6 +423,11 @@ export class AIAgent {
         datetime: isoDate,
         api_id: appointmentId, // для трекинга
       });
+      // Сохраняем yclientsRecordId — чтоб webhook от YClients не задвоил эту же запись
+      await prisma.appointment.update({
+        where: { id: appointmentId },
+        data: { yclientsRecordId: String(result.id) },
+      });
       console.log(`[yclients-sync] создана запись в YClients id=${result.id} (наша=${appointmentId})`);
     } catch (e: any) {
       console.error(`[yclients-sync] ошибка для appointment=${appointmentId}:`, e?.message);

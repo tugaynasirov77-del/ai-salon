@@ -183,11 +183,13 @@ export class AIAgent {
           services: this.formatServices(crm.services),
           schedule: this.formatSchedule(crm.workingHours),
         }) +
-        `\n\nКогда клиент явно подтвердил желание записаться И ты знаешь услугу, дату и время — ОБЯЗАТЕЛЬНО вызови инструмент create_appointment. Не пиши «запись оформлена», пока не вызвал инструмент.`;
+        `\n\nКогда клиент явно подтвердил желание записаться И ты знаешь услугу, дату и время — ОБЯЗАТЕЛЬНО вызови инструмент create_appointment. Не пиши «запись оформлена», пока не вызвал инструмент.\n\nПосле успешного вызова инструмента (create/cancel/reschedule) — сформулируй подтверждение СВОИМИ словами в стиле живого диалога. НЕ пиши "Запись создана. ID: ...". Пример хорошего ответа: "Готово, записал на завтра в 15:00 👍" или "Окей, отменил" — коротко, по-человечески.`;
       // Переменная часть — НЕ кэшируется (дата/клиент меняются)
+      const clientContext = await this.buildClientContext(client.id, salon.id, client.name);
       const volatileSystem =
         `Текущая дата: ${new Date().toISOString().slice(0, 10)} (UTC, только день).\n` +
-        `Имя клиента в системе: ${client.name || '(не указано)'}.`;
+        `Имя клиента в системе: ${client.name || '(не указано)'}.\n` +
+        clientContext;
 
       const messages: Anthropic.MessageParam[] = history.map((m) => ({
         role: m.direction === 'in' ? 'user' : 'assistant',
@@ -365,8 +367,16 @@ export class AIAgent {
       console.error('[aiAgent.syncToYClients] error:', e?.message)
     );
 
+    // Возвращаем структурированные данные — AI сам сформулирует подтверждение клиенту
+    // (живо и в контексте диалога, а не template-фразой).
     return {
-      content: `Запись создана. ID: ${appointment.id}. ${input.service}, ${datetime.toLocaleString('ru-RU')}.`,
+      content: JSON.stringify({
+        success: true,
+        appointmentId: appointment.id,
+        service: input.service,
+        datetime: datetime.toLocaleString('ru-RU'),
+        master: input.master || null,
+      }),
       isError: false,
     };
   }
@@ -468,7 +478,12 @@ export class AIAgent {
     });
     console.log(`[aiAgent] отменена запись ${appointment.id}`);
     return {
-      content: `Запись отменена. Была: ${appointment.service}, ${appointment.datetime.toLocaleString('ru-RU')}.`,
+      content: JSON.stringify({
+        success: true,
+        cancelled: true,
+        wasService: appointment.service,
+        wasDatetime: appointment.datetime.toLocaleString('ru-RU'),
+      }),
       isError: false,
     };
   }
@@ -506,7 +521,13 @@ export class AIAgent {
     await scheduleReminders(updated as unknown as IAppointment);
     console.log(`[aiAgent] перенесена запись ${appointment.id} на ${newDt.toISOString()}`);
     return {
-      content: `Запись перенесена. ${updated.service}: было ${appointment.datetime.toLocaleString('ru-RU')}, стало ${newDt.toLocaleString('ru-RU')}.`,
+      content: JSON.stringify({
+        success: true,
+        rescheduled: true,
+        service: updated.service,
+        was: appointment.datetime.toLocaleString('ru-RU'),
+        now: newDt.toLocaleString('ru-RU'),
+      }),
       isError: false,
     };
   }
@@ -575,6 +596,49 @@ export class AIAgent {
       prisma.faq.findMany({ where: { salonId }, orderBy: { order: 'asc' } }),
     ]);
     return { services, masters, workingHours, faqs };
+  }
+
+  // Контекст клиента: история визитов + любимый мастер.
+  // Подсовываем в volatileSystem чтобы AI "помнил" клиента и не звучал как впервые.
+  private async buildClientContext(
+    clientId: string,
+    salonId: string,
+    clientName: string | null
+  ): Promise<string> {
+    const yearAgo = new Date(Date.now() - 365 * 24 * 3600 * 1000);
+    const appts = await prisma.appointment.findMany({
+      where: { clientId, salonId, datetime: { gte: yearAgo } },
+      orderBy: { datetime: 'desc' },
+      take: 10,
+      include: { masterRef: { select: { name: true } } },
+    });
+
+    if (appts.length === 0) {
+      return `Клиент новый — у нас впервые. Не спрашивай "вы у нас уже были?" просто помогай.`;
+    }
+
+    const completed = appts.filter((a) => a.status === 'completed' || a.status === 'confirmed');
+    const last = appts[0];
+    const lastDate = last.datetime.toLocaleDateString('ru-RU');
+
+    // Любимый мастер: самый частый среди завершённых
+    const masterCounts = new Map<string, number>();
+    for (const a of completed) {
+      const m = a.masterRef?.name || a.master;
+      if (m) masterCounts.set(m, (masterCounts.get(m) || 0) + 1);
+    }
+    const favMaster = Array.from(masterCounts.entries()).sort((a, b) => b[1] - a[1])[0];
+
+    const lines = [`КОНТЕКСТ КЛИЕНТА (используй чтобы звучать как знакомый, но не упоминай в лоб):`];
+    lines.push(`— Визитов за год: ${completed.length}.`);
+    lines.push(`— Последний визит: ${lastDate}, ${last.service}.`);
+    if (favMaster && favMaster[1] >= 2) {
+      lines.push(`— Чаще всего ходит к мастеру: ${favMaster[0]} (${favMaster[1]} раз). Можешь предложить его по умолчанию.`);
+    }
+    if (completed.length >= 3) {
+      lines.push(`— Постоянный клиент. Тон чуть теплее, можно приветствовать по имени${clientName ? ` (${clientName})` : ''}.`);
+    }
+    return lines.join('\n');
   }
 
   // Простой матч FAQ: ищем пересечение значимых слов вопроса клиента с FAQ-вопросами салона.

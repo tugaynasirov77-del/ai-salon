@@ -25,12 +25,12 @@ export function SavingsCalculator() {
     <section id="savings" className="relative py-24">
       <div className="mx-auto max-w-5xl px-4">
         <div className="text-center">
-          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">Сколько вы экономите</span>
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">Калькулятор</span>
           <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
-            AI вместо администратора <br /> в 18 раз дешевле
+            Посчитайте, сколько вы<br /> экономите в месяц
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-            Подвиньте ползунки под свой бизнес — увидите, сколько вы сэкономите за год.
+            Подвиньте ползунки под свой бизнес — увидите экономию в месяц и за год.
           </p>
         </div>
 

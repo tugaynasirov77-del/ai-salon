@@ -548,7 +548,8 @@ export class AIAgent {
   async processDryRun(
     salonId: string,
     history: Array<{ role: 'user' | 'assistant'; text: string }>,
-    newUserText: string
+    newUserText: string,
+    opts?: { images?: Array<{ data: Buffer; mediaType: string }> }
   ): Promise<{ text: string; usage: AggregateUsage }> {
     const usage: AggregateUsage = {
       inputTokens: 0,
@@ -575,7 +576,19 @@ export class AIAgent {
     const messages: Anthropic.MessageParam[] = history
       .slice(-HISTORY_LIMIT)
       .map((m) => ({ role: m.role, content: this.truncate(m.text) }));
-    messages.push({ role: 'user', content: this.truncate(newUserText) });
+
+    if (opts?.images?.length) {
+      const blocks = this.buffersToImageBlocks(opts.images);
+      messages.push({
+        role: 'user',
+        content: [
+          ...blocks,
+          { type: 'text', text: this.truncate(newUserText || '[изображение]') } as any,
+        ],
+      });
+    } else {
+      messages.push({ role: 'user', content: this.truncate(newUserText) });
+    }
 
     const response = await this.client.messages.create({
       model: MODEL,
@@ -607,6 +620,20 @@ export class AIAgent {
       prisma.faq.findMany({ where: { salonId }, orderBy: { order: 'asc' } }),
     ]);
     return { services, masters, workingHours, faqs };
+  }
+
+  // Формируем image content blocks из буферов (для multipart upload, без скачивания).
+  buffersToImageBlocks(images: Array<{ data: Buffer; mediaType: string }>): any[] {
+    return images
+      .filter((img) => img.data.length <= 5 * 1024 * 1024)
+      .map((img) => ({
+        type: 'image',
+        source: {
+          type: 'base64',
+          media_type: img.mediaType || 'image/jpeg',
+          data: img.data.toString('base64'),
+        },
+      }));
   }
 
   // Скачиваем картинки и формируем blocks для Anthropic Vision (base64 для совместимости с OpenRouter).

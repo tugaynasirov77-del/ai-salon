@@ -11,21 +11,35 @@ export async function transcribeAudio(audioUrl: string): Promise<string | null> 
     return null;
   }
   try {
-    // Скачиваем аудио
     const r = await fetch(audioUrl);
     if (!r.ok) {
       console.warn('[whisper] не удалось скачать аудио:', r.status);
       return null;
     }
-    const buf = await r.arrayBuffer();
-    // Ограничение: > 25 MB Whisper не принимает
-    if (buf.byteLength > 25 * 1024 * 1024) {
-      console.warn('[whisper] аудио > 25MB — пропускаем');
-      return null;
-    }
-    // Определяем имя файла (TG voice — обычно .oga)
+    const buf = Buffer.from(await r.arrayBuffer());
     const fileName = audioUrl.split('/').pop()?.split('?')[0] || 'voice.oga';
+    return transcribeAudioBuffer(buf, fileName);
+  } catch (e: any) {
+    console.error('[whisper] error:', e?.message);
+    return null;
+  }
+}
 
+// Транскрипция напрямую из буфера (для multipart upload через web — voice пишется
+// в браузере через MediaRecorder и приходит на бэк уже как Blob).
+export async function transcribeAudioBuffer(
+  buf: Buffer,
+  fileName: string = 'voice.webm'
+): Promise<string | null> {
+  if (!GROQ_API_KEY) {
+    console.warn('[whisper] GROQ_API_KEY не задан — пропускаем транскрипцию');
+    return null;
+  }
+  if (buf.length > 25 * 1024 * 1024) {
+    console.warn('[whisper] аудио > 25MB — пропускаем');
+    return null;
+  }
+  try {
     const form = new FormData();
     form.append('file', new Blob([buf]), fileName);
     form.append('model', MODEL);
@@ -43,8 +57,7 @@ export async function transcribeAudio(audioUrl: string): Promise<string | null> 
       return null;
     }
     const data: any = await resp.json();
-    const text = String(data?.text || '').trim();
-    return text || null;
+    return String(data?.text || '').trim() || null;
   } catch (e: any) {
     console.error('[whisper] error:', e?.message);
     return null;

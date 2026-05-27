@@ -16,7 +16,6 @@ import {
 } from 'lucide-react';
 import { NICHES } from '@shared/niches';
 import { PricingSection } from '@/components/landing/PricingSection';
-import { DemoWidget } from '@/components/landing/DemoWidget';
 import { Logo } from '@/components/landing/Logo';
 import { SavingsCalculator } from '@/components/landing/SavingsCalculator';
 import { ComparisonTable } from '@/components/landing/ComparisonTable';
@@ -415,12 +414,11 @@ export default function LandingPage() {
             </div>
           </Link>
 
-          <p className="mt-6 text-center text-xs text-slate-500">
-            Или нажмите на кружок справа внизу — там тот же ИИ в формате виджета для сайта.
-          </p>
         </div>
-        <DemoWidget />
       </section>
+
+      {/* === Floating demo button (corner) === */}
+      <FloatingDemoLink />
 
       {/* === CTA === */}
       <section className="relative py-20">
@@ -506,6 +504,20 @@ function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; 
       <h3 className="mt-5 text-base font-semibold text-white">{title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-slate-400">{text}</p>
     </div>
+  );
+}
+
+function FloatingDemoLink() {
+  return (
+    <Link
+      href="/demo"
+      aria-label="Открыть полное демо"
+      className="group fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_-4px_rgba(139,92,246,0.6)] backdrop-blur-xl transition-transform hover:scale-[1.03] sm:bottom-6 sm:right-6 sm:px-5 sm:py-3.5"
+    >
+      <MessageSquare className="h-4 w-4" strokeWidth={2} />
+      <span className="hidden sm:inline">Открыть демо</span>
+      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+    </Link>
   );
 }
 

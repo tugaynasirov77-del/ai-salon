@@ -90,9 +90,6 @@ export default function LandingPage() {
                 не спит
               </span>
             </span>
-            <span className="mt-2 block text-3xl text-white/70 sm:text-5xl">
-              и стоит 2 500 ₽ в месяц
-            </span>
           </h1>
 
           <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-slate-400">

@@ -60,7 +60,9 @@ export default function LandingPage() {
               className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-lg bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_rgba(139,92,246,0.45)] transition-transform hover:scale-[1.02]"
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-              Регистрация
+              <span className="hidden sm:inline">Попробовать бесплатно</span>
+              <span className="sm:hidden">Начать</span>
+              <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
         </div>
@@ -77,46 +79,50 @@ export default function LandingPage() {
             <span>AI-администратор для малого бизнеса</span>
           </div>
 
-          <h1 className="mx-auto mt-8 max-w-4xl bg-gradient-to-b from-white via-white to-white/60 bg-clip-text text-center text-5xl font-semibold tracking-tight text-transparent sm:text-7xl">
-            <span className="block">Бот, который записывает</span>
+          <h1 className="mx-auto mt-8 max-w-5xl bg-gradient-to-b from-white via-white to-white/60 bg-clip-text text-center text-5xl font-semibold tracking-tight text-transparent sm:text-7xl">
+            <span className="block">Ваш администратор,</span>
             <span className="block">
-              клиентов{' '}
+              который{' '}
               <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
-                за вас
+                не спит
               </span>
+            </span>
+            <span className="mt-2 block text-3xl text-white/70 sm:text-5xl">
+              и стоит 2 500 ₽ в месяц
             </span>
           </h1>
 
           <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-slate-400">
-            Liva ai отвечает на сообщения в Telegram, Авито и на сайте 24/7,
-            подбирает время и записывает на услугу. Вы видите дашборд с диалогами,
-            записями и аналитикой.
+            Liva ai отвечает клиентам в Telegram, на Авито и на сайте, записывает на услугу
+            и напоминает о визите. Подключение за 15 минут. Работает 24/7 без выходных.
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/register"
-              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-transform hover:scale-[1.02]"
+              className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-transform hover:scale-[1.02] sm:w-auto"
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-              Начать бесплатно
-              <ArrowRight className="h-4 w-4" />
+              Попробовать бесплатно
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <a
               href="#pricing"
-              className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-7 py-3.5 text-base font-medium text-slate-200 backdrop-blur transition-colors hover:bg-white/[0.08] hover:text-white"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-7 py-3.5 text-base font-medium text-slate-200 backdrop-blur transition-colors hover:bg-white/[0.08] hover:text-white sm:w-auto"
             >
-              Подключить под ключ
+              Подключим за вас за 1 день
             </a>
           </div>
-          <p className="mt-4 text-xs text-slate-500">Без карты. Подключение за 1 день.</p>
+          <p className="mt-5 text-sm text-slate-500">
+            Без карты · 1 000 сообщений в подарок · Отмена в один клик
+          </p>
 
           {/* Bullet badges */}
           <div className="mx-auto mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs text-slate-400">
             <BulletBadge>Запуск за 15 минут</BulletBadge>
-            <BulletBadge>Отмена в любой момент</BulletBadge>
-            <BulletBadge>Поддержка на русском</BulletBadge>
-            <BulletBadge>Платёж в рублях</BulletBadge>
+            <BulletBadge>AI на Claude — не сценарий</BulletBadge>
+            <BulletBadge>Данные в России, 152-ФЗ</BulletBadge>
+            <BulletBadge>Отмена в один клик</BulletBadge>
           </div>
         </div>
 

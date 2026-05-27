@@ -8,6 +8,7 @@ import { NICHES } from '@shared/niches';
 import type { NicheKey } from '@shared/types';
 import { apiRegister, useAuthStore } from '@/lib/auth';
 import { formatPhone } from '@/lib/utils';
+import { track } from '@/lib/analytics';
 
 const NICHE_ORDER: NicheKey[] = [
   'beauty_salon', 'barbershop', 'fitness', 'clinic', 'auto_service',
@@ -59,6 +60,11 @@ export default function RegisterPage() {
         address: form.address || undefined,
       });
       setSession({ user: res.user, salon: res.salon });
+      track('register_completed', {
+        niche: form.niche,
+        has_phone: !!form.phone?.trim(),
+        has_address: !!form.address?.trim(),
+      });
       router.replace('/dashboard');
     } catch (e: any) {
       setError(e?.message || 'Не удалось зарегистрироваться');

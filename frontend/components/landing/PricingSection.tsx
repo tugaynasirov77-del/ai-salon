@@ -6,6 +6,7 @@ import { Check, X, Loader2, Briefcase, UserCog, ArrowRight } from 'lucide-react'
 import { submitLead } from '@/lib/api';
 import { formatPhone } from '@/lib/utils';
 import { NICHES } from '@shared/niches';
+import { track } from '@/lib/analytics';
 
 export function PricingSection() {
   const [open, setOpen] = useState(false);
@@ -52,6 +53,7 @@ export function PricingSection() {
 
             <Link
               href="/register"
+              onClick={() => track('cta_register', { location: 'pricing_self_start' })}
               className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-6 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-white/[0.08]"
             >
               Попробовать бесплатно
@@ -93,7 +95,7 @@ export function PricingSection() {
             </ul>
 
             <button
-              onClick={() => setOpen(true)}
+              onClick={() => { track('cta_turnkey_open', { location: 'pricing_turnkey' }); setOpen(true); }}
               className="group relative mt-8 inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-3 text-center text-sm font-semibold text-white shadow-[0_0_30px_rgba(139,92,246,0.4)] transition-transform hover:scale-[1.02]"
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
@@ -149,6 +151,12 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
         city: form.city.trim() || undefined,
         comment: form.comment.trim() || undefined,
         source: 'landing-pricing-turnkey',
+      });
+      track('lead_submitted', {
+        niche: form.niche || null,
+        city: form.city.trim() || null,
+        has_comment: !!form.comment.trim(),
+        source: 'pricing_turnkey',
       });
       setState('sent');
     } catch (e: any) {

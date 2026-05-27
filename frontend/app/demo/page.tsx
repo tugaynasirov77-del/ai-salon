@@ -7,6 +7,7 @@ import {
   Users, Sparkles, Globe, Loader2, Paperclip, Mic, Square, X, Play, Pause,
 } from 'lucide-react';
 import { Logo } from '@/components/landing/Logo';
+import { track } from '@/lib/analytics';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://api.ailiva.ru';
 const DEMO_SALON_ID = 'cmpfhd7ha00001s7ud34xwfmw';
@@ -209,6 +210,15 @@ export default function DemoPage() {
     if ((!value && !hasAtt) || sending || recording) return;
     setError(null);
 
+    // Первое сообщение посетителя — главное микро-conversion
+    if (userMessages.length === 0) {
+      track('demo_first_message', {
+        has_image: !!attachedImage,
+        has_voice: !!voiceBlob,
+        text_length: value.length,
+      });
+    }
+
     // Снимок прикреплений
     const snapshotImage = attachedImage;
     const snapshotImageUrl = attachedImageUrl;
@@ -300,6 +310,7 @@ export default function DemoPage() {
           </Link>
           <Link
             href="/register"
+            onClick={() => track('cta_register', { location: 'demo_header' })}
             className="group inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_rgba(139,92,246,0.45)] transition-transform hover:scale-[1.02]"
           >
             Попробовать бесплатно
@@ -550,6 +561,7 @@ export default function DemoPage() {
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link
                   href="/register"
+                  onClick={() => track('cta_register', { location: 'demo_footer' })}
                   className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-transform hover:scale-[1.02] sm:w-auto"
                 >
                   Попробовать бесплатно
@@ -557,6 +569,7 @@ export default function DemoPage() {
                 </Link>
                 <Link
                   href="/#pricing"
+                  onClick={() => track('cta_turnkey_anchor', { location: 'demo_footer' })}
                   className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-7 py-3.5 text-base font-medium text-slate-200 transition-colors hover:bg-white/[0.08] sm:w-auto"
                 >
                   Подключим за вас

@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import {
   MessageSquare,
@@ -17,6 +19,7 @@ import {
 import { NICHES } from '@shared/niches';
 import { PricingSection } from '@/components/landing/PricingSection';
 import { Logo } from '@/components/landing/Logo';
+import { track } from '@/lib/analytics';
 import { SavingsCalculator } from '@/components/landing/SavingsCalculator';
 import { ComparisonTable } from '@/components/landing/ComparisonTable';
 import { StickyCta } from '@/components/landing/StickyCta';
@@ -59,6 +62,7 @@ export default function LandingPage() {
             </Link>
             <Link
               href="/register"
+              onClick={() => track('cta_register', { location: 'header' })}
               className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-lg bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_rgba(139,92,246,0.45)] transition-transform hover:scale-[1.02]"
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
@@ -99,6 +103,7 @@ export default function LandingPage() {
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/register"
+              onClick={() => track('cta_register', { location: 'hero' })}
               className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-transform hover:scale-[1.02] sm:w-auto"
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
@@ -107,6 +112,7 @@ export default function LandingPage() {
             </Link>
             <a
               href="#pricing"
+              onClick={() => track('cta_turnkey_anchor', { location: 'hero' })}
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-7 py-3.5 text-base font-medium text-slate-200 backdrop-blur transition-colors hover:bg-white/[0.08] hover:text-white sm:w-auto"
             >
               Подключим за вас за 1 день
@@ -193,6 +199,7 @@ export default function LandingPage() {
 
           <Link
             href="/demo"
+            onClick={() => track('cta_demo', { location: 'demo_card' })}
             className="group relative mx-auto mt-12 block max-w-3xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-indigo-900/40 via-violet-900/30 to-fuchsia-900/40 p-1 transition-transform hover:scale-[1.01]"
           >
             <div className="rounded-[22px] bg-slate-950/70 p-8 sm:p-12">
@@ -450,6 +457,7 @@ export default function LandingPage() {
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link
                   href="/register"
+                  onClick={() => track('cta_register', { location: 'final_cta' })}
                   className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-transform hover:scale-[1.02] sm:w-auto"
                 >
                   <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
@@ -458,6 +466,7 @@ export default function LandingPage() {
                 </Link>
                 <a
                   href="#pricing"
+                  onClick={() => track('cta_turnkey_anchor', { location: 'final_cta' })}
                   className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-7 py-3.5 text-base font-medium text-slate-200 transition-colors hover:bg-white/[0.08] sm:w-auto"
                 >
                   Подключим за вас
@@ -535,6 +544,7 @@ function FloatingDemoLink() {
   return (
     <Link
       href="/demo"
+      onClick={() => track('cta_demo', { location: 'floating' })}
       aria-label="Открыть полное демо"
       className="group fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_-4px_rgba(139,92,246,0.6)] backdrop-blur-xl transition-transform hover:scale-[1.03] sm:bottom-6 sm:right-6 sm:px-5 sm:py-3.5"
     >

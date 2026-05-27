@@ -50,6 +50,8 @@ model User {
   salon        Salon?   @relation(fields: [salonId], references: [id], onDelete: SetNull)
   createdAt    DateTime @default(now())
   lastLoginAt  DateTime?
+  passwordResetToken     String?   @unique
+  passwordResetExpiresAt DateTime?
 
   @@index([salonId])
 }

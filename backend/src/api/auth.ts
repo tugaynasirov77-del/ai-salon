@@ -2,12 +2,15 @@
 // Регистрация создаёт User + Salon одной транзакцией.
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import prisma from '../db/prisma';
 import { asyncHandler } from '../middleware/errors';
 import { signToken, requireAuth } from '../middleware/auth';
+import { sendPasswordResetEmail, sendWelcomeEmail } from '../utils/mailer';
 
 const router = Router();
 const BCRYPT_ROUNDS = 10;
+const RESET_TOKEN_TTL_MS = 60 * 60 * 1000; // 1 час
 
 // POST /api/auth/register — регистрация владельца + создание салона
 router.post(
@@ -67,6 +70,11 @@ router.post(
       role: result.user.role,
     });
 
+    // Welcome-email — async, не блокирует ответ
+    sendWelcomeEmail(result.user.email, result.user.name, result.salon.name).catch((e) =>
+      console.error('[auth.register] welcome email error:', e?.message)
+    );
+
     res.status(201).json({
       token,
       user: {
@@ -82,6 +90,62 @@ router.post(
         niche: result.salon.niche,
       },
     });
+  })
+);
+
+// POST /api/auth/forgot-password — генерируем токен, шлём ссылку на email
+// Всегда отвечаем 200 (не палим какие email зарегистрированы)
+router.post(
+  '/forgot-password',
+  asyncHandler(async (req, res) => {
+    const { email } = req.body;
+    if (!email || typeof email !== 'string') {
+      res.status(400).json({ error: 'email обязателен' });
+      return;
+    }
+    const emailLower = email.trim().toLowerCase();
+    const user = await prisma.user.findUnique({ where: { email: emailLower } });
+    if (user) {
+      const token = crypto.randomBytes(32).toString('hex');
+      const expiresAt = new Date(Date.now() + RESET_TOKEN_TTL_MS);
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { passwordResetToken: token, passwordResetExpiresAt: expiresAt },
+      });
+      const baseUrl = process.env.FRONTEND_URL || 'https://ailiva.ru';
+      const resetUrl = `${baseUrl}/reset-password?token=${token}`;
+      sendPasswordResetEmail(user.email, resetUrl, user.name).catch((e) =>
+        console.error('[auth.forgot] mail error:', e?.message)
+      );
+    }
+    res.json({ ok: true, message: 'Если email зарегистрирован — мы отправили ссылку для сброса.' });
+  })
+);
+
+// POST /api/auth/reset-password — проверяем токен, ставим новый пароль
+router.post(
+  '/reset-password',
+  asyncHandler(async (req, res) => {
+    const { token, newPassword } = req.body;
+    if (!token || !newPassword || typeof newPassword !== 'string' || newPassword.length < 6) {
+      res.status(400).json({ error: 'token и newPassword (мин. 6 символов) обязательны' });
+      return;
+    }
+    const user = await prisma.user.findUnique({ where: { passwordResetToken: String(token) } });
+    if (!user || !user.passwordResetExpiresAt || user.passwordResetExpiresAt < new Date()) {
+      res.status(400).json({ error: 'Ссылка недействительна или истекла. Запросите новую.' });
+      return;
+    }
+    const passwordHash = await bcrypt.hash(newPassword, BCRYPT_ROUNDS);
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        passwordHash,
+        passwordResetToken: null,
+        passwordResetExpiresAt: null,
+      },
+    });
+    res.json({ ok: true });
   })
 );
 

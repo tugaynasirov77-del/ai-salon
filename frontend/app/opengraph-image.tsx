@@ -44,8 +44,8 @@ export default function OGImage() {
               </g>
             </svg>
           </div>
-          <div style={{ fontSize: 56, fontWeight: 700, letterSpacing: -1 }}>
-            Liva<span style={{ opacity: 0.6 }}> ai</span>
+          <div style={{ display: 'flex', fontSize: 56, fontWeight: 700, letterSpacing: -1 }}>
+            Liva<span style={{ opacity: 0.6 }}>&nbsp;ai</span>
           </div>
         </div>
 
@@ -53,6 +53,8 @@ export default function OGImage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
           <div
             style={{
+              display: 'flex',
+              flexDirection: 'column',
               fontSize: 96,
               fontWeight: 700,
               letterSpacing: -3,
@@ -62,23 +64,36 @@ export default function OGImage() {
               color: 'transparent',
             }}
           >
-            Бот, который записывает
-            <br />
-            клиентов{' '}
-            <span
-              style={{
-                backgroundImage: 'linear-gradient(90deg, #818CF8 0%, #C084FC 50%, #F472B6 100%)',
-                backgroundClip: 'text',
-                color: 'transparent',
-              }}
-            >
-              за вас
-            </span>
+            <div style={{ display: 'flex' }}>Бот, который записывает</div>
+            <div style={{ display: 'flex' }}>
+              клиентов&nbsp;
+              <span
+                style={{
+                  backgroundImage:
+                    'linear-gradient(90deg, #818CF8 0%, #C084FC 50%, #F472B6 100%)',
+                  backgroundClip: 'text',
+                  color: 'transparent',
+                }}
+              >
+                за вас
+              </span>
+            </div>
           </div>
-          <div style={{ fontSize: 32, color: 'rgba(255,255,255,0.7)', lineHeight: 1.3 }}>
-            AI-администратор для салонов, барбершопов, СТО и других нишевых бизнесов.
-            <br />
-            Отвечает 24/7 в Telegram, Авито, YClients и веб-чате.
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              fontSize: 32,
+              color: 'rgba(255,255,255,0.7)',
+              lineHeight: 1.3,
+            }}
+          >
+            <div style={{ display: 'flex' }}>
+              AI-администратор для салонов, барбершопов, СТО и других нишевых бизнесов.
+            </div>
+            <div style={{ display: 'flex' }}>
+              Отвечает 24/7 в Telegram, Авито, YClients и веб-чате.
+            </div>
           </div>
         </div>
 

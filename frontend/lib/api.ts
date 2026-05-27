@@ -1,7 +1,7 @@
 // Все запросы к live-бэку https://api.ailiva.ru через axios (lib/http.ts).
 // JWT подкладывается интерсептором автоматически.
 
-import { httpGet, httpPost, httpPut, httpDelete } from './http';
+import { http, httpGet, httpPost, httpPut, httpDelete } from './http';
 import type {
   ISalon,
   IClient,
@@ -232,6 +232,29 @@ export const fetchUsage = (salonId: string, range?: { from?: string; to?: string
 
 export const sendTestChat = (salonId: string, text: string, sessionId?: string) =>
   httpPost<ITestChatResponse>(`/api/salons/${salonId}/test-chat`, { text, sessionId });
+
+// Вариант с медиа: фронт отправляет multipart/form-data с полями
+// text (опц.) + sessionId (опц.) + image (File, опц.) + voice (Blob, опц.).
+// Бэкенду нужно расширить тот же эндпоинт чтобы принимать multipart —
+// см. договорённость по интеграции Vision + голосовых в тест-чат.
+export async function sendTestChatMultipart(
+  salonId: string,
+  payload: { text?: string; sessionId?: string; image?: File; voice?: Blob },
+): Promise<ITestChatResponse> {
+  const fd = new FormData();
+  if (payload.text) fd.append('text', payload.text);
+  if (payload.sessionId) fd.append('sessionId', payload.sessionId);
+  if (payload.image) fd.append('image', payload.image, payload.image.name);
+  if (payload.voice) fd.append('voice', payload.voice, 'voice.webm');
+  try {
+    const res = await http.post<ITestChatResponse>(`/api/salons/${salonId}/test-chat`, fd);
+    return res.data;
+  } catch (e: any) {
+    const msg = e?.response?.data?.error || e?.message || 'Ошибка запроса';
+    throw new Error(msg);
+  }
+}
+
 export const resetTestChat = (salonId: string, sessionId: string) =>
   httpDelete<{ ok: boolean }>(`/api/salons/${salonId}/test-chat/${sessionId}`);
 

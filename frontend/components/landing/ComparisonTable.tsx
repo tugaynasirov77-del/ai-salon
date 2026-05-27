@@ -97,8 +97,20 @@ export function ComparisonTable() {
           </div>
         </div>
 
+        <div className="mt-10 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-indigo-500/10 via-violet-500/10 to-fuchsia-500/10 p-6 text-center backdrop-blur-sm sm:p-8">
+          <p className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            В{' '}
+            <span className="bg-gradient-to-r from-indigo-300 via-violet-300 to-fuchsia-300 bg-clip-text text-transparent">
+              18 раз дешевле
+            </span>{' '}
+            и работает 24/7
+          </p>
+          <p className="mx-auto mt-3 max-w-xl text-sm text-slate-400">
+            Один администратор стоит как 18 месяцев Liva ai. И всё равно не отвечает в выходные.
+          </p>
+        </div>
         <p className="mt-6 text-center text-xs text-slate-500">
-          Сравнение справедливо для типового салона/студии до 5 мастеров. Не заменяем живого человека там, где важен личный контакт (касса, клининг, конфликты).
+          Сравнение справедливо для типового салона/студии до 5 мастеров. Liva ai не заменяет живого человека там, где важен личный контакт (касса, конфликты, клининг).
         </p>
       </div>
     </section>

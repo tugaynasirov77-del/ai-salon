@@ -133,6 +133,36 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* === Pain → Solution === */}
+      <section className="relative py-24">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="text-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-300">Знакомо?</span>
+            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+              Малый бизнес теряет до 40% заявок<br className="hidden sm:block" /> просто потому, что некому ответить
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-slate-400">
+              Каждая упущенная заявка — это не вернувшийся клиент. Каждый администратор — это 35–50 тыс ₽ в месяц. Liva ai закрывает обе боли.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-5 md:grid-cols-3">
+            <PainCard
+              pain="Клиент написал в 22:30 — ответили утром. Он ушёл к конкуренту."
+              gain="Бот отвечает за 3 секунды в любое время суток."
+            />
+            <PainCard
+              pain="Администратор за 45 000 ₽ болеет, в отпуске, увольняется."
+              gain="Liva ai работает 365 дней в году. 2 500 ₽/мес."
+            />
+            <PainCard
+              pain="Диалоги в трёх мессенджерах — половину забываете."
+              gain="Telegram, Авито, веб-чат и записи в одной админке."
+            />
+          </div>
+        </div>
+      </section>
+
       {/* === Features === */}
       <section id="features" className="relative py-24">
         <div className="mx-auto max-w-6xl px-4">
@@ -366,6 +396,16 @@ function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; 
       </div>
       <h3 className="mt-5 text-base font-semibold text-white">{title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-slate-400">{text}</p>
+    </div>
+  );
+}
+
+function PainCard({ pain, gain }: { pain: string; gain: string }) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-7 backdrop-blur-sm transition-colors hover:bg-white/[0.04]">
+      <p className="text-sm leading-relaxed text-slate-500 line-through decoration-rose-400/40 decoration-1">{pain}</p>
+      <div className="my-5 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      <p className="text-base font-medium leading-relaxed text-white">{gain}</p>
     </div>
   );
 }

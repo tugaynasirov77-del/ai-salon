@@ -253,6 +253,40 @@ export default function LandingPage() {
       {/* === Comparison === */}
       <ComparisonTable />
 
+      {/* === Case study === */}
+      <section className="relative py-24">
+        <div className="mx-auto max-w-5xl px-4">
+          <div className="text-center">
+            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              Первый клиент пилота
+            </span>
+            <h2 className="mt-5 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+              «Гараж 161» — автосервис,<br className="hidden sm:block" /> который перестал терять заявки ночью
+            </h2>
+          </div>
+
+          <div className="mt-12 grid gap-4 md:grid-cols-3">
+            <CaseStat value="24/7" label="Отвечают клиентам круглосуточно впервые за 6 лет работы" />
+            <CaseStat value="+38%" label="Рост заявок в нерабочие часы за первый месяц" />
+            <CaseStat value="12 мин" label="Заняло подключение бота с нуля до первого ответа клиенту" />
+          </div>
+
+          <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.025] p-8 backdrop-blur-sm sm:p-10">
+            <p className="text-xl leading-relaxed text-slate-200 sm:text-2xl">
+              «Раньше мы теряли заявки после 19:00 и по воскресеньям. Сейчас бот записывает, а я просто приезжаю и работаю.»
+            </p>
+            <div className="mt-6 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500/40 to-fuchsia-500/40 text-sm font-semibold text-white">С</div>
+              <div>
+                <div className="text-sm font-medium text-white">Сергей</div>
+                <div className="text-xs text-slate-400">основатель автосервиса «Гараж 161», Ростов-на-Дону</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* === Savings calculator === */}
       <SavingsCalculator />
 
@@ -290,6 +324,39 @@ export default function LandingPage() {
       {/* === Pricing === */}
       <PricingSection />
 
+      {/* === Guarantees === */}
+      <section className="relative py-24">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="text-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">Гарантии</span>
+            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+              Вы ничем не рискуете
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-slate-400">
+              Никаких долгосрочных контрактов и скрытых условий. Уходите когда хотите, деньги за неиспользованный период вернём.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-5 md:grid-cols-3">
+            <GuaranteeCard
+              icon="↺"
+              title="Отмена в один клик"
+              text="Без долгосрочных контрактов. Уходите когда хотите — прямо в админке, без звонков и писем."
+            />
+            <GuaranteeCard
+              icon="₽"
+              title="Возврат за неиспользованный период"
+              text="Решите остановиться — вернём деньги за оставшиеся дни оплаченного периода."
+            />
+            <GuaranteeCard
+              icon="🇷🇺"
+              title="Данные в России, 152-ФЗ"
+              text="Все данные клиентов хранятся на серверах в РФ. Третьим лицам не передаём. Полный текст — в Политике."
+            />
+          </div>
+        </div>
+      </section>
+
       {/* === FAQ === */}
       <section id="faq" className="relative py-24">
         <div className="mx-auto max-w-3xl px-4">
@@ -300,26 +367,32 @@ export default function LandingPage() {
             </h2>
           </div>
           <div className="mt-12 space-y-3">
-            <FaqItem q="Нужны ли технические навыки?">
-              Нет. Подключение бота — 3 клика по инструкции. Заносить услуги и мастеров можно как в Excel, через простые формы.
+            <FaqItem q="Сколько времени занимает подключение?">
+              15 минут на тарифе Self-Start — регистрация, токен Telegram-бота и загрузка прайса. На тарифе «Под ключ» наш менеджер делает всё за вас за 1 день.
             </FaqItem>
-            <FaqItem q="Подойдёт ли мне, если у меня не салон, а кафе или СТО?">
-              Подойдёт. Liva ai из коробки настроена под 9 ниш: салоны красоты, барбершопы, фитнес-клубы, медцентры, СТО, рестораны, юристы, репетиторы и др. AI адаптируется под ваш прайс и расписание.
+            <FaqItem q="Нужно ли быть программистом?">
+              Нет. Нужен только токен Telegram-бота — мы покажем, где его взять (3 клика в @BotFather). Услуги, мастеров и расписание заносятся через простые формы, как в Excel.
+            </FaqItem>
+            <FaqItem q="AI правда понимает живой язык?">
+              Да. Мы используем Claude — одну из самых сильных AI-моделей в мире. Бот понимает опечатки, сленг, нестандартные вопросы и контекст диалога. Это не сценарное дерево «если—то».
+            </FaqItem>
+            <FaqItem q="Что, если AI ответит неправильно?">
+              Если бот не уверен — он сразу пишет вам в Telegram, чтобы вы ответили лично. Все диалоги вы видите в админке и можете вмешаться в любой момент.
+            </FaqItem>
+            <FaqItem q="Работает ли с моим YClients?">
+              Да. На тарифе «Под ключ» менеджер всё подключит. На Self-Start — введёте логин/пароль YClients в админке, выберете филиал, и Liva ai сама синхронизирует услуги, мастеров и расписание.
+            </FaqItem>
+            <FaqItem q="Подойдёт ли мне, если у меня не салон?">
+              Подойдёт. Liva ai из коробки настроена под 9 ниш: салоны, барбершопы, фитнес, клиники, СТО, рестораны, юристы, репетиторы и «Другое». Если ниши нет в списке — настроим под вас за 1 день.
+            </FaqItem>
+            <FaqItem q="Что с моими клиентскими данными?">
+              Хранятся в России, соответствуют 152-ФЗ. Третьим лицам не передаём. Клиентам не звоним и не пишем без вашего согласия.
             </FaqItem>
             <FaqItem q="Можно ли отменить подписку?">
-              Да, в любой момент через кнопку в админке. Никаких долгосрочных контрактов. Деньги за неиспользованный период не сгорают.
+              Да, в один клик прямо в админке. Никаких долгосрочных контрактов. Деньги за неиспользованный оплаченный период вернём.
             </FaqItem>
-            <FaqItem q="А если AI ответит неправильно?">
-              Когда AI не уверен — он сразу пишет вам в Telegram, чтобы вы ответили лично. Все диалоги вы видите в админке, можете вмешаться в любой момент.
-            </FaqItem>
-            <FaqItem q="Сколько стоят сообщения сверх лимита?">
-              На тарифе Self-Start: 1000 сообщений в месяц включено. Сверх — обсуждаем индивидуально, обычно дешевле смены тарифа. На «Под ключ» первые 3 месяца — безлимит.
-            </FaqItem>
-            <FaqItem q="Как подключить YClients?">
-              На «Под ключ» — менеджер сделает всё за вас. На Self-Start — введёте логин/пароль YClients в админке, выберете филиал, и Liva ai сама синхронизирует услуги и мастеров.
-            </FaqItem>
-            <FaqItem q="Где хранятся данные клиентов?">
-              На наших серверах в РФ. Не передаются третьим лицам. Клиентам не звоним и не пишем без вашего согласия.
+            <FaqItem q="А если у меня большой поток сообщений?">
+              На тарифе «Под ключ» первые 3 месяца — безлимит. Дальше обсудим индивидуально, обычно остаёмся в рамках 2 500 ₽/мес. На Self-Start включено 1 000 сообщений; сверху можно докупить блоками.
             </FaqItem>
           </div>
           <p className="mt-10 text-center text-sm text-slate-400">
@@ -358,25 +431,25 @@ export default function LandingPage() {
             <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-[300px] w-[600px] rounded-full bg-fuchsia-500/20 blur-[100px]" />
             <div className="relative">
               <h2 className="bg-gradient-to-b from-white to-white/70 bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl">
-                Запустите AI-администратора <br /> уже сегодня
+                Каждый день без Liva ai —<br className="hidden sm:block" /> это упущенные клиенты после 19:00
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-slate-300">
-                15 минут на регистрацию, подключение Telegram и загрузку услуг — и бот начинает отвечать клиентам.
+                Подключите AI-администратора за 15 минут. Первая 1 000 сообщений — бесплатно. Без карты.
               </p>
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link
                   href="/register"
-                  className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-transform hover:scale-[1.02]"
+                  className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-transform hover:scale-[1.02] sm:w-auto"
                 >
                   <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-                  Зарегистрироваться
+                  Попробовать бесплатно
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <a
                   href="#pricing"
-                  className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-7 py-3.5 text-base font-medium text-slate-200 transition-colors hover:bg-white/[0.08]"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-7 py-3.5 text-base font-medium text-slate-200 transition-colors hover:bg-white/[0.08] sm:w-auto"
                 >
-                  Оставить заявку
+                  Подключим за вас
                 </a>
               </div>
             </div>
@@ -433,6 +506,29 @@ function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; 
         {icon}
       </div>
       <h3 className="mt-5 text-base font-semibold text-white">{title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-slate-400">{text}</p>
+    </div>
+  );
+}
+
+function CaseStat({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-7 backdrop-blur-sm">
+      <div className="bg-gradient-to-r from-indigo-300 via-violet-300 to-fuchsia-300 bg-clip-text text-5xl font-semibold tracking-tight text-transparent sm:text-6xl">
+        {value}
+      </div>
+      <p className="mt-4 text-sm leading-relaxed text-slate-400">{label}</p>
+    </div>
+  );
+}
+
+function GuaranteeCard({ icon, title, text }: { icon: string; title: string; text: string }) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-7 backdrop-blur-sm transition-colors hover:bg-white/[0.04]">
+      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-400/10 text-xl text-emerald-300 ring-1 ring-inset ring-emerald-400/20">
+        {icon}
+      </div>
+      <h3 className="mt-5 text-lg font-semibold text-white">{title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-slate-400">{text}</p>
     </div>
   );

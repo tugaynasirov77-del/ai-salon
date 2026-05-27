@@ -83,6 +83,8 @@ export interface IIncomingMessage {
   text: string;
   senderName?: string;
   phone?: string;
+  imageUrls?: string[];       // URLs прикреплённых изображений (Vision)
+  voiceUrl?: string;          // URL голосового сообщения (для Whisper-транскрипции)
   raw?: any;
 }
 

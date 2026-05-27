@@ -2,13 +2,14 @@ import prisma from '../db/prisma';
 import { aiAgent } from '../agents/aiAgent';
 import { cascadeSender } from './cascadeSender';
 import { Channel, IIncomingMessage, IClient, ISalon } from '../../../shared/types';
+import { transcribeAudio } from '../utils/whisper';
 
 export class MessageRouter {
   // Главная точка входа для входящих сообщений из любого канала
   async handleIncoming(channel: Channel, rawData: any, salonId?: string): Promise<void> {
     try {
       const msg = this.normalize(channel, rawData);
-      if (!msg || !msg.text) {
+      if (!msg || (!msg.text && !msg.imageUrls?.length)) {
         console.warn('[router] пустое или некорректное сообщение');
         return;
       }
@@ -18,6 +19,31 @@ export class MessageRouter {
       if (!salon) {
         console.warn('[router] салон не найден');
         return;
+      }
+
+      // Резолвим TG-плейсхолдеры (`tg-file-id:XXX`) в реальные URL картинок
+      if (msg.imageUrls?.length && channel === 'telegram' && (salon as any).telegramBotToken) {
+        msg.imageUrls = await this.resolveTelegramImages(
+          (salon as any).telegramBotToken,
+          msg.imageUrls
+        );
+      }
+
+      // Резолвим и транскрибируем голосовые
+      if (msg.voiceUrl && channel === 'telegram' && (salon as any).telegramBotToken) {
+        const [resolved] = await this.resolveTelegramImages(
+          (salon as any).telegramBotToken,
+          [msg.voiceUrl]
+        );
+        if (resolved) {
+          msg.voiceUrl = resolved;
+          const transcript = await transcribeAudio(resolved);
+          if (transcript) {
+            console.log(`[router] voice → "${transcript.slice(0, 80)}..."`);
+            // Заменяем placeholder-текст реальной транскрипцией
+            msg.text = msg.text === '[голосовое]' ? transcript : `${msg.text} ${transcript}`.trim();
+          }
+        }
       }
 
       const client = await this.findOrCreateClient(salon.id, msg);
@@ -71,18 +97,53 @@ export class MessageRouter {
     }
   }
 
+  // Резолвим TG file_id → URL вида https://api.telegram.org/file/bot<TOKEN>/<file_path>
+  private async resolveTelegramImages(botToken: string, placeholders: string[]): Promise<string[]> {
+    const urls: string[] = [];
+    for (const p of placeholders) {
+      if (!p.startsWith('tg-file-id:')) {
+        urls.push(p);
+        continue;
+      }
+      const fileId = p.slice('tg-file-id:'.length);
+      try {
+        const r = await fetch(`https://api.telegram.org/bot${botToken}/getFile?file_id=${fileId}`);
+        const data: any = await r.json();
+        const filePath = data?.result?.file_path;
+        if (filePath) {
+          urls.push(`https://api.telegram.org/file/bot${botToken}/${filePath}`);
+        } else {
+          console.warn('[router.resolveTG] getFile вернул пусто:', data);
+        }
+      } catch (e: any) {
+        console.error('[router.resolveTG] error:', e?.message);
+      }
+    }
+    return urls;
+  }
+
   // Нормализация входящих данных в единый формат
   normalize(channel: Channel, rawData: any): IIncomingMessage | null {
     try {
       switch (channel) {
         case 'telegram': {
           const m = rawData?.message;
-          if (!m?.text) return null;
+          if (!m) return null;
+          // Telegram photo[]: массив версий, последняя — самая большая
+          const photoFileId =
+            Array.isArray(m.photo) && m.photo.length
+              ? m.photo[m.photo.length - 1]?.file_id
+              : null;
+          const voiceFileId = m.voice?.file_id || m.audio?.file_id || null;
+          const text = m.text || m.caption || (photoFileId ? '[фото]' : voiceFileId ? '[голосовое]' : '');
+          if (!text && !photoFileId && !voiceFileId) return null;
           return {
             channel,
             externalUserId: String(m.chat.id),
-            text: m.text,
+            text,
             senderName: [m.from?.first_name, m.from?.last_name].filter(Boolean).join(' ') || undefined,
+            imageUrls: photoFileId ? [`tg-file-id:${photoFileId}`] : undefined,
+            voiceUrl: voiceFileId ? `tg-file-id:${voiceFileId}` : undefined,
             raw: rawData,
           };
         }

@@ -195,7 +195,18 @@ export class AIAgent {
         role: m.direction === 'in' ? 'user' : 'assistant',
         content: this.truncate(m.text),
       }));
-      messages.push({ role: 'user', content: this.truncate(message.text) });
+
+      // Vision: если есть прикреплённые изображения — формируем content как массив блоков
+      if (message.imageUrls?.length) {
+        const imageBlocks = await this.fetchImagesAsBlocks(message.imageUrls);
+        const userContent: any[] = [
+          ...imageBlocks,
+          { type: 'text', text: this.truncate(message.text || '[изображение]') },
+        ];
+        messages.push({ role: 'user', content: userContent });
+      } else {
+        messages.push({ role: 'user', content: this.truncate(message.text) });
+      }
 
       // Цикл tool use: Claude может вызвать инструмент → исполняем → отдаём результат
       let finalText = '';
@@ -596,6 +607,36 @@ export class AIAgent {
       prisma.faq.findMany({ where: { salonId }, orderBy: { order: 'asc' } }),
     ]);
     return { services, masters, workingHours, faqs };
+  }
+
+  // Скачиваем картинки и формируем blocks для Anthropic Vision (base64 для совместимости с OpenRouter).
+  private async fetchImagesAsBlocks(urls: string[]): Promise<any[]> {
+    const blocks: any[] = [];
+    for (const url of urls) {
+      try {
+        const r = await fetch(url);
+        if (!r.ok) continue;
+        const buf = Buffer.from(await r.arrayBuffer());
+        // Ограничение: пропускаем гигантские картинки (> 5 MB) чтобы не раздувать prompt
+        if (buf.length > 5 * 1024 * 1024) {
+          console.warn('[aiAgent.vision] картинка > 5MB пропущена');
+          continue;
+        }
+        const contentType = r.headers.get('content-type') || 'image/jpeg';
+        const mediaType = contentType.split(';')[0].trim();
+        blocks.push({
+          type: 'image',
+          source: {
+            type: 'base64',
+            media_type: mediaType,
+            data: buf.toString('base64'),
+          },
+        });
+      } catch (e: any) {
+        console.warn('[aiAgent.vision] fetch error:', e?.message);
+      }
+    }
+    return blocks;
   }
 
   // Контекст клиента: история визитов + любимый мастер.

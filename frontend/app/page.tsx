@@ -47,9 +47,9 @@ export default function LandingPage() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
           <Logo size={32} variant="light" />
           <nav className="hidden gap-7 text-sm text-slate-300 lg:flex">
+            <a href="#demo" className="transition-colors hover:text-white">Демо</a>
             <a href="#features" className="transition-colors hover:text-white">Возможности</a>
             <a href="#how" className="transition-colors hover:text-white">Как это работает</a>
-            <a href="#savings" className="transition-colors hover:text-white">Экономия</a>
             <a href="#pricing" className="transition-colors hover:text-white">Тарифы</a>
             <a href="#faq" className="transition-colors hover:text-white">FAQ</a>
           </nav>
@@ -132,6 +132,22 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* === Channels bar === */}
+      <section className="relative border-y border-white/[0.04] bg-white/[0.01] py-8">
+        <div className="mx-auto max-w-6xl px-4">
+          <p className="mb-5 text-center text-xs font-medium uppercase tracking-[0.2em] text-slate-500">
+            Работает там, где ваши клиенты
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-slate-300">
+            <ChannelBadge icon={<Send className="h-4 w-4" />} name="Telegram" />
+            <ChannelBadge icon={<Briefcase className="h-4 w-4" />} name="Авито" />
+            <ChannelBadge icon={<Calendar className="h-4 w-4" />} name="YClients" />
+            <ChannelBadge icon={<MessageSquare className="h-4 w-4" />} name="WhatsApp" />
+            <ChannelBadge icon={<Globe className="h-4 w-4" />} name="Веб-чат на сайт" />
+          </div>
+        </div>
+      </section>
+
       {/* === Pain → Solution === */}
       <section className="relative py-24">
         <div className="mx-auto max-w-6xl px-4">
@@ -159,6 +175,56 @@ export default function LandingPage() {
               gain="Telegram, Авито, веб-чат и записи в одной админке."
             />
           </div>
+        </div>
+      </section>
+
+      {/* === Demo === */}
+      <section id="demo" className="relative py-24">
+        <div className="mx-auto max-w-5xl px-4">
+          <div className="text-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-fuchsia-300">Демо</span>
+            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+              Попробуйте, как это<br className="hidden sm:block" /> работает изнутри
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-slate-400">
+              Откройте интерактивное демо — слева вы пишете ИИ-администратору как клиент, справа сразу видите, что отображается у владельца в админке. Без регистрации.
+            </p>
+          </div>
+
+          <Link
+            href="/demo"
+            className="group relative mx-auto mt-12 block max-w-3xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-indigo-900/40 via-violet-900/30 to-fuchsia-900/40 p-1 transition-transform hover:scale-[1.01]"
+          >
+            <div className="rounded-[22px] bg-slate-950/70 p-8 sm:p-12">
+              <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-stretch sm:justify-between sm:gap-10">
+                <div className="flex-1 text-center sm:text-left">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-200">
+                    <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" /></span>
+                    Реальный AI на Claude
+                  </div>
+                  <div className="mt-4 text-2xl font-semibold text-white sm:text-3xl">
+                    Открыть полное демо
+                  </div>
+                  <p className="mt-2 text-sm text-slate-400">
+                    Чат + админка владельца на одном экране. Ваш диалог появится в админке в реальном времени.
+                  </p>
+                </div>
+                <div className="flex shrink-0 items-center gap-3">
+                  <span className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-transform group-hover:scale-[1.03]">
+                    Открыть демо
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs sm:justify-start">
+                <Channel icon={<Send className="h-4 w-4" />} label="Telegram" tone="indigo" />
+                <Channel icon={<Globe className="h-4 w-4" />} label="Веб-чат" tone="emerald" />
+                <Channel icon={<Briefcase className="h-4 w-4" />} label="Авито" tone="orange" />
+                <Channel icon={<Calendar className="h-4 w-4" />} label="YClients" tone="cyan" />
+              </div>
+            </div>
+          </Link>
         </div>
       </section>
 
@@ -366,57 +432,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* === Demo === */}
-      <section id="demo" className="relative py-24">
-        <div className="mx-auto max-w-5xl px-4">
-          <div className="text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-fuchsia-300">Демо</span>
-            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
-              Попробуйте, как это<br className="hidden sm:block" /> работает изнутри
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-              Откройте интерактивное демо — слева вы пишете ИИ-администратору как клиент, справа сразу видите, что отображается у владельца в админке. Без регистрации.
-            </p>
-          </div>
-
-          <Link
-            href="/demo"
-            className="group relative mx-auto mt-12 block max-w-3xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-indigo-900/40 via-violet-900/30 to-fuchsia-900/40 p-1 transition-transform hover:scale-[1.01]"
-          >
-            <div className="rounded-[22px] bg-slate-950/70 p-8 sm:p-12">
-              <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-stretch sm:justify-between sm:gap-10">
-                <div className="flex-1 text-center sm:text-left">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-200">
-                    <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" /></span>
-                    Реальный AI на Claude
-                  </div>
-                  <div className="mt-4 text-2xl font-semibold text-white sm:text-3xl">
-                    Открыть полное демо
-                  </div>
-                  <p className="mt-2 text-sm text-slate-400">
-                    Чат + админка владельца на одном экране. Ваш диалог появится в админке в реальном времени.
-                  </p>
-                </div>
-                <div className="flex shrink-0 items-center gap-3">
-                  <span className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-transform group-hover:scale-[1.03]">
-                    Открыть демо
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs sm:justify-start">
-                <Channel icon={<Send className="h-4 w-4" />} label="Telegram" tone="indigo" />
-                <Channel icon={<Globe className="h-4 w-4" />} label="Веб-чат" tone="emerald" />
-                <Channel icon={<Briefcase className="h-4 w-4" />} label="Авито" tone="orange" />
-                <Channel icon={<Calendar className="h-4 w-4" />} label="YClients" tone="cyan" />
-              </div>
-            </div>
-          </Link>
-
-        </div>
-      </section>
-
       {/* === Floating demo button (corner) === */}
       <FloatingDemoLink />
 
@@ -503,6 +518,15 @@ function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; 
       </div>
       <h3 className="mt-5 text-base font-semibold text-white">{title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-slate-400">{text}</p>
+    </div>
+  );
+}
+
+function ChannelBadge({ icon, name }: { icon: React.ReactNode; name: string }) {
+  return (
+    <div className="inline-flex items-center gap-2 text-sm font-medium text-slate-300">
+      <span className="text-slate-400">{icon}</span>
+      <span>{name}</span>
     </div>
   );
 }

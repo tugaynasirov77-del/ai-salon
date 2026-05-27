@@ -2,7 +2,8 @@ import Link from 'next/link';
 import {
   MessageSquare,
   Calendar,
-  TrendingUp,
+  BellRing,
+  BarChart3,
   Check,
   Zap,
   Briefcase,
@@ -11,7 +12,9 @@ import {
   Send,
   ArrowRight,
   Sparkles,
+  UserCog,
 } from 'lucide-react';
+import { NICHES } from '@shared/niches';
 import { PricingSection } from '@/components/landing/PricingSection';
 import { DemoWidget } from '@/components/landing/DemoWidget';
 import { Logo } from '@/components/landing/Logo';
@@ -169,42 +172,42 @@ export default function LandingPage() {
           <div className="text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-300">Возможности</span>
             <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
-              Всё, что нужно <br /> для автоматизации записи
+              Всё, что делает живой администратор<br className="hidden sm:block" /> — и больше
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-              Один AI-агент закрывает работу администратора: переписка, запись, напоминания, аналитика.
+              Не сценарный бот, а AI, который понимает контекст, записывает на услугу и доводит клиента до визита.
             </p>
           </div>
           <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:grid-cols-3">
             <Feature
-              icon={<MessageSquare className="h-5 w-5" />}
-              title="Принимает заявки везде"
-              text="Telegram, Авито, YClients, виджет на сайте. Все диалоги в одном окне."
+              icon={<Bot className="h-5 w-5" />}
+              title="AI на Claude — не сценарий"
+              text="Отвечает на нестандартные вопросы, понимает опечатки и контекст. Не «зависает» на фразе вне сценария."
             />
             <Feature
               icon={<Calendar className="h-5 w-5" />}
-              title="Записывает на услугу"
-              text="AI понимает контекст, подбирает свободное время и мастера, отправляет напоминания за 24 и 2 часа."
+              title="Запись в YClients"
+              text="Свободные слоты, мастера, услуги — синхронно с вашим расписанием. Запись падает прямо в YClients."
             />
             <Feature
-              icon={<TrendingUp className="h-5 w-5" />}
-              title="Считает деньги"
-              text="Конверсия, выручка за период, топ-услуги и расход токенов на AI — в одном дашборде."
+              icon={<BellRing className="h-5 w-5" />}
+              title="Напоминания 24 и 2 часа"
+              text="Автоматические напоминания клиенту за сутки и за 2 часа. Снижает неявки до 60%."
             />
             <Feature
-              icon={<Bot className="h-5 w-5" />}
-              title="Учится вашему бизнесу"
-              text="Загрузите прайс, расписание и FAQ — бот настроится под вашу нишу автоматически."
-            />
-            <Feature
-              icon={<Briefcase className="h-5 w-5" />}
-              title="9 ниш из коробки"
-              text="Салоны красоты, барбершопы, фитнес, клиники, СТО, рестораны, юристы, репетиторы."
+              icon={<UserCog className="h-5 w-5" />}
+              title="Эскалация владельцу"
+              text="Если AI не уверен в ответе — сразу пишет вам в Telegram. Вы всегда в курсе и можете ответить лично."
             />
             <Feature
               icon={<Sparkles className="h-5 w-5" />}
-              title="Эскалация владельцу"
-              text="Когда AI не уверен в ответе — пишет вам в Telegram, чтобы вы ответили лично."
+              title="9 ниш из коробки"
+              text="Салоны, барбершопы, фитнес, клиники, СТО, рестораны, юристы, репетиторы и другое."
+            />
+            <Feature
+              icon={<BarChart3 className="h-5 w-5" />}
+              title="Аналитика в реальном времени"
+              text="Сколько диалогов и записей, конверсия, топ-услуги и какие вопросы клиенты задают чаще всего."
             />
           </div>
         </div>
@@ -216,30 +219,34 @@ export default function LandingPage() {
           <div className="text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-300">Как это работает</span>
             <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
-              От регистрации <br /> до первой записи — 15 минут
+              Запуск проще, чем настройка<br className="hidden sm:block" /> Wi-Fi в кафе
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-              Никакого программирования. Всё через простую админку с подсказками.
+              Три шага. Никакого программирования. Всё через админку с подсказками.
             </p>
           </div>
 
           <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3">
             <Step
               num="01"
-              title="Зарегистрируйтесь"
-              text="Создайте салон за 2 минуты: email, телефон, ниша. Вы сразу попадаете в дашборд."
+              title="Регистрируетесь"
+              text="Почта и пароль — 30 секунд. Сразу попадаете в дашборд и выбираете нишу."
             />
             <Step
               num="02"
-              title="Подключите Telegram-бота"
-              text="Создайте бота через @BotFather (3 клика, инструкция в админке), вставьте токен."
+              title="Подключаете канал"
+              text="Вставляете токен Telegram-бота (3 клика в @BotFather, инструкция в админке) или вешаете виджет на сайт."
             />
             <Step
               num="03"
-              title="Загрузите услуги"
-              text="Добавьте прайс, мастеров и расписание. AI начнёт принимать заявки и записывать клиентов."
+              title="AI начинает отвечать"
+              text="Загружаете прайс и расписание одним файлом — бот сразу отвечает клиентам и записывает на услугу."
             />
           </div>
+
+          <p className="mt-10 text-center text-sm text-slate-500">
+            В среднем салоны запускаются за <span className="font-semibold text-white">12 минут</span>
+          </p>
         </div>
       </section>
 
@@ -248,6 +255,37 @@ export default function LandingPage() {
 
       {/* === Savings calculator === */}
       <SavingsCalculator />
+
+      {/* === Niches === */}
+      <section className="relative py-24">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="text-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-fuchsia-300">9 ниш</span>
+            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+              Готовые пресеты<br className="hidden sm:block" /> под ваш бизнес
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-slate-400">
+              Для каждой ниши — свой системный промпт, шаблоны напоминаний, набор полей записи и FAQ.
+            </p>
+          </div>
+
+          <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-3 sm:grid-cols-3">
+            {Object.values(NICHES).map((n: any) => (
+              <div
+                key={n.key}
+                className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.025] px-4 py-3.5 text-sm text-slate-200 backdrop-blur-sm transition-colors hover:border-white/20 hover:bg-white/[0.05]"
+              >
+                <span className="text-xl leading-none">{n.icon}</span>
+                <span>{n.label}</span>
+              </div>
+            ))}
+          </div>
+
+          <p className="mx-auto mt-10 max-w-2xl text-center text-sm text-slate-400">
+            Не нашли свою? <span className="font-medium text-white">Liva ai настраивается под любую нишу за 1 день</span> — просто оставьте заявку.
+          </p>
+        </div>
+      </section>
 
       {/* === Pricing === */}
       <PricingSection />

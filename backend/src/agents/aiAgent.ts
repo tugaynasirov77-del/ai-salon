@@ -637,9 +637,25 @@ export class AIAgent {
   }
 
   // Скачиваем картинки и формируем blocks для Anthropic Vision (base64 для совместимости с OpenRouter).
+  // Поддерживает HTTP(S) URLs и data:URLs (для inline передачи из widget multipart).
   private async fetchImagesAsBlocks(urls: string[]): Promise<any[]> {
     const blocks: any[] = [];
     for (const url of urls) {
+      // data: URL — парсим напрямую без HTTP
+      if (url.startsWith('data:')) {
+        const m = url.match(/^data:([^;]+);base64,(.+)$/);
+        if (m) {
+          const mediaType = m[1];
+          const data = m[2];
+          const size = Math.floor(data.length * 0.75); // approx base64 → bytes
+          if (size > 5 * 1024 * 1024) {
+            console.warn('[aiAgent.vision] data-url картинка > 5MB пропущена');
+            continue;
+          }
+          blocks.push({ type: 'image', source: { type: 'base64', media_type: mediaType, data } });
+        }
+        continue;
+      }
       try {
         const r = await fetch(url);
         if (!r.ok) continue;

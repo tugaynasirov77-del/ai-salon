@@ -1,14 +1,25 @@
 // Веб-чат widget API: синхронный (request → reply в одном HTTP).
 // Не использует cascadeSender — ответ возвращается прямо в response.
 import { Router } from 'express';
+import multer from 'multer';
 import crypto from 'crypto';
 import prisma from '../db/prisma';
 import { asyncHandler } from '../middleware/errors';
 import { aiAgent } from '../agents/aiAgent';
 import { messageRouter } from '../channels/messageRouter';
+import { transcribeAudioBuffer } from '../utils/whisper';
 import type { IClient, IIncomingMessage, ISalon } from '../../../shared/types';
 
 const router = Router({ mergeParams: true });
+
+// Multer для multipart: image ≤5MB, voice ≤25MB (общий лимит)
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 25 * 1024 * 1024 },
+}).fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'voice', maxCount: 1 },
+]);
 
 // CORS для widget — разрешаем всё (виджет грузится на любом сайте салона)
 router.use((req, res, next) => {
@@ -22,19 +33,23 @@ router.use((req, res, next) => {
   next();
 });
 
-// POST /api/widget/:salonId/message {text, sessionId?, name?, phone?}
+// POST /api/widget/:salonId/message
+// Принимает JSON (text only) или multipart/form-data (text + image + voice)
 router.post(
   '/:salonId/message',
+  upload,
   asyncHandler(async (req, res) => {
     const { salonId } = req.params;
-    const { text, sessionId: incomingSessionId, name, phone } = req.body as {
-      text?: string;
-      sessionId?: string;
-      name?: string;
-      phone?: string;
-    };
-    if (!text || typeof text !== 'string') {
-      res.status(400).json({ error: 'text обязателен' });
+    const text = String(req.body?.text || '').trim();
+    const incomingSessionId = req.body?.sessionId ? String(req.body.sessionId) : undefined;
+    const name = req.body?.name ? String(req.body.name) : undefined;
+    const phone = req.body?.phone ? String(req.body.phone) : undefined;
+    const files = (req.files as { [field: string]: Express.Multer.File[] } | undefined) || {};
+    const imageFile = files.image?.[0];
+    const voiceFile = files.voice?.[0];
+
+    if (!text && !imageFile && !voiceFile) {
+      res.status(400).json({ error: 'нужен text или вложение (image/voice)' });
       return;
     }
     const sessionId = incomingSessionId || crypto.randomUUID();
@@ -45,12 +60,33 @@ router.post(
       return;
     }
 
+    // Транскрибируем голосовое в text
+    let finalText = text;
+    if (voiceFile) {
+      const transcript = await transcribeAudioBuffer(
+        voiceFile.buffer,
+        voiceFile.originalname || 'voice.webm'
+      );
+      if (transcript) {
+        finalText = finalText ? `${finalText} ${transcript}` : transcript;
+      } else if (!finalText) {
+        finalText = '[голосовое — не удалось распознать]';
+      }
+    }
+    if (!finalText && imageFile) finalText = '[фото]';
+
+    // Картинку передаём в aiAgent через data:URL (он умеет такие в fetchImagesAsBlocks)
+    const imageUrls = imageFile
+      ? [`data:${imageFile.mimetype};base64,${imageFile.buffer.toString('base64')}`]
+      : undefined;
+
     const incoming: IIncomingMessage = {
       channel: 'webchat',
       externalUserId: sessionId,
-      text,
+      text: finalText,
       senderName: name,
       phone,
+      imageUrls,
     };
     const client = await messageRouter.findOrCreateClient(salonId, incoming);
 
@@ -65,14 +101,20 @@ router.post(
       });
     }
 
-    const intent = aiAgent.detectIntent(text);
+    const intent = aiAgent.detectIntent(finalText);
+    // В БД сохраняем краткую пометку о вложениях (data-URL не храним — слишком жирно)
+    const dbText = imageFile
+      ? `${finalText} [фото]`.trim()
+      : voiceFile
+      ? `🎙 ${finalText}`
+      : finalText;
     await prisma.message.create({
       data: {
         salonId,
         clientId: client.id,
         channel: 'webchat',
         direction: 'in',
-        text,
+        text: dbText,
         intent,
       },
     });

@@ -110,6 +110,43 @@
         document.getElementById('h-redis').innerHTML = pillHealth(d.health.redis === 'up');
         document.getElementById('h-env').textContent = d.health.env;
 
+        // ── HTTP-метрики ──
+        try {
+          const mr = await fetch('/api/admin/metrics?minutes=60', { headers: { 'X-Admin-Token': token } });
+          const m = await mr.json();
+          document.getElementById('m-reqs').textContent = fmt(m.requests);
+          document.getElementById('m-p50').textContent = m.latency.p50 + ' ms';
+          document.getElementById('m-p95').textContent = m.latency.p95 + ' ms';
+          document.getElementById('m-p99').textContent = m.latency.p99 + ' ms';
+          document.getElementById('m-max').textContent = m.latency.max + ' ms';
+          document.getElementById('m-avg').textContent = m.latency.avg + ' ms';
+          const erPct = (m.errorRate * 100).toFixed(2);
+          const erEl = document.getElementById('m-err-rate');
+          erEl.textContent = erPct + '%';
+          erEl.className = 'big ' + (m.errorRate > 0.05 ? 'err' : m.errorRate > 0.01 ? 'warn' : 'accent');
+          document.getElementById('m-err-total').textContent = fmt(m.errors.total);
+          document.getElementById('m-err-5xx').textContent = fmt(m.errors.by5xx);
+          document.getElementById('m-err-4xx').textContent = fmt(m.errors.by4xx);
+          document.querySelector('#m-top-errors tbody').innerHTML = m.topErrors.length
+            ? m.topErrors.map(function (e) {
+                var cls = e.status >= 500 ? 'err' : 'warn';
+                return '<tr><td><span class="pill ' + cls + '">' + e.status + '</span></td>' +
+                  '<td>' + e.method + '</td><td><code>' + e.path + '</code></td>' +
+                  '<td style="text-align:right;font-weight:600;">' + fmt(e.count) + '</td></tr>';
+              }).join('')
+            : '<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:12px;">нет ошибок 👍</td></tr>';
+          document.querySelector('#m-slowest tbody').innerHTML = m.slowest.length
+            ? m.slowest.map(function (s) {
+                return '<tr><td style="font-weight:600;">' + s.latency + '</td>' +
+                  '<td>' + s.status + '</td><td>' + s.method + '</td>' +
+                  '<td><code>' + s.path + '</code></td>' +
+                  '<td>' + new Date(s.ts).toLocaleTimeString('ru-RU') + '</td></tr>';
+              }).join('')
+            : '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:12px;">—</td></tr>';
+        } catch (e) {
+          console.warn('metrics load failed', e);
+        }
+
         const sr = await fetch('/api/admin/salons?limit=20', { headers: { 'X-Admin-Token': token } });
         const salons = await sr.json();
         const rows = salons.map(function (s) {

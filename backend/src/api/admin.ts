@@ -3,6 +3,7 @@ import { Router } from 'express';
 import prisma from '../db/prisma';
 import redis from '../db/redis';
 import { asyncHandler } from '../middleware/errors';
+import { getMetrics } from '../middleware/metrics';
 
 const router = Router();
 
@@ -205,6 +206,16 @@ router.get(
         counts: s._count,
       }))
     );
+  })
+);
+
+// HTTP-метрики за окно (по умолчанию 60 минут): p50/p95/p99, error rate, top-5 ошибок и медленных
+router.get(
+  '/metrics',
+  asyncHandler(async (req, res) => {
+    const minutes = Math.min(360, Math.max(1, Number(req.query.minutes) || 60));
+    const data = await getMetrics(minutes * 60 * 1000);
+    res.json({ windowMinutes: minutes, ...data });
   })
 );
 

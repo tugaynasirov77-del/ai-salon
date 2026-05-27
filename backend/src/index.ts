@@ -6,6 +6,7 @@ import helmet from 'helmet';
 
 import { apiLimiter, webhookLimiter } from './middleware/rateLimit';
 import { errorHandler, setupGlobalErrorHandlers } from './middleware/errors';
+import { metricsMiddleware, startMetricsCleanup } from './middleware/metrics';
 import { alertInfo, alertError } from './utils/alerter';
 
 import webhooksRouter from './api/webhooks';
@@ -35,6 +36,9 @@ app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 // SMS-провайдеры (sms.ru/smsc) шлют callback в form-encoded
 app.use(express.urlencoded({ extended: false, limit: '1mb' }));
+
+// HTTP-метрики: latency / error rate / top ошибок (для /api/admin/metrics)
+app.use(metricsMiddleware);
 
 // JWT attach — кладёт req.user если есть валидный токен (не падает если нет)
 app.use(attachUser);
@@ -83,6 +87,8 @@ app.listen(PORT, () => {
     console.error('[startup] avito init error:', e);
     alertError('Avito init failed', String(e), 'avito-init');
   });
+
+  startMetricsCleanup();
 
   try {
     startReminderWorker();

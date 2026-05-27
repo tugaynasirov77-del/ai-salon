@@ -99,7 +99,7 @@ export default function AnalyticsPage() {
   return (
     <div>
       <div className="mb-4 flex items-start justify-between gap-4">
-        <PageHeader title="Аналитика" description="Метрики работы бота за выбранный период." />
+        <PageHeader title="Аналитика" description="Метрики работы ИИ-администратора за выбранный период." />
         <div className="flex gap-1 rounded-lg border border-slate-200 p-1 dark:border-slate-800">
           {PERIODS.map((p) => (
             <button

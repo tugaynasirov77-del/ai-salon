@@ -31,7 +31,7 @@ export function PricingSection() {
             </div>
             <div className="mt-2 text-2xl font-semibold text-white">Подключаете сами</div>
             <p className="mt-3 text-sm text-slate-400">
-              Для тех, кто хочет попробовать сам. Регистрация и подключение Telegram-бота — 15 минут по инструкции в админке.
+              Для тех, кто хочет попробовать сам. Регистрация и подключение Telegram-канала — 15 минут по инструкции в админке.
             </p>
 
             <div className="mt-6 flex items-baseline gap-2">
@@ -41,7 +41,7 @@ export function PricingSection() {
             <div className="mt-1 text-sm text-slate-500">Подключение бесплатно</div>
 
             <ul className="mt-6 flex-1 space-y-2.5 text-sm text-slate-300">
-              <Feat>Telegram-бот и веб-чат на сайт</Feat>
+              <Feat>Telegram + веб-чат на сайт</Feat>
               <Feat>1 000 сообщений в месяц</Feat>
               <Feat>AI на Claude — отвечает как живой</Feat>
               <Feat>Все 9 ниш и готовые пресеты</Feat>
@@ -87,7 +87,7 @@ export function PricingSection() {
               <Feat>Подключение Telegram, Авито и YClients под ключ</Feat>
               <Feat>Перенос вашего прайса и расписания</Feat>
               <Feat>Безлимит сообщений первые 3 месяца</Feat>
-              <Feat>Адаптация тона бота под ваш бизнес</Feat>
+              <Feat>Адаптация тона ИИ под ваш бизнес</Feat>
               <Feat>Персональный менеджер на запуске</Feat>
               <Feat>Приоритетная поддержка</Feat>
             </ul>

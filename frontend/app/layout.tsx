@@ -42,6 +42,9 @@ export const metadata: Metadata = {
   },
 };
 
+import { Suspense } from 'react';
+import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -53,6 +56,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>{children}</Providers>
+        <Suspense fallback={null}>
+          <AnalyticsProvider />
+        </Suspense>
       </body>
     </html>
   );

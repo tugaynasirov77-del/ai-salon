@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { LogoMark } from './Logo';
+import { track } from '@/lib/analytics';
 
 /**
  * Появляется после ~600px скролла. Скрывается при достижении футера.
@@ -49,12 +50,14 @@ export function StickyCta() {
         <div className="ml-auto flex shrink-0 items-center gap-2">
           <Link
             href="#pricing"
+            onClick={() => track('cta_pricing_anchor', { location: 'sticky' })}
             className="hidden rounded-lg border border-white/15 bg-white/[0.04] px-3 py-2 text-xs font-medium text-slate-200 hover:bg-white/[0.08] sm:inline-flex"
           >
             Тарифы
           </Link>
           <Link
             href="/register"
+            onClick={() => track('cta_register', { location: 'sticky' })}
             className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-lg bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-3.5 py-2 text-xs font-semibold text-white shadow-[0_0_20px_rgba(139,92,246,0.4)] sm:px-4 sm:text-sm"
           >
             <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />

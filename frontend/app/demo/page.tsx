@@ -4,14 +4,32 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import {
   ArrowLeft, ArrowRight, Send, MessageSquare, Calendar, BarChart3,
-  Users, Sparkles, Globe, Loader2,
+  Users, Sparkles, Globe, Loader2, Paperclip, Mic, Square, X, Play, Pause,
 } from 'lucide-react';
 import { Logo } from '@/components/landing/Logo';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://api.ailiva.ru';
 const DEMO_SALON_ID = 'cmpfhd7ha00001s7ud34xwfmw';
 
-type Msg = { id: string; text: string; from: 'user' | 'bot'; at: Date };
+type Msg = {
+  id: string;
+  text: string;
+  from: 'user' | 'bot';
+  at: Date;
+  imageUrl?: string; // локальный object URL для прикреплённого фото
+  voiceUrl?: string; // локальный object URL для записанного голосового
+};
+
+// Лимиты
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+const MAX_VOICE_SECONDS = 60;
+
+function fmtDuration(sec: number) {
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
 
 const PRESET_INITIAL_DIALOGS = [
   { name: 'Анна К.', initial: 'А', channel: 'Telegram', text: 'Хочу записаться на маникюр в пятницу', time: '12 мин', tone: 'indigo' as const },
@@ -46,10 +64,32 @@ export default function DemoPage() {
   const [sending, setSending] = useState(false);
   const [sessionId, setSessionId] = useState<string>('');
   const [tab, setTab] = useState<'main' | 'dialogs' | 'schedule'>('main');
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const [error, setError] = useState<string | null>(null);
 
+  // Прикреплённое фото
+  const [attachedImage, setAttachedImage] = useState<File | null>(null);
+  const [attachedImageUrl, setAttachedImageUrl] = useState<string | null>(null);
+
+  // Голосовое
+  const [recording, setRecording] = useState(false);
+  const [recordSeconds, setRecordSeconds] = useState(0);
+  const [voiceBlob, setVoiceBlob] = useState<Blob | null>(null);
+  const [voiceUrl, setVoiceUrl] = useState<string | null>(null);
+  const [voicePlaying, setVoicePlaying] = useState(false);
+
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
+  const recordChunksRef = useRef<Blob[]>([]);
+  const recordTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const recordStartRef = useRef<number>(0);
+  const voiceAudioRef = useRef<HTMLAudioElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
   const userMessages = messages.filter(m => m.from === 'user');
   const lastUserMsg = userMessages[userMessages.length - 1];
+  const hasAttachment = !!attachedImage || !!voiceBlob;
+  const canSend = !sending && !recording && (input.trim().length > 0 || hasAttachment);
 
   // Auto-scroll chat
   useEffect(() => {
@@ -57,22 +97,164 @@ export default function DemoPage() {
     if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
   }, [messages, sending]);
 
+  // Очистка ресурсов при размонтировании
+  useEffect(() => {
+    return () => {
+      if (attachedImageUrl) URL.revokeObjectURL(attachedImageUrl);
+      if (voiceUrl) URL.revokeObjectURL(voiceUrl);
+      mediaStreamRef.current?.getTracks().forEach(t => t.stop());
+      if (recordTimerRef.current) clearInterval(recordTimerRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /* ─── Прикрепление фото ─── */
+  function onPickImage(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      setError('Поддерживаются JPEG, PNG и WebP');
+      return;
+    }
+    if (file.size > MAX_IMAGE_BYTES) {
+      setError('Размер фото — не более 5 МБ');
+      return;
+    }
+    setError(null);
+    if (attachedImageUrl) URL.revokeObjectURL(attachedImageUrl);
+    setAttachedImage(file);
+    setAttachedImageUrl(URL.createObjectURL(file));
+  }
+  function removeAttachedImage() {
+    if (attachedImageUrl) URL.revokeObjectURL(attachedImageUrl);
+    setAttachedImage(null);
+    setAttachedImageUrl(null);
+  }
+
+  /* ─── Запись голосового ─── */
+  async function startRecording() {
+    setError(null);
+    if (typeof navigator === 'undefined' || !navigator.mediaDevices?.getUserMedia) {
+      setError('Браузер не поддерживает запись звука');
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaStreamRef.current = stream;
+      const candidates = ['audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus', ''];
+      let mime = '';
+      for (const c of candidates) {
+        if (c === '' || (typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported(c))) {
+          mime = c;
+          break;
+        }
+      }
+      const rec = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
+      recordChunksRef.current = [];
+      rec.ondataavailable = (ev) => {
+        if (ev.data && ev.data.size > 0) recordChunksRef.current.push(ev.data);
+      };
+      rec.onstop = () => {
+        const type = mime || 'audio/webm';
+        const blob = new Blob(recordChunksRef.current, { type });
+        if (voiceUrl) URL.revokeObjectURL(voiceUrl);
+        setVoiceBlob(blob);
+        setVoiceUrl(URL.createObjectURL(blob));
+        mediaStreamRef.current?.getTracks().forEach(t => t.stop());
+        mediaStreamRef.current = null;
+      };
+      mediaRecorderRef.current = rec;
+      rec.start();
+      recordStartRef.current = Date.now();
+      setRecordSeconds(0);
+      setRecording(true);
+      recordTimerRef.current = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - recordStartRef.current) / 1000);
+        setRecordSeconds(elapsed);
+        if (elapsed >= MAX_VOICE_SECONDS) stopRecording();
+      }, 250);
+    } catch (e: any) {
+      setError(e?.name === 'NotAllowedError' ? 'Нужно разрешить доступ к микрофону' : 'Не удалось начать запись');
+      mediaStreamRef.current?.getTracks().forEach(t => t.stop());
+      mediaStreamRef.current = null;
+    }
+  }
+  function stopRecording() {
+    if (recordTimerRef.current) {
+      clearInterval(recordTimerRef.current);
+      recordTimerRef.current = null;
+    }
+    const rec = mediaRecorderRef.current;
+    if (rec && rec.state !== 'inactive') rec.stop();
+    setRecording(false);
+  }
+  function removeVoice() {
+    if (voiceUrl) URL.revokeObjectURL(voiceUrl);
+    setVoiceBlob(null);
+    setVoiceUrl(null);
+    setVoicePlaying(false);
+  }
+  function togglePlayVoice() {
+    const a = voiceAudioRef.current;
+    if (!a) return;
+    if (a.paused) { a.play().catch(() => {}); setVoicePlaying(true); }
+    else { a.pause(); setVoicePlaying(false); }
+  }
+
+  /* ─── Отправка ─── */
   async function send(text?: string) {
     const value = (text ?? input).trim();
-    if (!value || sending) return;
-    const userMsg: Msg = { id: Date.now() + 'u', text: value, from: 'user', at: new Date() };
-    setMessages(m => [...m, userMsg]);
+    const hasAtt = !!attachedImage || !!voiceBlob;
+    if ((!value && !hasAtt) || sending || recording) return;
+    setError(null);
+
+    // Снимок прикреплений
+    const snapshotImage = attachedImage;
+    const snapshotImageUrl = attachedImageUrl;
+    const snapshotVoice = voiceBlob;
+    const snapshotVoiceUrl = voiceUrl;
+
+    setMessages(m => [
+      ...m,
+      {
+        id: Date.now() + 'u',
+        text: value,
+        from: 'user',
+        at: new Date(),
+        imageUrl: snapshotImageUrl ?? undefined,
+        voiceUrl: snapshotVoiceUrl ?? undefined,
+      },
+    ]);
     setInput('');
+    setAttachedImage(null);
+    setAttachedImageUrl(null);
+    setVoiceBlob(null);
+    setVoiceUrl(null);
+    setVoicePlaying(false);
     setSending(true);
+
     try {
-      const body: Record<string, string> = { text: value };
-      if (sessionId) body.sessionId = sessionId;
-      const r = await fetch(`${API_BASE}/api/widget/${DEMO_SALON_ID}/message`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      const data = await r.json();
+      let data: { sessionId?: string; reply?: string };
+      const url = `${API_BASE}/api/widget/${DEMO_SALON_ID}/message`;
+      if (snapshotImage || snapshotVoice) {
+        const fd = new FormData();
+        if (value) fd.append('text', value);
+        if (sessionId) fd.append('sessionId', sessionId);
+        if (snapshotImage) fd.append('image', snapshotImage, snapshotImage.name);
+        if (snapshotVoice) fd.append('voice', snapshotVoice, 'voice.webm');
+        const r = await fetch(url, { method: 'POST', body: fd });
+        data = await r.json();
+      } else {
+        const body: Record<string, string> = { text: value };
+        if (sessionId) body.sessionId = sessionId;
+        const r = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        data = await r.json();
+      }
       if (data.sessionId && !sessionId) setSessionId(data.sessionId);
       setMessages(m => [
         ...m,
@@ -166,13 +348,13 @@ export default function DemoPage() {
 
             <div ref={scrollRef} className="flex h-[480px] flex-col gap-3 overflow-y-auto bg-slate-950/40 px-4 py-5 sm:px-6">
               {messages.map(m => (
-                <Bubble key={m.id} from={m.from} text={m.text} />
+                <Bubble key={m.id} from={m.from} text={m.text} imageUrl={m.imageUrl} voiceUrl={m.voiceUrl} />
               ))}
               {sending && <BubbleTyping />}
             </div>
 
             {/* Suggested prompts */}
-            {userMessages.length === 0 && (
+            {userMessages.length === 0 && !hasAttachment && !recording && (
               <div className="flex flex-wrap gap-2 border-t border-white/[0.06] bg-white/[0.01] px-4 py-3">
                 {SUGGESTED.map(p => (
                   <button
@@ -187,20 +369,125 @@ export default function DemoPage() {
               </div>
             )}
 
+            {/* Error */}
+            {error && (
+              <div className="border-t border-red-400/30 bg-red-500/10 px-4 py-2 text-xs text-red-200">
+                {error}
+              </div>
+            )}
+
+            {/* Recording indicator */}
+            {recording && (
+              <div className="flex items-center gap-3 border-t border-red-400/30 bg-red-500/10 px-4 py-2.5">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75" />
+                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-red-500" />
+                </span>
+                <span className="text-sm font-medium text-red-200">Запись · {fmtDuration(recordSeconds)}</span>
+                <span className="text-[11px] text-red-300/70">макс {fmtDuration(MAX_VOICE_SECONDS)}</span>
+                <button
+                  type="button"
+                  onClick={stopRecording}
+                  className="ml-auto inline-flex items-center gap-1.5 rounded-md border border-red-400/30 bg-red-500/20 px-2.5 py-1 text-xs font-medium text-red-100 hover:bg-red-500/30"
+                >
+                  <Square className="h-3 w-3 fill-current" /> Остановить
+                </button>
+              </div>
+            )}
+
+            {/* Attachments preview */}
+            {(attachedImageUrl || voiceUrl) && (
+              <div className="flex flex-wrap items-center gap-2 border-t border-white/[0.06] bg-white/[0.01] px-4 py-2.5">
+                {attachedImageUrl && (
+                  <div className="relative inline-block">
+                    <img src={attachedImageUrl} alt="Превью" className="h-14 w-14 rounded-lg border border-white/15 object-cover" />
+                    <button
+                      type="button"
+                      onClick={removeAttachedImage}
+                      aria-label="Убрать фото"
+                      className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-slate-800 text-white shadow ring-1 ring-white/10 hover:bg-slate-700"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                )}
+                {voiceUrl && (
+                  <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] py-1 pl-1 pr-2">
+                    <button
+                      type="button"
+                      onClick={togglePlayVoice}
+                      className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-white"
+                      aria-label={voicePlaying ? 'Пауза' : 'Воспроизвести'}
+                    >
+                      {voicePlaying ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
+                    </button>
+                    <span className="text-xs text-slate-300">Голосовое</span>
+                    <audio ref={voiceAudioRef} src={voiceUrl} onEnded={() => setVoicePlaying(false)} onPause={() => setVoicePlaying(false)} preload="auto" />
+                    <button
+                      type="button"
+                      onClick={removeVoice}
+                      aria-label="Удалить голосовое"
+                      className="ml-1 flex h-5 w-5 items-center justify-center rounded-full text-slate-400 hover:bg-white/[0.08] hover:text-slate-200"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
             <form
               onSubmit={(e) => { e.preventDefault(); send(); }}
               className="flex items-center gap-2 border-t border-white/[0.06] bg-white/[0.02] px-4 py-3"
             >
               <input
+                ref={fileInputRef}
+                type="file"
+                accept={ALLOWED_IMAGE_TYPES.join(',')}
+                onChange={onPickImage}
+                className="hidden"
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={sending || recording || !!attachedImage}
+                title={attachedImage ? 'Фото уже прикреплено' : 'Прикрепить фото'}
+                aria-label="Прикрепить фото"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-slate-300 transition-colors hover:bg-white/[0.08] hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <Paperclip className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={recording ? stopRecording : startRecording}
+                disabled={sending || !!voiceBlob}
+                title={voiceBlob ? 'Голосовое уже записано' : recording ? 'Остановить запись' : 'Записать голосовое'}
+                aria-label={recording ? 'Остановить запись' : 'Записать голосовое'}
+                className={
+                  'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border transition-colors disabled:cursor-not-allowed disabled:opacity-50 ' +
+                  (recording
+                    ? 'border-red-400/40 bg-red-500/80 text-white hover:bg-red-500'
+                    : 'border-white/10 bg-white/[0.04] text-slate-300 hover:bg-white/[0.08] hover:text-white')
+                }
+              >
+                {recording ? <Square className="h-4 w-4 fill-current" /> : <Mic className="h-4 w-4" />}
+              </button>
+              <input
                 value={input}
                 onChange={e => setInput(e.target.value)}
-                placeholder="Напишите сообщение…"
-                disabled={sending}
+                placeholder={
+                  recording
+                    ? 'Идёт запись голосового…'
+                    : hasAttachment
+                    ? 'Добавьте комментарий (необязательно)…'
+                    : 'Напишите сообщение…'
+                }
+                disabled={sending || recording}
                 className="flex-1 rounded-lg border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-400/30 disabled:opacity-60"
               />
               <button
                 type="submit"
-                disabled={sending || !input.trim()}
+                disabled={!canSend}
                 className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 via-violet-500 to-fuchsia-500 text-white shadow-[0_0_20px_rgba(139,92,246,0.4)] transition-transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
               >
                 {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
@@ -285,13 +572,23 @@ export default function DemoPage() {
 
 /* ─────────── Chat bubbles ─────────── */
 
-function Bubble({ from, text }: { from: 'user' | 'bot'; text: string }) {
+function Bubble({ from, text, imageUrl, voiceUrl }: { from: 'user' | 'bot'; text: string; imageUrl?: string; voiceUrl?: string }) {
   if (from === 'user') {
     return (
-      <div className="flex justify-end">
-        <div className="max-w-[80%] rounded-2xl rounded-br-sm bg-gradient-to-br from-indigo-500 to-violet-500 px-4 py-2.5 text-sm leading-relaxed text-white shadow-lg">
-          {text}
-        </div>
+      <div className="flex flex-col items-end gap-1.5">
+        {imageUrl && (
+          <a href={imageUrl} target="_blank" rel="noreferrer" className="block max-w-[80%]">
+            <img src={imageUrl} alt="Фото" className="max-h-48 rounded-2xl border border-white/10 object-cover" />
+          </a>
+        )}
+        {voiceUrl && (
+          <audio controls src={voiceUrl} className="h-9 max-w-[80%] rounded-full" />
+        )}
+        {text && (
+          <div className="max-w-[80%] whitespace-pre-wrap rounded-2xl rounded-br-sm bg-gradient-to-br from-indigo-500 to-violet-500 px-4 py-2.5 text-sm leading-relaxed text-white shadow-lg">
+            {text}
+          </div>
+        )}
       </div>
     );
   }

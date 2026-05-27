@@ -64,9 +64,9 @@ export default function OGImage() {
               color: 'transparent',
             }}
           >
-            <div style={{ display: 'flex' }}>Бот, который записывает</div>
+            <div style={{ display: 'flex' }}>ИИ-администратор,</div>
             <div style={{ display: 'flex' }}>
-              клиентов&nbsp;
+              который&nbsp;
               <span
                 style={{
                   backgroundImage:
@@ -75,7 +75,7 @@ export default function OGImage() {
                   color: 'transparent',
                 }}
               >
-                за вас
+                не спит
               </span>
             </div>
           </div>

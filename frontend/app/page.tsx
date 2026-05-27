@@ -83,7 +83,7 @@ export default function LandingPage() {
           </div>
 
           <h1 className="mx-auto mt-8 max-w-5xl bg-gradient-to-b from-white via-white to-white/60 bg-clip-text text-center text-5xl font-semibold tracking-tight text-transparent sm:text-7xl">
-            <span className="block">Ваш администратор,</span>
+            <span className="block">Ваш ИИ-администратор,</span>
             <span className="block">
               который{' '}
               <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
@@ -152,7 +152,7 @@ export default function LandingPage() {
           <div className="mt-14 grid gap-5 md:grid-cols-3">
             <PainCard
               pain="Клиент написал в 22:30 — ответили утром. Он ушёл к конкуренту."
-              gain="Бот отвечает за 3 секунды в любое время суток."
+              gain="ИИ отвечает за 3 секунды в любое время суток."
             />
             <PainCard
               pain="Администратор за 45 000 ₽ болеет, в отпуске, увольняется."
@@ -175,7 +175,7 @@ export default function LandingPage() {
               Всё, что делает живой администратор<br className="hidden sm:block" /> — и больше
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-              Не сценарный бот, а AI, который понимает контекст, записывает на услугу и доводит клиента до визита.
+              Не сценарий «если—то», а ИИ-агент, который понимает контекст, записывает на услугу и доводит клиента до визита.
             </p>
           </div>
           <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:grid-cols-3">
@@ -235,12 +235,12 @@ export default function LandingPage() {
             <Step
               num="02"
               title="Подключаете канал"
-              text="Вставляете токен Telegram-бота (3 клика в @BotFather, инструкция в админке) или вешаете виджет на сайт."
+              text="Вставляете токен Telegram-канала (3 клика в @BotFather, инструкция в админке) или вешаете виджет на сайт."
             />
             <Step
               num="03"
               title="AI начинает отвечать"
-              text="Загружаете прайс и расписание одним файлом — бот сразу отвечает клиентам и записывает на услугу."
+              text="Загружаете прайс и расписание одним файлом — ИИ сразу отвечает клиентам и записывает на услугу."
             />
           </div>
 
@@ -269,12 +269,12 @@ export default function LandingPage() {
           <div className="mt-12 grid gap-4 md:grid-cols-3">
             <CaseStat value="24/7" label="Отвечают клиентам круглосуточно впервые за 6 лет работы" />
             <CaseStat value="+38%" label="Рост заявок в нерабочие часы за первый месяц" />
-            <CaseStat value="12 мин" label="Заняло подключение бота с нуля до первого ответа клиенту" />
+            <CaseStat value="12 мин" label="Заняло подключение ИИ-администратора с нуля до первого ответа клиенту" />
           </div>
 
           <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.025] p-8 backdrop-blur-sm sm:p-10">
             <p className="text-xl leading-relaxed text-slate-200 sm:text-2xl">
-              «Раньше мы теряли заявки после 19:00 и по воскресеньям. Сейчас бот записывает, а я просто приезжаю и работаю.»
+              «Раньше мы теряли заявки после 19:00 и по воскресеньям. Сейчас ИИ записывает, а я просто приезжаю и работаю.»
             </p>
             <div className="mt-6 flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500/40 to-fuchsia-500/40 text-sm font-semibold text-white">С</div>
@@ -368,16 +368,16 @@ export default function LandingPage() {
           </div>
           <div className="mt-12 space-y-3">
             <FaqItem q="Сколько времени занимает подключение?">
-              15 минут на тарифе Self-Start — регистрация, токен Telegram-бота и загрузка прайса. На тарифе «Под ключ» наш менеджер делает всё за вас за 1 день.
+              15 минут на тарифе Self-Start — регистрация, токен Telegram-канала и загрузка прайса. На тарифе «Под ключ» наш менеджер делает всё за вас за 1 день.
             </FaqItem>
             <FaqItem q="Нужно ли быть программистом?">
-              Нет. Нужен только токен Telegram-бота — мы покажем, где его взять (3 клика в @BotFather). Услуги, мастеров и расписание заносятся через простые формы, как в Excel.
+              Нет. Нужен только токен Telegram-канала — мы покажем, где его взять (3 клика в @BotFather). Услуги, мастеров и расписание заносятся через простые формы, как в Excel.
             </FaqItem>
             <FaqItem q="AI правда понимает живой язык?">
-              Да. Мы используем Claude — одну из самых сильных AI-моделей в мире. Бот понимает опечатки, сленг, нестандартные вопросы и контекст диалога. Это не сценарное дерево «если—то».
+              Да. Мы используем Claude — одну из самых сильных AI-моделей в мире. ИИ понимает опечатки, сленг, нестандартные вопросы и контекст диалога. Это не сценарное дерево «если—то».
             </FaqItem>
             <FaqItem q="Что, если AI ответит неправильно?">
-              Если бот не уверен — он сразу пишет вам в Telegram, чтобы вы ответили лично. Все диалоги вы видите в админке и можете вмешаться в любой момент.
+              Если ИИ не уверен — он сразу пишет вам в Telegram, чтобы вы ответили лично. Все диалоги вы видите в админке и можете вмешаться в любой момент.
             </FaqItem>
             <FaqItem q="Работает ли с моим YClients?">
               Да. На тарифе «Под ключ» менеджер всё подключит. На Self-Start — введёте логин/пароль YClients в админке, выберете филиал, и Liva ai сама синхронизирует услуги, мастеров и расписание.
@@ -413,7 +413,7 @@ export default function LandingPage() {
               Попробуйте, как это<br className="hidden sm:block" /> работает изнутри
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-              Откройте интерактивное демо — слева вы пишете боту как клиент, справа сразу видите, что отображается у владельца в админке. Без регистрации.
+              Откройте интерактивное демо — слева вы пишете ИИ-администратору как клиент, справа сразу видите, что отображается у владельца в админке. Без регистрации.
             </p>
           </div>
 
@@ -453,7 +453,7 @@ export default function LandingPage() {
           </Link>
 
           <p className="mt-6 text-center text-xs text-slate-500">
-            Или нажмите на кружок справа внизу — там тот же бот в формате виджета для сайта.
+            Или нажмите на кружок справа внизу — там тот же ИИ в формате виджета для сайта.
           </p>
         </div>
         <DemoWidget />

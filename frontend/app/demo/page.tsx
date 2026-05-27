@@ -139,7 +139,7 @@ export default function DemoPage() {
           Слева вы клиент. Справа — что видит владелец.
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-          Напишите боту как обычный клиент — спросите цену услуги, попросите записаться. Ваше сообщение появится в админке справа в реальном времени, точно так же, как у владельца на телефоне.
+          Напишите ИИ-администратору как обычный клиент — спросите цену услуги, попросите записаться. Ваше сообщение появится в админке справа в реальном времени, точно так же, как у владельца на телефоне.
         </p>
       </section>
 
@@ -243,7 +243,7 @@ export default function DemoPage() {
 
         {/* Hint */}
         <p className="mx-auto mt-6 max-w-3xl text-center text-sm text-slate-500">
-          Виджет ниже справа — это тот же самый бот, только в режиме floating-chat для встраивания на ваш сайт.
+          Виджет ниже справа — это тот же самый ИИ, только в режиме floating-chat для встраивания на ваш сайт.
         </p>
       </section>
 
@@ -255,7 +255,7 @@ export default function DemoPage() {
             <div className="relative">
               <Sparkles className="mx-auto h-8 w-8 text-violet-300" />
               <h2 className="mt-4 bg-gradient-to-b from-white to-white/70 bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl">
-                Понравилось? Запустите такой же бот<br className="hidden sm:block" /> для своего бизнеса за 15 минут
+                Понравилось? Запустите такого же ИИ-администратора<br className="hidden sm:block" /> для своего бизнеса за 15 минут
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-slate-300">
                 Первая 1 000 сообщений — бесплатно. Без карты. Отмена в один клик.

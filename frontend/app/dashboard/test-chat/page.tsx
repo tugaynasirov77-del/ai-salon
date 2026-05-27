@@ -103,7 +103,7 @@ export default function TestChatPage() {
               <div className="text-base font-medium text-slate-700 dark:text-slate-200">Поговорите с AI как клиент</div>
               <div className="mt-1 max-w-md text-sm text-slate-500">
                 Напишите «Сколько стоит стрижка?» или «Запишите меня на завтра в 14:00» —
-                и посмотрите, что ответит бот вашим клиентам.
+                и посмотрите, что ответит ИИ вашим клиентам.
               </div>
             </div>
           ) : (

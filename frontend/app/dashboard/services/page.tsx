@@ -144,7 +144,7 @@ export default function ServicesPage() {
       <div className="mb-4 flex items-start justify-between gap-4">
         <PageHeader
           title="Услуги"
-          description="Прайс-лист, который AI предлагает клиентам при записи. Без услуг бот не сможет оформлять записи."
+          description="Прайс-лист, который ИИ-администратор предлагает клиентам при записи. Без услуг ИИ не сможет оформлять записи."
         />
         <Button onClick={openCreate}>
           <Plus className="h-4 w-4" />
@@ -168,7 +168,7 @@ export default function ServicesPage() {
             </div>
             <div className="mb-1 text-base font-medium text-slate-700 dark:text-slate-200">Пока нет услуг</div>
             <div className="mb-4 max-w-sm text-sm text-slate-500">
-              Добавьте хотя бы одну услугу — без этого бот не сможет предлагать запись клиентам.
+              Добавьте хотя бы одну услугу — без этого ИИ не сможет предлагать запись клиентам.
             </div>
             <Button onClick={openCreate}>
               <Plus className="h-4 w-4" />
@@ -222,7 +222,7 @@ export default function ServicesPage() {
                         <button
                           onClick={() => toggleActiveMut.mutate(s)}
                           className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium hover:bg-slate-100 dark:hover:bg-slate-800"
-                          title={s.isActive ? 'Скрыть от бота' : 'Показать боту'}
+                          title={s.isActive ? 'Скрыть от ИИ' : 'Показать ИИ'}
                         >
                           {s.isActive ? (
                             <>
@@ -371,7 +371,7 @@ export default function ServicesPage() {
         }
       >
         <div className="text-sm text-slate-600 dark:text-slate-300">
-          Услуга <b>«{confirmDelete?.name}»</b> будет удалена. Бот перестанет её предлагать. Существующие записи останутся.
+          Услуга <b>«{confirmDelete?.name}»</b> будет удалена. ИИ перестанет её предлагать. Существующие записи останутся.
         </div>
       </Modal>
     </div>

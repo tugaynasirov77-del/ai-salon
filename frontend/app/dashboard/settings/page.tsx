@@ -162,13 +162,13 @@ function ChannelsTab({ salonId, salon, refetch, notify }: TabProps) {
 
   return (
     <Card>
-      <p className="mb-4 text-xs text-slate-500">Без подключения хотя бы одного канала бот не сможет принимать сообщения.</p>
+      <p className="mb-4 text-xs text-slate-500">Без подключения хотя бы одного канала ИИ-администратор не сможет принимать сообщения.</p>
 
       {/* Telegram */}
       <div className="mb-5 rounded-lg border border-slate-200 p-4 dark:border-slate-800">
         <ChannelHeader icon={Send} title="Telegram" status={<StatusPill ok={tgOn} />} />
         <p className="mb-3 text-xs text-slate-500">
-          Создайте бота через <code className="rounded bg-slate-100 px-1 dark:bg-slate-800">@BotFather</code>, вставьте токен.
+          Создайте Telegram-канал через <code className="rounded bg-slate-100 px-1 dark:bg-slate-800">@BotFather</code> и вставьте токен.
         </p>
         {tgOn ? (
           <div className="flex justify-end">
@@ -180,7 +180,7 @@ function ChannelsTab({ salonId, salon, refetch, notify }: TabProps) {
         ) : (
           <div className="flex flex-wrap items-end gap-2">
             <div className="flex-1 min-w-[260px]">
-              <Label htmlFor="tg-token">Токен бота</Label>
+              <Label htmlFor="tg-token">Токен Telegram-канала</Label>
               <Input id="tg-token" type="password" value={tgToken} onChange={(e) => setTgToken(e.target.value)} placeholder="123456789:ABCDEF..." />
             </div>
             <Button onClick={() => tgConnect.mutate()} disabled={!tgToken.trim() || tgConnect.isPending}>
@@ -282,7 +282,7 @@ function YclientsCard({ salonId, salon, refetch, notify }: TabProps) {
     <div className="rounded-lg border border-slate-200 p-4 dark:border-slate-800">
       <ChannelHeader icon={CalendarIcon} title="YClients" status={<StatusPill ok={yclientsConnected} />} />
       <p className="mb-3 text-xs text-slate-500">
-        Интеграция с CRM YClients. Бот будет видеть ваши услуги, мастеров и расписание из YClients.
+        Интеграция с CRM YClients. ИИ-администратор будет видеть ваши услуги, мастеров и расписание из YClients.
       </p>
 
       {yclientsConnected ? (
@@ -373,7 +373,7 @@ function EscalationTab({ salonId, salon, refetch, notify }: TabProps) {
       <ChannelHeader icon={Bell} title="Эскалация владельцу" />
       <p className="mb-3 text-xs text-slate-500">
         Telegram chat_id, куда AI напишет, если не уверен в ответе или клиент попросил человека.
-        Узнать ваш chat_id: напишите боту <code className="rounded bg-slate-100 px-1 dark:bg-slate-800">@userinfobot</code> в Telegram.
+        Узнать ваш chat_id: напишите Telegram-сервису <code className="rounded bg-slate-100 px-1 dark:bg-slate-800">@userinfobot</code>.
       </p>
       <div className="flex flex-wrap items-end gap-2">
         <div className="flex-1 min-w-[240px]">

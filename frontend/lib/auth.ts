@@ -66,6 +66,24 @@ export async function apiChangePassword(oldPassword: string, newPassword: string
   return httpPost<{ ok: boolean }>('/api/auth/change-password', { oldPassword, newPassword });
 }
 
+/**
+ * Запрос на восстановление пароля. Бэкенд всегда отвечает 200 (anti-enumeration),
+ * поэтому ошибки на этом запросе бросаются только на сетевых проблемах.
+ * При успехе — на указанный email отправляется ссылка вида
+ * https://ailiva.ru/reset-password?token=... (TTL 1 час).
+ */
+export async function apiForgotPassword(email: string): Promise<{ ok: boolean }> {
+  return httpPost<{ ok: boolean }>('/api/auth/forgot-password', { email });
+}
+
+/**
+ * Установить новый пароль по токену из письма. Минимум 6 символов.
+ * После успеха токен инвалидируется и больше не работает.
+ */
+export async function apiResetPassword(token: string, newPassword: string): Promise<{ ok: boolean }> {
+  return httpPost<{ ok: boolean }>('/api/auth/reset-password', { token, newPassword });
+}
+
 // Удобно: есть ли токен (синхронно)
 export function hasToken(): boolean {
   if (typeof window === 'undefined') return false;

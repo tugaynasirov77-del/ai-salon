@@ -253,40 +253,6 @@ export default function LandingPage() {
       {/* === Comparison === */}
       <ComparisonTable />
 
-      {/* === Case study === */}
-      <section className="relative py-24">
-        <div className="mx-auto max-w-5xl px-4">
-          <div className="text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              Первый клиент пилота
-            </span>
-            <h2 className="mt-5 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
-              «Гараж 161» — автосервис,<br className="hidden sm:block" /> который перестал терять заявки ночью
-            </h2>
-          </div>
-
-          <div className="mt-12 grid gap-4 md:grid-cols-3">
-            <CaseStat value="24/7" label="Отвечают клиентам круглосуточно впервые за 6 лет работы" />
-            <CaseStat value="+38%" label="Рост заявок в нерабочие часы за первый месяц" />
-            <CaseStat value="12 мин" label="Заняло подключение ИИ-администратора с нуля до первого ответа клиенту" />
-          </div>
-
-          <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.025] p-8 backdrop-blur-sm sm:p-10">
-            <p className="text-xl leading-relaxed text-slate-200 sm:text-2xl">
-              «Раньше мы теряли заявки после 19:00 и по воскресеньям. Сейчас ИИ записывает, а я просто приезжаю и работаю.»
-            </p>
-            <div className="mt-6 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500/40 to-fuchsia-500/40 text-sm font-semibold text-white">С</div>
-              <div>
-                <div className="text-sm font-medium text-white">Сергей</div>
-                <div className="text-xs text-slate-400">основатель автосервиса «Гараж 161», Ростов-на-Дону</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* === Savings calculator === */}
       <SavingsCalculator />
 
@@ -542,17 +508,6 @@ function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; 
       </div>
       <h3 className="mt-5 text-base font-semibold text-white">{title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-slate-400">{text}</p>
-    </div>
-  );
-}
-
-function CaseStat({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-7 backdrop-blur-sm">
-      <div className="bg-gradient-to-r from-indigo-300 via-violet-300 to-fuchsia-300 bg-clip-text text-5xl font-semibold tracking-tight text-transparent sm:text-6xl">
-        {value}
-      </div>
-      <p className="mt-4 text-sm leading-relaxed text-slate-400">{label}</p>
     </div>
   );
 }

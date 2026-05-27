@@ -406,20 +406,55 @@ export default function LandingPage() {
 
       {/* === Demo === */}
       <section id="demo" className="relative py-24">
-        <div className="mx-auto max-w-4xl px-4 text-center">
-          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-fuchsia-300">Демо</span>
-          <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
-            Попробуйте прямо <br /> сейчас
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-            Виджет демо-салона работает на этой странице. Нажмите на кружок справа внизу и напишите боту любой вопрос — он ответит как живой администратор.
-          </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3 text-xs">
-            <Channel icon={<Send className="h-4 w-4" />} label="Telegram" tone="indigo" />
-            <Channel icon={<Globe className="h-4 w-4" />} label="Веб-чат" tone="emerald" />
-            <Channel icon={<Briefcase className="h-4 w-4" />} label="Авито" tone="orange" />
-            <Channel icon={<Calendar className="h-4 w-4" />} label="YClients" tone="cyan" />
+        <div className="mx-auto max-w-5xl px-4">
+          <div className="text-center">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-fuchsia-300">Демо</span>
+            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+              Попробуйте, как это<br className="hidden sm:block" /> работает изнутри
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-slate-400">
+              Откройте интерактивное демо — слева вы пишете боту как клиент, справа сразу видите, что отображается у владельца в админке. Без регистрации.
+            </p>
           </div>
+
+          <Link
+            href="/demo"
+            className="group relative mx-auto mt-12 block max-w-3xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-indigo-900/40 via-violet-900/30 to-fuchsia-900/40 p-1 transition-transform hover:scale-[1.01]"
+          >
+            <div className="rounded-[22px] bg-slate-950/70 p-8 sm:p-12">
+              <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-stretch sm:justify-between sm:gap-10">
+                <div className="flex-1 text-center sm:text-left">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-200">
+                    <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" /></span>
+                    Реальный AI на Claude
+                  </div>
+                  <div className="mt-4 text-2xl font-semibold text-white sm:text-3xl">
+                    Открыть полное демо
+                  </div>
+                  <p className="mt-2 text-sm text-slate-400">
+                    Чат + админка владельца на одном экране. Ваш диалог появится в админке в реальном времени.
+                  </p>
+                </div>
+                <div className="flex shrink-0 items-center gap-3">
+                  <span className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-transform group-hover:scale-[1.03]">
+                    Открыть демо
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs sm:justify-start">
+                <Channel icon={<Send className="h-4 w-4" />} label="Telegram" tone="indigo" />
+                <Channel icon={<Globe className="h-4 w-4" />} label="Веб-чат" tone="emerald" />
+                <Channel icon={<Briefcase className="h-4 w-4" />} label="Авито" tone="orange" />
+                <Channel icon={<Calendar className="h-4 w-4" />} label="YClients" tone="cyan" />
+              </div>
+            </div>
+          </Link>
+
+          <p className="mt-6 text-center text-xs text-slate-500">
+            Или нажмите на кружок справа внизу — там тот же бот в формате виджета для сайта.
+          </p>
         </div>
         <DemoWidget />
       </section>

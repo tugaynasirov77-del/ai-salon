@@ -2,25 +2,22 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { ArrowRight, X } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { LogoMark } from './Logo';
 
-const STORAGE_KEY = 'liva_sticky_cta_dismissed_v1';
-
 /**
- * Появляется после ~600px скролла. Скрывается при достижении футера и
- * запоминается крестик в localStorage чтобы не приставать к тем кто закрыл.
+ * Появляется после ~600px скролла. Скрывается при достижении футера.
+ * Без крестика — это конверсионный элемент, постоянно доступен в пределах
+ * скролла. Старый ключ liva_sticky_cta_dismissed_v1 в localStorage больше
+ * не используется (можно почистить вручную, но не обязательно).
  */
 export function StickyCta() {
   const [visible, setVisible] = useState(false);
-  const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    if (localStorage.getItem(STORAGE_KEY) === '1') {
-      setDismissed(true);
-      return;
-    }
+    // Чистим устаревший флаг dismiss, если он остался у пользователя
+    try { localStorage.removeItem('liva_sticky_cta_dismissed_v1'); } catch { /* ignore */ }
     function onScroll() {
       const y = window.scrollY;
       // Скрываем, если у самого верха или возле футера
@@ -31,13 +28,6 @@ export function StickyCta() {
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  function dismiss() {
-    setDismissed(true);
-    try { localStorage.setItem(STORAGE_KEY, '1'); } catch { /* ignore */ }
-  }
-
-  if (dismissed) return null;
 
   return (
     <div
@@ -73,13 +63,6 @@ export function StickyCta() {
           </Link>
         </div>
 
-        <button
-          onClick={dismiss}
-          aria-label="Скрыть"
-          className="shrink-0 rounded p-1 text-slate-500 transition-colors hover:bg-white/[0.06] hover:text-slate-300"
-        >
-          <X className="h-3.5 w-3.5" />
-        </button>
       </div>
     </div>
   );

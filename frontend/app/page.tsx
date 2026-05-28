@@ -44,7 +44,7 @@ export default function LandingPage() {
         {/* Top glow */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(56,189,248,0.10),transparent_60%)]" />
         {/* Neural grid */}
-        <div className="liva-grid absolute inset-0 opacity-60" />
+        <div className="liva-grid absolute inset-0 opacity-35" />
       </div>
 
       {/* === Header === */}
@@ -698,7 +698,7 @@ function InteractiveMockup() {
     const r = ref.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width - 0.5; // -0.5..0.5
     const py = (e.clientY - r.top) / r.height - 0.5;
-    setTilt({ rx: -py * 6, ry: px * 8 }); // мягкий наклон до ~6-8deg
+    setTilt({ rx: -py * 10, ry: px * 13 }); // наклон до ~10-13deg — больше глубины
   }
   function onLeave() {
     setTilt({ rx: 0, ry: 0 });
@@ -714,7 +714,7 @@ function InteractiveMockup() {
         onMouseMove={onMove}
         onMouseLeave={onLeave}
         className="relative"
-        style={{ perspective: '1400px' }}
+        style={{ perspective: '1000px' }}
       >
         {/* Float layer (только drift по Y) */}
         <div className="liva-float">
@@ -729,7 +729,7 @@ function InteractiveMockup() {
             <DashboardMockup />
 
             {/* Floating mini-windows — глубина через translateZ на внешнем слое */}
-            <FloatCard className="absolute -left-4 -top-6 hidden w-[230px] sm:block" depth={60} delay="0s">
+            <FloatCard className="absolute -left-8 -top-8 hidden w-[230px] sm:block" depth={120} delay="0s">
               <div className="flex items-center gap-2.5">
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-300 ring-1 ring-inset ring-emerald-400/30">
                   <Check className="h-4 w-4" />
@@ -741,7 +741,7 @@ function InteractiveMockup() {
               </div>
             </FloatCard>
 
-            <FloatCard className="absolute -right-4 top-10 hidden w-[250px] lg:block" depth={90} delay="-2s">
+            <FloatCard className="absolute -right-8 top-8 hidden w-[250px] lg:block" depth={180} delay="-2s">
               <div className="flex items-start gap-2.5">
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-[11px] font-semibold text-white">К</span>
                 <div className="min-w-0">
@@ -753,7 +753,7 @@ function InteractiveMockup() {
               </div>
             </FloatCard>
 
-            <FloatCard className="absolute -bottom-6 left-12 hidden w-[240px] md:block" depth={50} delay="-4s">
+            <FloatCard className="absolute -bottom-8 left-10 hidden w-[240px] md:block" depth={100} delay="-4s">
               <div className="flex items-center gap-2.5">
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-cyan-500/15 text-cyan-300 ring-1 ring-inset ring-cyan-400/30">
                   <BellRing className="h-4 w-4" />

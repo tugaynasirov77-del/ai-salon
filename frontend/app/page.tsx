@@ -85,10 +85,10 @@ export default function LandingPage() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-fuchsia-400 opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-fuchsia-500" />
             </span>
-            <span>AI-администратор для малого бизнеса</span>
+            <span>ИИ-администратор для малого бизнеса</span>
           </div>
 
-          <h1 className="mx-auto mt-8 max-w-5xl bg-gradient-to-b from-white via-white to-white/60 bg-clip-text text-center text-5xl font-semibold tracking-tight text-transparent sm:text-7xl">
+          <h1 className="mx-auto mt-8 max-w-5xl text-balance bg-gradient-to-b from-white via-white to-white/60 bg-clip-text text-center text-[2rem] font-semibold leading-tight tracking-tight text-transparent sm:text-6xl lg:text-7xl">
             <span className="block">Ваш ИИ-администратор,</span>
             <span className="block">
               который{' '}

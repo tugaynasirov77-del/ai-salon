@@ -132,6 +132,30 @@ body {
 }
 .liva-float { animation: liva-float 6s ease-in-out infinite; }
 
+/* ---------- Демо-чат: печатающие точки + всплытие пузыря ---------- */
+@keyframes liva-typing {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-3px); opacity: 1; }
+}
+.liva-typing-dot { animation: liva-typing 1.2s infinite; }
+
+@keyframes liva-pop {
+  0% { opacity: 0; transform: translateY(6px) scale(0.97); }
+  100% { opacity: 1; transform: none; }
+}
+
+/* ---------- Прорисовка линии графика в Hero-мокапе ---------- */
+@keyframes liva-draw {
+  from { stroke-dashoffset: 700; }
+  to { stroke-dashoffset: 0; }
+}
+.liva-draw-path {
+  stroke-dasharray: 700;
+  stroke-dashoffset: 700;
+  animation: liva-draw 2s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .liva-aurora, .liva-aurora-2, .liva-grid, .liva-float { animation: none; }
+  .liva-aurora, .liva-aurora-2, .liva-grid, .liva-float, .liva-typing-dot { animation: none; }
+  .liva-draw-path { stroke-dashoffset: 0; animation: none; }
 }

@@ -28,6 +28,8 @@ import { ComparisonTable } from '@/components/landing/ComparisonTable';
 import { StickyCta } from '@/components/landing/StickyCta';
 import { ScrollTracker } from '@/components/analytics/ScrollTracker';
 import { RevealInit } from '@/components/landing/RevealInit';
+import { CountUp } from '@/components/landing/CountUp';
+import { TypingDemo } from '@/components/landing/TypingDemo';
 
 export default function LandingPage() {
   return (
@@ -191,33 +193,38 @@ export default function LandingPage() {
             onClick={() => track('cta_demo', { location: 'demo_card' })}
             className="border-gradient reveal group relative mx-auto mt-12 block max-w-3xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-indigo-900/40 via-violet-900/30 to-fuchsia-900/40 p-1 transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_20px_70px_-20px_rgba(56,189,248,0.5)]"
           >
-            <div className="relative rounded-[22px] bg-slate-950/70 p-8 sm:p-12">
-              <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-stretch sm:justify-between sm:gap-10">
-                <div className="flex-1 text-center sm:text-left">
+            <div className="relative rounded-[22px] bg-slate-950/70 p-6 sm:p-10">
+              <div className="grid items-center gap-8 sm:grid-cols-2 sm:gap-10">
+                {/* Живой печатающийся чат */}
+                <div className="order-2 sm:order-1">
+                  <TypingDemo />
+                </div>
+
+                {/* Текст + CTA */}
+                <div className="order-1 text-center sm:order-2 sm:text-left">
                   <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-200">
                     <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" /></span>
                     Реальный AI на Claude
                   </div>
                   <div className="mt-4 text-2xl font-semibold text-white sm:text-3xl">
-                    Открыть полное демо
+                    Так выглядит диалог с клиентом
                   </div>
                   <p className="mt-2 text-sm text-slate-400">
-                    Чат + админка владельца на одном экране. Ваш диалог появится в админке в реальном времени.
+                    Слева — живой пример. В полном демо вы сами пишете ИИ-администратору, а справа в реальном времени видите, что появляется у владельца в админке.
                   </p>
-                </div>
-                <div className="flex shrink-0 items-center gap-3">
-                  <span className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-transform group-hover:scale-[1.03]">
-                    Открыть демо
+
+                  <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs sm:justify-start">
+                    <Channel icon={<Send className="h-3.5 w-3.5" />} label="Telegram" tone="indigo" />
+                    <Channel icon={<Globe className="h-3.5 w-3.5" />} label="Веб-чат" tone="emerald" />
+                    <Channel icon={<Briefcase className="h-3.5 w-3.5" />} label="Авито" tone="orange" />
+                    <Channel icon={<Calendar className="h-3.5 w-3.5" />} label="YClients" tone="cyan" />
+                  </div>
+
+                  <span className="mt-7 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-transform group-hover:scale-[1.03]">
+                    Открыть полное демо
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                   </span>
                 </div>
-              </div>
-
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs sm:justify-start">
-                <Channel icon={<Send className="h-4 w-4" />} label="Telegram" tone="indigo" />
-                <Channel icon={<Globe className="h-4 w-4" />} label="Веб-чат" tone="emerald" />
-                <Channel icon={<Briefcase className="h-4 w-4" />} label="Авито" tone="orange" />
-                <Channel icon={<Calendar className="h-4 w-4" />} label="YClients" tone="cyan" />
               </div>
             </div>
           </Link>
@@ -870,10 +877,10 @@ function DashboardMockup() {
 
           {/* Metrics */}
           <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <MockMetric label="Записей" value="128" trend="+18%" tone="emerald" />
-            <MockMetric label="Выручка" value="247 500 ₽" trend="+24%" tone="emerald" />
-            <MockMetric label="Конверсия" value="42%" trend="+6%" tone="indigo" />
-            <MockMetric label="Сообщений" value="1 284" trend="" tone="violet" />
+            <MockMetric label="Записей" to={128} trend="+18%" tone="emerald" />
+            <MockMetric label="Выручка" to={247500} format={(n) => `${Math.round(n).toLocaleString('ru-RU')} ₽`} trend="+24%" tone="emerald" />
+            <MockMetric label="Конверсия" to={42} format={(n) => `${Math.round(n)}%`} trend="+6%" tone="indigo" />
+            <MockMetric label="Сообщений" to={1284} trend="" tone="violet" />
           </div>
 
           {/* Body row */}
@@ -893,6 +900,7 @@ function DashboardMockup() {
                   fill="url(#mock-grad)"
                 />
                 <path
+                  className="liva-draw-path"
                   d="M0,75 C30,72 50,55 75,55 C100,55 120,68 150,52 C180,40 210,28 240,32 C270,38 290,22 300,18"
                   stroke="#A78BFA"
                   strokeWidth="2"
@@ -932,13 +940,15 @@ function MockNavItem({ children, active }: { children: React.ReactNode; active?:
   );
 }
 
-function MockMetric({ label, value, trend, tone = 'indigo' }: { label: string; value: string; trend?: string; tone?: 'emerald' | 'indigo' | 'violet' }) {
+function MockMetric({ label, to, format, trend, tone = 'indigo' }: { label: string; to: number; format?: (n: number) => string; trend?: string; tone?: 'emerald' | 'indigo' | 'violet' }) {
   const trendColor = tone === 'emerald' ? 'text-emerald-400' : tone === 'violet' ? 'text-fuchsia-300' : 'text-indigo-300';
   return (
     <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-3">
       <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">{label}</div>
       <div className="mt-1.5 flex items-baseline gap-1.5">
-        <div className="text-base font-semibold text-white">{value}</div>
+        <div className="text-base font-semibold text-white">
+          <CountUp to={to} format={format} />
+        </div>
         {trend && <div className={`text-[10px] font-medium ${trendColor}`}>{trend}</div>}
       </div>
     </div>

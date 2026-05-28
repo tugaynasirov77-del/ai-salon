@@ -50,6 +50,15 @@ create policy "anon can insert events"
 Автоматически на каждое изменение URL в SPA (через `AnalyticsProvider` в корневом
 layout). Событие `page_view`, `meta.path` — путь.
 
+### Вовлечённость на лендинге (`ScrollTracker`)
+
+| Событие | Когда | `meta` |
+|---|---|---|
+| `scroll_depth` | Посетитель доскроллил до 25 / 50 / 75 / 100% | `percent` |
+| `section_view` | Секция показалась на экране ≥40% | `section` (`demo`,`features`,`how`,`pricing`,`faq`) |
+
+Каждое — не более одного раза за загрузку страницы.
+
 ### CTA-клики (`cta_register` / `cta_turnkey_anchor` / `cta_demo`)
 
 | Событие | Где | `meta.location` |

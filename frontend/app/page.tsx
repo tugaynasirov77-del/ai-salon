@@ -26,10 +26,12 @@ import { track } from '@/lib/analytics';
 import { SavingsCalculator } from '@/components/landing/SavingsCalculator';
 import { ComparisonTable } from '@/components/landing/ComparisonTable';
 import { StickyCta } from '@/components/landing/StickyCta';
+import { ScrollTracker } from '@/components/analytics/ScrollTracker';
 
 export default function LandingPage() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-slate-950 text-slate-100">
+      <ScrollTracker />
       {/* === Backgrоund-noise + ambient blobs (фиксированные) === */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute -top-32 -left-40 h-[520px] w-[520px] rounded-full bg-indigo-600/30 blur-[140px]" />

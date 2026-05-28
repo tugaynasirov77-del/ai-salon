@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { TrendingUp, Sparkles } from 'lucide-react';
+import { AnimatedNumber } from '@/components/landing/AnimatedNumber';
 
 const LIVA_PRICE = 2_500; // ₽/мес тариф Self-Start
 
@@ -80,7 +81,7 @@ export function SavingsCalculator() {
               <div className="mt-6">
                 <div className="text-xs uppercase tracking-wider text-slate-400">в месяц</div>
                 <div className="mt-1 bg-gradient-to-r from-emerald-300 via-emerald-200 to-white bg-clip-text text-5xl font-semibold text-transparent sm:text-6xl">
-                  {fmtMoney(totalMonthlySavings)}
+                  <AnimatedNumber value={totalMonthlySavings} format={fmtMoney} />
                 </div>
               </div>
 
@@ -89,7 +90,7 @@ export function SavingsCalculator() {
                 <Row label="Тариф Liva ai" value={`− ${fmtMoney(LIVA_PRICE)}`} accent="emerald" />
                 <Row
                   label="Возвращённая выручка с упущенных заявок"
-                  value={`+ ${fmtMoney(monthlyMissedRevenue)}`}
+                  value={<>+ <AnimatedNumber value={monthlyMissedRevenue} format={fmtMoney} /></>}
                   accent="emerald"
                   hint="Считаем что AI ловит 100% обращений в нерабочее время"
                 />
@@ -101,7 +102,7 @@ export function SavingsCalculator() {
                   За год
                 </div>
                 <div className="text-xl font-semibold text-white">
-                  {fmtMoney(yearlySavings)}
+                  <AnimatedNumber value={yearlySavings} format={fmtMoney} />
                 </div>
               </div>
 
@@ -158,7 +159,7 @@ function Slider({
   );
 }
 
-function Row({ label, value, muted, accent, hint }: { label: string; value: string; muted?: boolean; accent?: 'emerald'; hint?: string }) {
+function Row({ label, value, muted, accent, hint }: { label: string; value: React.ReactNode; muted?: boolean; accent?: 'emerald'; hint?: string }) {
   return (
     <div>
       <div className="flex items-center justify-between gap-3">

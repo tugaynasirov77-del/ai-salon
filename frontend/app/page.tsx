@@ -236,7 +236,7 @@ export default function LandingPage() {
               Не сценарий «если—то», а ИИ-агент, который понимает контекст, записывает на услугу и доводит клиента до визита.
             </p>
           </div>
-          <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:grid-cols-3">
+          <SpotlightGrid>
             <Feature
               icon={<Bot className="h-5 w-5" />}
               title="AI на Claude — не сценарий"
@@ -267,7 +267,7 @@ export default function LandingPage() {
               title="Аналитика в реальном времени"
               text="Сколько диалогов и записей, конверсия, топ-услуги и какие вопросы клиенты задают чаще всего."
             />
-          </div>
+          </SpotlightGrid>
         </div>
       </section>
 
@@ -505,6 +505,33 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+    </div>
+  );
+}
+
+function SpotlightGrid({ children }: { children: React.ReactNode }) {
+  const [el, setEl] = useState<HTMLDivElement | null>(null);
+
+  function onMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--x', `${e.clientX - r.left}px`);
+    el.style.setProperty('--y', `${e.clientY - r.top}px`);
+  }
+
+  return (
+    <div ref={setEl} onMouseMove={onMove} className="group reveal relative mt-16">
+      {/* Spotlight, следующий за курсором */}
+      <div
+        className="pointer-events-none absolute inset-0 z-10 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background:
+            'radial-gradient(260px circle at var(--x) var(--y), rgba(56,189,248,0.10), transparent 65%)',
+        }}
+      />
+      <div className="relative grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:grid-cols-3">
+        {children}
+      </div>
     </div>
   );
 }

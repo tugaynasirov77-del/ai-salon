@@ -798,7 +798,7 @@ function FloatCard({
 
 function DashboardMockup() {
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-slate-900/80 shadow-[0_30px_80px_-20px_rgba(99,102,241,0.4)] backdrop-blur-xl">
+    <div className="overflow-hidden rounded-2xl border border-white/10 bg-slate-900/95 shadow-[0_30px_80px_-20px_rgba(99,102,241,0.4)] backdrop-blur-sm">
       {/* Window chrome */}
       <div className="flex items-center gap-2 border-b border-white/[0.06] bg-white/[0.02] px-4 py-3">
         <span className="h-3 w-3 rounded-full bg-red-400/60" />

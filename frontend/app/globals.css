@@ -33,10 +33,10 @@ body {
 @layer utilities {
   /* Glassmorphism-карточка с тонким верхним хайлайтом */
   .glass {
-    background: rgba(17, 20, 34, 0.55);
+    background: rgba(17, 20, 34, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.09);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
   }
 
   /* Hover-glow для интерактивных карточек */

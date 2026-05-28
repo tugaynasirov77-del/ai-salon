@@ -37,8 +37,8 @@ export function StickyCta() {
         (visible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0')
       }
     >
-      <div className="pointer-events-auto relative flex w-full max-w-3xl items-center gap-3 overflow-hidden rounded-2xl border border-white/15 bg-slate-900/85 px-4 py-2.5 shadow-[0_20px_60px_-10px_rgba(99,102,241,0.5)] backdrop-blur-xl sm:gap-4 sm:px-5 sm:py-3">
-        <span className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-violet-400/60 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-20 bg-[radial-gradient(ellipse_50%_100%_at_50%_100%,rgba(99,102,241,0.4),transparent_70%)] blur-xl" />
+      <div className="pointer-events-auto relative flex w-full max-w-3xl items-center gap-3 rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-2.5 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] backdrop-blur-md sm:gap-4 sm:rounded-full sm:px-5 sm:py-3">
         <div className="flex shrink-0 items-center gap-2.5">
           <LogoMark size={32} />
           <div className="hidden text-xs leading-tight sm:block">
@@ -51,21 +51,20 @@ export function StickyCta() {
           <Link
             href="#pricing"
             onClick={() => track('cta_pricing_anchor', { location: 'sticky' })}
-            className="hidden rounded-lg border border-white/15 bg-white/[0.04] px-3 py-2 text-xs font-medium text-slate-200 hover:bg-white/[0.08] sm:inline-flex"
+            className="hidden rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-2 text-xs font-medium text-slate-200 hover:bg-white/[0.08] sm:inline-flex"
           >
             Тарифы
           </Link>
           <Link
             href="/register"
             onClick={() => track('cta_register', { location: 'sticky' })}
-            className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-lg bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-3.5 py-2 text-xs font-semibold text-white shadow-[0_0_20px_rgba(139,92,246,0.4)] sm:px-4 sm:text-sm"
+            className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-fuchsia-500 px-3.5 py-2 text-xs font-semibold text-white shadow-[0_0_24px_-4px_rgba(99,102,241,0.7)] sm:px-4 sm:text-sm"
           >
-            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
             Начать бесплатно
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
-
       </div>
     </div>
   );

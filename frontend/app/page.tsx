@@ -218,9 +218,9 @@ export default function LandingPage() {
           <Link
             href="/demo"
             onClick={() => track('cta_demo', { location: 'demo_card' })}
-            className="group relative mx-auto mt-12 block max-w-3xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-indigo-900/40 via-violet-900/30 to-fuchsia-900/40 p-1 transition-transform hover:scale-[1.01]"
+            className="border-gradient reveal group relative mx-auto mt-12 block max-w-3xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-indigo-900/40 via-violet-900/30 to-fuchsia-900/40 p-1 transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_20px_70px_-20px_rgba(56,189,248,0.5)]"
           >
-            <div className="rounded-[22px] bg-slate-950/70 p-8 sm:p-12">
+            <div className="relative rounded-[22px] bg-slate-950/70 p-8 sm:p-12">
               <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-stretch sm:justify-between sm:gap-10">
                 <div className="flex-1 text-center sm:text-left">
                   <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-200">

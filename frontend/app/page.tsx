@@ -47,31 +47,35 @@ export default function LandingPage() {
         <div className="liva-grid absolute inset-0 opacity-35" />
       </div>
 
-      {/* === Header === */}
-      <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-slate-950/70 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-          <Logo size={32} variant="light" />
-          <nav className="hidden gap-7 text-sm text-slate-300 lg:flex">
-            <a href="#demo" className="transition-colors hover:text-white">Демо</a>
-            <a href="#features" className="transition-colors hover:text-white">Возможности</a>
-            <a href="#how" className="transition-colors hover:text-white">Как это работает</a>
-            <a href="#pricing" className="transition-colors hover:text-white">Тарифы</a>
-            <a href="#faq" className="transition-colors hover:text-white">FAQ</a>
-          </nav>
-          <div className="flex items-center gap-3">
-            <Link href="/login" className="hidden text-sm font-medium text-slate-300 transition-colors hover:text-white sm:inline">
-              Войти
-            </Link>
-            <Link
-              href="/register"
-              onClick={() => track('cta_register', { location: 'header' })}
-              className="group relative hidden items-center gap-1.5 overflow-hidden rounded-lg bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_rgba(139,92,246,0.45)] transition-transform hover:scale-[1.02] sm:inline-flex"
-            >
-              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-              Попробовать бесплатно
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-            <MobileMenu />
+      {/* === Header — плавающая капсула === */}
+      <header className="sticky top-3 z-40 px-3 sm:top-5 sm:px-4">
+        <div className="relative mx-auto max-w-4xl">
+          {/* Свечение под капсулой */}
+          <div className="pointer-events-none absolute -inset-x-10 -top-6 -z-10 h-24 bg-[radial-gradient(ellipse_50%_100%_at_50%_0%,rgba(99,102,241,0.45),transparent_70%)] blur-xl" />
+          <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-slate-950/60 px-3 py-2.5 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] backdrop-blur-md sm:rounded-full sm:px-5">
+            <Logo size={30} variant="light" />
+            <nav className="hidden gap-7 text-sm text-slate-300 lg:flex">
+              <a href="#demo" className="transition-colors hover:text-white">Демо</a>
+              <a href="#features" className="transition-colors hover:text-white">Возможности</a>
+              <a href="#how" className="transition-colors hover:text-white">Как это работает</a>
+              <a href="#pricing" className="transition-colors hover:text-white">Тарифы</a>
+              <a href="#faq" className="transition-colors hover:text-white">FAQ</a>
+            </nav>
+            <div className="flex items-center gap-2.5">
+              <Link href="/login" className="hidden text-sm font-medium text-slate-300 transition-colors hover:text-white sm:inline">
+                Войти
+              </Link>
+              <Link
+                href="/register"
+                onClick={() => track('cta_register', { location: 'header' })}
+                className="group relative hidden items-center gap-1.5 overflow-hidden rounded-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-fuchsia-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_-4px_rgba(99,102,241,0.7)] transition-transform hover:scale-[1.03] sm:inline-flex"
+              >
+                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                Попробовать бесплатно
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+              <MobileMenu />
+            </div>
           </div>
         </div>
       </header>

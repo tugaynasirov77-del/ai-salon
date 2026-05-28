@@ -134,11 +134,8 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Dashboard mockup */}
-        <div className="relative mx-auto mt-12 max-w-5xl px-4">
-          <div className="absolute -inset-x-12 -inset-y-8 -z-10 rounded-[40px] bg-gradient-to-b from-violet-500/20 via-fuchsia-500/10 to-transparent blur-3xl" />
-          <DashboardMockup />
-        </div>
+        {/* Interactive 3D dashboard mockup + floating windows */}
+        <InteractiveMockup />
       </section>
 
       {/* === Trust / Channels bar === */}
@@ -691,6 +688,113 @@ const CHANNEL_TONES: Record<string, string> = {
   orange: 'border-orange-400/30 bg-orange-500/10 text-orange-200',
   cyan: 'border-cyan-400/30 bg-cyan-500/10 text-cyan-200',
 };
+
+function InteractiveMockup() {
+  const [ref, setRef] = useState<HTMLDivElement | null>(null);
+  const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
+
+  function onMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (!ref) return;
+    const r = ref.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5; // -0.5..0.5
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    setTilt({ rx: -py * 6, ry: px * 8 }); // мягкий наклон до ~6-8deg
+  }
+  function onLeave() {
+    setTilt({ rx: 0, ry: 0 });
+  }
+
+  return (
+    <div className="relative mx-auto mt-14 max-w-5xl px-4">
+      {/* Ambient glow за окном */}
+      <div className="absolute -inset-x-12 -inset-y-10 -z-10 rounded-[48px] bg-gradient-to-b from-cyan-500/15 via-violet-500/15 to-transparent blur-3xl" />
+
+      <div
+        ref={setRef}
+        onMouseMove={onMove}
+        onMouseLeave={onLeave}
+        className="relative"
+        style={{ perspective: '1400px' }}
+      >
+        {/* Float layer (только drift по Y) */}
+        <div className="liva-float">
+          {/* Tilt layer (только rotate; preserve-3d для глубины floating-окон) */}
+          <div
+            className="relative transition-transform duration-300 ease-out will-change-transform"
+            style={{
+              transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
+              transformStyle: 'preserve-3d',
+            }}
+          >
+            <DashboardMockup />
+
+            {/* Floating mini-windows — глубина через translateZ на внешнем слое */}
+            <FloatCard className="absolute -left-4 -top-6 hidden w-[230px] sm:block" depth={60} delay="0s">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-300 ring-1 ring-inset ring-emerald-400/30">
+                  <Check className="h-4 w-4" />
+                </span>
+                <div className="min-w-0">
+                  <div className="text-[12px] font-semibold text-white">Новая запись</div>
+                  <div className="truncate text-[11px] text-slate-400">Анна — маникюр, пт 15:00</div>
+                </div>
+              </div>
+            </FloatCard>
+
+            <FloatCard className="absolute -right-4 top-10 hidden w-[250px] lg:block" depth={90} delay="-2s">
+              <div className="flex items-start gap-2.5">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-[11px] font-semibold text-white">К</span>
+                <div className="min-w-0">
+                  <div className="text-[11px] text-slate-400">Telegram · сейчас</div>
+                  <div className="mt-0.5 rounded-lg rounded-tl-sm bg-white/[0.06] px-2.5 py-1.5 text-[12px] text-slate-100">
+                    Запишите на стрижку в субботу 🙏
+                  </div>
+                </div>
+              </div>
+            </FloatCard>
+
+            <FloatCard className="absolute -bottom-6 left-12 hidden w-[240px] md:block" depth={50} delay="-4s">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-cyan-500/15 text-cyan-300 ring-1 ring-inset ring-cyan-400/30">
+                  <BellRing className="h-4 w-4" />
+                </span>
+                <div className="min-w-0">
+                  <div className="text-[12px] font-semibold text-white">Напоминание отправлено</div>
+                  <div className="truncate text-[11px] text-slate-400">За 2 часа до визита</div>
+                </div>
+              </div>
+            </FloatCard>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Внешний слой держит translateZ (глубина в 3D), внутренний — float-drift,
+// чтобы CSS-анимация не перетёрла inline-transform с translateZ.
+function FloatCard({
+  children,
+  className = '',
+  depth = 60,
+  delay = '0s',
+}: {
+  children: React.ReactNode;
+  className?: string;
+  depth?: number;
+  delay?: string;
+}) {
+  return (
+    <div className={className} style={{ transform: `translateZ(${depth}px)` }}>
+      <div
+        className="glass liva-float rounded-2xl px-3.5 py-3 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.85)]"
+        style={{ animationDelay: delay }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
 
 function DashboardMockup() {
   return (

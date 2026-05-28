@@ -27,27 +27,24 @@ import { SavingsCalculator } from '@/components/landing/SavingsCalculator';
 import { ComparisonTable } from '@/components/landing/ComparisonTable';
 import { StickyCta } from '@/components/landing/StickyCta';
 import { ScrollTracker } from '@/components/analytics/ScrollTracker';
+import { RevealInit } from '@/components/landing/RevealInit';
 
 export default function LandingPage() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-slate-950 text-slate-100">
       <ScrollTracker />
-      {/* === Backgrоund-noise + ambient blobs (фиксированные) === */}
-      <div className="pointer-events-none fixed inset-0 -z-10">
-        <div className="absolute -top-32 -left-40 h-[520px] w-[520px] rounded-full bg-indigo-600/30 blur-[140px]" />
-        <div className="absolute top-[18%] -right-32 h-[480px] w-[480px] rounded-full bg-fuchsia-600/25 blur-[140px]" />
-        <div className="absolute top-[60%] left-1/3 h-[420px] w-[420px] rounded-full bg-violet-600/20 blur-[140px]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(99,102,241,0.08),transparent_60%)]" />
-        {/* Grid noise */}
-        <div
-          className="absolute inset-0 opacity-[0.025]"
-          style={{
-            backgroundImage:
-              'linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)',
-            backgroundSize: '56px 56px',
-            maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 80%)',
-          }}
-        />
+      <RevealInit />
+      {/* === Animated futuristic background (фиксированный) === */}
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#05060f]">
+        {/* Aurora-mesh blobs */}
+        <div className="liva-aurora absolute -top-40 -left-40 h-[560px] w-[560px] rounded-full bg-indigo-600/30 blur-[150px]" />
+        <div className="liva-aurora-2 absolute top-[12%] -right-40 h-[520px] w-[520px] rounded-full bg-fuchsia-600/25 blur-[150px]" />
+        <div className="liva-aurora absolute top-[55%] left-1/4 h-[460px] w-[460px] rounded-full bg-cyan-500/20 blur-[150px]" />
+        <div className="liva-aurora-2 absolute bottom-0 right-1/4 h-[420px] w-[420px] rounded-full bg-violet-600/20 blur-[150px]" />
+        {/* Top glow */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(56,189,248,0.10),transparent_60%)]" />
+        {/* Neural grid */}
+        <div className="liva-grid absolute inset-0 opacity-60" />
       </div>
 
       {/* === Header === */}
@@ -82,21 +79,19 @@ export default function LandingPage() {
       {/* === Hero === */}
       <section className="relative">
         <div className="mx-auto max-w-6xl px-4 pt-24 pb-28 text-center sm:pt-32 sm:pb-36">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-medium text-slate-300 backdrop-blur">
+          <div className="reveal is-visible inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs font-medium text-slate-300 shadow-[0_0_30px_-8px_rgba(56,189,248,0.5)] backdrop-blur">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-fuchsia-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-fuchsia-500" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-400" />
             </span>
             <span>ИИ-администратор для малого бизнеса</span>
           </div>
 
-          <h1 className="mx-auto mt-8 max-w-5xl text-balance bg-gradient-to-b from-white via-white to-white/60 bg-clip-text text-center text-[2rem] font-semibold leading-tight tracking-tight text-transparent sm:text-6xl lg:text-7xl">
+          <h1 className="mx-auto mt-8 max-w-5xl text-balance bg-gradient-to-b from-white via-white to-white/55 bg-clip-text text-center text-[2rem] font-semibold leading-[1.05] tracking-tight text-transparent sm:text-6xl lg:text-[5rem]">
             <span className="block">Ваш ИИ-администратор,</span>
             <span className="block">
               который{' '}
-              <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
-                не спит
-              </span>
+              <span className="text-gradient">не спит</span>
             </span>
           </h1>
 
@@ -109,19 +104,22 @@ export default function LandingPage() {
             <Link
               href="/register"
               onClick={() => track('cta_register', { location: 'hero' })}
-              className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(139,92,246,0.5)] transition-transform hover:scale-[1.02] sm:w-auto"
+              className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-cyan-400 via-indigo-500 to-fuchsia-500 px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_50px_-6px_rgba(99,102,241,0.7)] transition-all hover:scale-[1.02] hover:shadow-[0_0_60px_-4px_rgba(56,189,248,0.7)] sm:w-auto"
             >
-              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
               Попробовать бесплатно
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
-            <a
-              href="#pricing"
-              onClick={() => track('cta_turnkey_anchor', { location: 'hero' })}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-7 py-3.5 text-base font-medium text-slate-200 backdrop-blur transition-colors hover:bg-white/[0.08] hover:text-white sm:w-auto"
+            <Link
+              href="/demo"
+              onClick={() => track('cta_demo', { location: 'hero' })}
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.03] px-7 py-3.5 text-base font-medium text-slate-200 backdrop-blur transition-colors hover:border-white/25 hover:bg-white/[0.07] hover:text-white sm:w-auto"
             >
-              Подключим за вас за 1 день
-            </a>
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10 transition-colors group-hover:bg-cyan-400/20">
+                <ArrowRight className="h-3 w-3" />
+              </span>
+              Смотреть демо
+            </Link>
           </div>
           <p className="mt-5 text-sm text-slate-500">
             Без карты · 1 000 сообщений в подарок · Отмена в один клик
@@ -143,18 +141,33 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* === Channels bar === */}
-      <section className="relative border-y border-white/[0.04] bg-white/[0.01] py-8">
-        <div className="mx-auto max-w-6xl px-4">
-          <p className="mb-5 text-center text-xs font-medium uppercase tracking-[0.2em] text-slate-500">
-            Работает там, где ваши клиенты
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-slate-300">
-            <ChannelBadge icon={<Send className="h-4 w-4" />} name="Telegram" />
-            <ChannelBadge icon={<Briefcase className="h-4 w-4" />} name="Авито" />
-            <ChannelBadge icon={<Calendar className="h-4 w-4" />} name="YClients" />
-            <ChannelBadge icon={<MessageSquare className="h-4 w-4" />} name="WhatsApp" />
-            <ChannelBadge icon={<Globe className="h-4 w-4" />} name="Веб-чат на сайт" />
+      {/* === Trust / Channels bar === */}
+      <section className="reveal relative border-y border-white/[0.06] bg-white/[0.01] py-9">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 lg:flex-row lg:justify-between lg:gap-10">
+          {/* Honest trust signal вместо «1000+ компаний» */}
+          <div className="flex shrink-0 items-center gap-2.5">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400/20 to-indigo-500/20 ring-1 ring-inset ring-white/10">
+              <Sparkles className="h-4 w-4 text-cyan-300" strokeWidth={1.5} />
+            </span>
+            <div className="text-left">
+              <div className="text-sm font-semibold text-white">Работает на Claude</div>
+              <div className="text-xs text-slate-500">одна из сильнейших AI-моделей мира</div>
+            </div>
+          </div>
+
+          <div className="hidden h-8 w-px bg-white/10 lg:block" />
+
+          <div className="flex flex-1 flex-col items-center gap-4">
+            <p className="text-center text-[11px] font-medium uppercase tracking-[0.2em] text-slate-500">
+              Работает там, где ваши клиенты
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-slate-300">
+              <ChannelBadge icon={<Send className="h-4 w-4" />} name="Telegram" />
+              <ChannelBadge icon={<Briefcase className="h-4 w-4" />} name="Авито" />
+              <ChannelBadge icon={<Calendar className="h-4 w-4" />} name="YClients" />
+              <ChannelBadge icon={<MessageSquare className="h-4 w-4" />} name="WhatsApp" />
+              <ChannelBadge icon={<Globe className="h-4 w-4" />} name="Веб-чат" />
+            </div>
           </div>
         </div>
       </section>
@@ -162,7 +175,7 @@ export default function LandingPage() {
       {/* === Pain → Solution === */}
       <section className="relative py-24">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="text-center">
+          <div className="reveal text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-300">Знакомо?</span>
             <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
               Малый бизнес теряет до 40% заявок<br className="hidden sm:block" /> просто потому, что некому ответить
@@ -192,7 +205,7 @@ export default function LandingPage() {
       {/* === Demo === */}
       <section id="demo" className="relative py-24">
         <div className="mx-auto max-w-5xl px-4">
-          <div className="text-center">
+          <div className="reveal text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-fuchsia-300">Демо</span>
             <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
               Попробуйте, как это<br className="hidden sm:block" /> работает изнутри
@@ -243,7 +256,7 @@ export default function LandingPage() {
       {/* === Features === */}
       <section id="features" className="relative py-24">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="text-center">
+          <div className="reveal text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-300">Возможности</span>
             <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
               Всё, что делает живой администратор<br className="hidden sm:block" /> — и больше
@@ -290,7 +303,7 @@ export default function LandingPage() {
       {/* === How it works === */}
       <section id="how" className="relative py-24">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="text-center">
+          <div className="reveal text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-300">Как это работает</span>
             <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
               Запуск проще, чем настройка<br className="hidden sm:block" /> Wi-Fi в кафе
@@ -333,7 +346,7 @@ export default function LandingPage() {
       {/* === Niches === */}
       <section className="relative py-24">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="text-center">
+          <div className="reveal text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-fuchsia-300">9 ниш</span>
             <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
               Готовые пресеты<br className="hidden sm:block" /> под ваш бизнес
@@ -347,9 +360,9 @@ export default function LandingPage() {
             {Object.values(NICHES).map((n: any) => (
               <div
                 key={n.key}
-                className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.025] px-4 py-3.5 text-sm text-slate-200 backdrop-blur-sm transition-colors hover:border-white/20 hover:bg-white/[0.05]"
+                className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.025] px-4 py-3.5 text-sm text-slate-200 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-400/30 hover:bg-white/[0.05] hover:shadow-[0_8px_30px_-12px_rgba(56,189,248,0.5)]"
               >
-                <span className="text-xl leading-none">{n.icon}</span>
+                <span className="text-xl leading-none transition-transform duration-300 group-hover:scale-110">{n.icon}</span>
                 <span>{n.label}</span>
               </div>
             ))}
@@ -367,7 +380,7 @@ export default function LandingPage() {
       {/* === Guarantees === */}
       <section className="relative py-24">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="text-center">
+          <div className="reveal text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">Гарантии</span>
             <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
               Вы ничем не рискуете
@@ -400,7 +413,7 @@ export default function LandingPage() {
       {/* === FAQ === */}
       <section id="faq" className="relative py-24">
         <div className="mx-auto max-w-3xl px-4">
-          <div className="text-center">
+          <div className="reveal text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-violet-300">Частые вопросы</span>
             <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
               Отвечаем заранее
@@ -450,8 +463,9 @@ export default function LandingPage() {
       {/* === CTA === */}
       <section className="relative py-20">
         <div className="mx-auto max-w-4xl px-4">
-          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-indigo-900/40 via-violet-900/30 to-fuchsia-900/40 p-10 text-center sm:p-14">
-            <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-[300px] w-[600px] rounded-full bg-fuchsia-500/20 blur-[100px]" />
+          <div className="border-gradient reveal relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-indigo-900/40 via-violet-900/30 to-fuchsia-900/40 p-10 text-center sm:p-14">
+            <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-[300px] w-[600px] rounded-full bg-fuchsia-500/25 blur-[100px]" />
+            <div className="absolute -bottom-32 left-1/4 h-[260px] w-[460px] rounded-full bg-cyan-500/15 blur-[110px]" />
             <div className="relative">
               <h2 className="bg-gradient-to-b from-white to-white/70 bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl">
                 Каждый день без Liva ai —<br className="hidden sm:block" /> это упущенные клиенты после 19:00
@@ -526,12 +540,14 @@ export default function LandingPage() {
 
 function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
   return (
-    <div className="group relative bg-slate-950/50 p-7 transition-colors hover:bg-white/[0.04]">
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500/20 to-fuchsia-500/20 text-indigo-300 ring-1 ring-inset ring-white/10">
+    <div className="group relative bg-slate-950/40 p-7 transition-colors duration-300 hover:bg-white/[0.04]">
+      {/* hover glow */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_0%,rgba(56,189,248,0.12),transparent_60%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400/20 via-indigo-500/20 to-fuchsia-500/20 text-cyan-200 ring-1 ring-inset ring-white/10 transition-all duration-300 group-hover:ring-cyan-400/40 group-hover:shadow-[0_0_24px_-4px_rgba(56,189,248,0.6)]">
         {icon}
       </div>
-      <h3 className="mt-5 text-base font-semibold text-white">{title}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-slate-400">{text}</p>
+      <h3 className="relative mt-5 text-base font-semibold text-white">{title}</h3>
+      <p className="relative mt-2 text-sm leading-relaxed text-slate-400">{text}</p>
     </div>
   );
 }
@@ -640,7 +656,7 @@ function FloatingDemoLink() {
 
 function GuaranteeCard({ icon, title, text }: { icon: string; title: string; text: string }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-7 backdrop-blur-sm transition-colors hover:bg-white/[0.04]">
+    <div className="glass glow-hover reveal rounded-2xl p-7">
       <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-400/10 text-xl text-emerald-300 ring-1 ring-inset ring-emerald-400/20">
         {icon}
       </div>
@@ -652,7 +668,7 @@ function GuaranteeCard({ icon, title, text }: { icon: string; title: string; tex
 
 function PainCard({ pain, gain }: { pain: string; gain: string }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-7 backdrop-blur-sm transition-colors hover:bg-white/[0.04]">
+    <div className="glass glow-hover reveal rounded-2xl p-7">
       <p className="text-sm leading-relaxed text-slate-500 line-through decoration-rose-400/40 decoration-1">{pain}</p>
       <div className="my-5 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       <p className="text-base font-medium leading-relaxed text-white">{gain}</p>
@@ -810,9 +826,9 @@ function MockDialog({ name, channel, text, time }: { name: string; channel: stri
 
 function Step({ num, title, text }: { num: string; title: string; text: string }) {
   return (
-    <div className="relative rounded-2xl border border-white/10 bg-white/[0.025] p-7 backdrop-blur-sm transition-colors hover:bg-white/[0.04]">
+    <div className="glass glow-hover reveal relative rounded-2xl p-7">
       <div
-        className="bg-gradient-to-br from-indigo-400 via-violet-400 to-fuchsia-400 bg-clip-text font-semibold text-transparent"
+        className="text-gradient font-semibold"
         style={{ fontSize: 56, lineHeight: 1 }}
       >
         {num}

@@ -25,7 +25,7 @@ export function PricingSection() {
 
         <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2">
           {/* === SELF-START === */}
-          <div className="relative flex flex-col rounded-2xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-sm">
+          <div className="glass glow-hover relative flex flex-col rounded-2xl p-8">
             <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
               <UserCog className="h-3.5 w-3.5" />
               Self-Start
@@ -63,7 +63,7 @@ export function PricingSection() {
           </div>
 
           {/* === TURNKEY === */}
-          <div className="relative flex flex-col rounded-2xl border border-violet-400/30 bg-gradient-to-b from-violet-900/30 via-violet-900/10 to-transparent p-8 backdrop-blur-sm shadow-[0_0_60px_rgba(139,92,246,0.15)]">
+          <div className="border-gradient relative flex flex-col rounded-2xl border border-violet-400/30 bg-gradient-to-b from-violet-900/30 via-violet-900/10 to-transparent p-8 backdrop-blur-sm shadow-[0_0_80px_-12px_rgba(139,92,246,0.45)]">
             <div className="mb-4 flex items-center justify-between gap-2">
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-violet-300">
                 <Briefcase className="h-3.5 w-3.5" />

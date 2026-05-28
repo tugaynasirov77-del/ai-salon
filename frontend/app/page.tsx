@@ -525,7 +525,7 @@ function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; 
 
 function FloatingHeader() {
   return (
-    <header className="sticky top-3 z-40 px-3 sm:top-5 sm:px-4">
+    <header className="fixed inset-x-0 top-3 z-40 px-3 sm:top-5 sm:px-4">
       <div className="relative mx-auto max-w-4xl">
         {/* Свечение под капсулой */}
         <div className="pointer-events-none absolute -inset-x-10 -top-6 -z-10 h-24 bg-[radial-gradient(ellipse_50%_100%_at_50%_0%,rgba(99,102,241,0.4),transparent_70%)] blur-xl" />

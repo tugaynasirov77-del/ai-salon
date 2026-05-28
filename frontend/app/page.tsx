@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import {
   MessageSquare,
@@ -15,6 +16,8 @@ import {
   ArrowRight,
   Sparkles,
   UserCog,
+  Menu,
+  X,
 } from 'lucide-react';
 import { NICHES } from '@shared/niches';
 import { PricingSection } from '@/components/landing/PricingSection';
@@ -57,19 +60,19 @@ export default function LandingPage() {
             <a href="#faq" className="transition-colors hover:text-white">FAQ</a>
           </nav>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">
+            <Link href="/login" className="hidden text-sm font-medium text-slate-300 transition-colors hover:text-white sm:inline">
               Войти
             </Link>
             <Link
               href="/register"
               onClick={() => track('cta_register', { location: 'header' })}
-              className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-lg bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_rgba(139,92,246,0.45)] transition-transform hover:scale-[1.02]"
+              className="group relative hidden items-center gap-1.5 overflow-hidden rounded-lg bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_rgba(139,92,246,0.45)] transition-transform hover:scale-[1.02] sm:inline-flex"
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-              <span className="hidden sm:inline">Попробовать бесплатно</span>
-              <span className="sm:hidden">Начать</span>
+              Попробовать бесплатно
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
+            <MobileMenu />
           </div>
         </div>
       </header>
@@ -528,6 +531,84 @@ function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; 
       <h3 className="mt-5 text-base font-semibold text-white">{title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-slate-400">{text}</p>
     </div>
+  );
+}
+
+function MobileMenu() {
+  const [open, setOpen] = useState(false);
+  const links: Array<[string, string]> = [
+    ['#demo', 'Демо'],
+    ['#features', 'Возможности'],
+    ['#how', 'Как это работает'],
+    ['#pricing', 'Тарифы'],
+    ['#faq', 'FAQ'],
+  ];
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        aria-label="Открыть меню"
+        className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-slate-200 transition-colors hover:bg-white/[0.08] lg:hidden"
+      >
+        <Menu className="h-5 w-5" />
+      </button>
+
+      {open && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm"
+            onClick={() => setOpen(false)}
+          />
+          {/* Panel */}
+          <div className="absolute inset-x-0 top-0 border-b border-white/10 bg-slate-950/95 px-4 pb-6 pt-4 shadow-2xl backdrop-blur-xl">
+            <div className="mx-auto flex max-w-6xl items-center justify-between">
+              <Logo size={32} variant="light" />
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Закрыть меню"
+                className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-slate-200 transition-colors hover:bg-white/[0.08]"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <nav className="mx-auto mt-6 flex max-w-6xl flex-col gap-1">
+              {links.map(([href, label]) => (
+                <a
+                  key={href}
+                  href={href}
+                  onClick={() => setOpen(false)}
+                  className="rounded-lg px-3 py-3 text-base font-medium text-slate-200 transition-colors hover:bg-white/[0.06] hover:text-white"
+                >
+                  {label}
+                </a>
+              ))}
+            </nav>
+
+            <div className="mx-auto mt-5 flex max-w-6xl flex-col gap-3 border-t border-white/[0.06] pt-5">
+              <Link
+                href="/register"
+                onClick={() => { track('cta_register', { location: 'mobile_menu' }); setOpen(false); }}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-3 text-base font-semibold text-white shadow-[0_0_24px_rgba(139,92,246,0.45)]"
+              >
+                Попробовать бесплатно
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/login"
+                onClick={() => setOpen(false)}
+                className="inline-flex w-full items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] px-6 py-3 text-base font-medium text-slate-200 transition-colors hover:bg-white/[0.08]"
+              >
+                Войти
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

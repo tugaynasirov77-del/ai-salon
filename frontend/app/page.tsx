@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import {
   MessageSquare,
@@ -524,36 +524,13 @@ function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; 
 }
 
 function FloatingHeader() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    function onScroll() {
-      setScrolled(window.scrollY > 40);
-    }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
   return (
     <header className="sticky top-3 z-40 px-3 sm:top-5 sm:px-4">
-      <div
-        className={
-          'relative mx-auto transition-all duration-300 ease-out ' +
-          (scrolled ? 'max-w-3xl' : 'max-w-4xl')
-        }
-      >
+      <div className="relative mx-auto max-w-4xl">
         {/* Свечение под капсулой */}
         <div className="pointer-events-none absolute -inset-x-10 -top-6 -z-10 h-24 bg-[radial-gradient(ellipse_50%_100%_at_50%_0%,rgba(99,102,241,0.4),transparent_70%)] blur-xl" />
-        <div
-          className={
-            'flex items-center justify-between gap-3 rounded-2xl border border-white/10 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] backdrop-blur-md transition-all duration-300 ease-out sm:rounded-full ' +
-            (scrolled
-              ? 'bg-slate-950/55 px-3 py-1.5 sm:px-4'
-              : 'bg-slate-950/30 px-3 py-2.5 sm:px-5')
-          }
-        >
-          <Logo size={scrolled ? 26 : 30} variant="light" />
+        <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-slate-950/40 px-3 py-2.5 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] backdrop-blur-md sm:rounded-full sm:px-5">
+          <Logo size={30} variant="light" />
           <nav className="hidden gap-7 text-sm text-slate-300 lg:flex">
             <a href="#demo" className="transition-colors hover:text-white">Демо</a>
             <a href="#features" className="transition-colors hover:text-white">Возможности</a>
@@ -568,10 +545,7 @@ function FloatingHeader() {
             <Link
               href="/register"
               onClick={() => track('cta_register', { location: 'header' })}
-              className={
-                'group relative hidden items-center gap-1.5 overflow-hidden rounded-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-fuchsia-500 font-semibold text-white shadow-[0_0_24px_-4px_rgba(99,102,241,0.7)] transition-all duration-300 hover:scale-[1.03] sm:inline-flex ' +
-                (scrolled ? 'px-3.5 py-1.5 text-sm' : 'px-4 py-2 text-sm')
-              }
+              className="group relative hidden items-center gap-1.5 overflow-hidden rounded-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-fuchsia-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_-4px_rgba(99,102,241,0.7)] transition-transform hover:scale-[1.03] sm:inline-flex"
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
               Попробовать бесплатно

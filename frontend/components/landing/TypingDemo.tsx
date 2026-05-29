@@ -64,7 +64,7 @@ export function TypingDemo() {
     <div className="flex h-[300px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60">
       {/* Header */}
       <div className="flex items-center gap-2.5 border-b border-white/[0.06] bg-white/[0.02] px-4 py-2.5">
-        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400/30 to-indigo-500/30 text-[11px] font-semibold text-cyan-100 ring-1 ring-inset ring-white/10">
+        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#E6C480]/30 to-[#CFA049]/30 text-[11px] font-semibold text-[#F0D9A8] ring-1 ring-inset ring-white/10">
           ИИ
         </span>
         <div className="min-w-0">
@@ -94,7 +94,7 @@ function Bubble({ role, text }: { role: 'user' | 'ai'; text: string }) {
       <div
         className={
           isUser
-            ? 'max-w-[80%] rounded-2xl rounded-br-sm bg-gradient-to-br from-indigo-500 to-violet-500 px-3.5 py-2 text-[12.5px] leading-snug text-white shadow-[0_8px_24px_-12px_rgba(99,102,241,0.8)]'
+            ? 'max-w-[80%] rounded-2xl rounded-br-sm bg-gradient-to-br from-[#CFA049] to-[#CFA049] px-3.5 py-2 text-[12.5px] leading-snug text-white shadow-[0_8px_24px_-12px_rgba(207,160,73,0.8)]'
             : 'max-w-[80%] rounded-2xl rounded-bl-sm border border-white/10 bg-white/[0.06] px-3.5 py-2 text-[12.5px] leading-snug text-slate-100'
         }
         style={{ animation: 'liva-pop 0.32s cubic-bezier(0.16,1,0.3,1)' }}
@@ -111,7 +111,7 @@ function TypingBubble({ role }: { role: 'user' | 'ai' }) {
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div
         className={`flex items-center gap-1 rounded-2xl px-3.5 py-2.5 ${
-          isUser ? 'rounded-br-sm bg-indigo-500/40' : 'rounded-bl-sm border border-white/10 bg-white/[0.06]'
+          isUser ? 'rounded-br-sm bg-[#CFA049]/40' : 'rounded-bl-sm border border-white/10 bg-white/[0.06]'
         }`}
       >
         {[0, 1, 2].map((i) => (

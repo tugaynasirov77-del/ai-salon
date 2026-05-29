@@ -7,7 +7,7 @@ import { Loader2, ArrowRight } from 'lucide-react';
 import { apiLogin, apiMe, useAuthStore } from '@/lib/auth';
 
 const inputCls =
-  'h-10 w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 text-sm text-white placeholder:text-slate-500 focus:border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-400/30';
+  'h-10 w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 text-sm text-white placeholder:text-slate-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/30';
 const labelCls = 'mb-1 block text-xs font-medium uppercase tracking-wider text-slate-400';
 
 function LoginForm() {
@@ -54,7 +54,7 @@ function LoginForm() {
       <div>
         <div className="mb-1 flex items-center justify-between">
           <label htmlFor="password" className={labelCls}>Пароль</label>
-          <Link href="/forgot-password" className="text-[11px] font-medium text-violet-300 hover:text-white">
+          <Link href="/forgot-password" className="text-[11px] font-medium text-amber-300 hover:text-white">
             Забыли пароль?
           </Link>
         </div>
@@ -74,7 +74,7 @@ function LoginForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-3 text-sm font-semibold text-white shadow-[0_0_30px_rgba(139,92,246,0.4)] transition-transform hover:scale-[1.01] disabled:opacity-60"
+        className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-amber-500 via-amber-500 to-amber-500 px-6 py-3 text-sm font-semibold text-white shadow-[0_0_30px_rgba(217,146,32,0.4)] transition-transform hover:scale-[1.01] disabled:opacity-60"
       >
         <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
         {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
@@ -97,7 +97,7 @@ export default function LoginPage() {
 
       <p className="mt-5 text-center text-sm text-slate-400">
         Нет аккаунта?{' '}
-        <Link href="/register" className="font-medium text-violet-300 hover:text-white">
+        <Link href="/register" className="font-medium text-amber-300 hover:text-white">
           Зарегистрироваться
         </Link>
       </p>

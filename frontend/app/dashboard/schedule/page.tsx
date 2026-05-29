@@ -152,11 +152,11 @@ export default function SchedulePage() {
                     key={d.toISOString()}
                     className={cn(
                       'border-b border-r border-slate-200 bg-slate-50 py-2 text-center dark:border-slate-800 dark:bg-slate-900/50',
-                      isToday && 'bg-blue-50 dark:bg-blue-950/30',
+                      isToday && 'bg-amber-50 dark:bg-amber-950/30',
                     )}
                   >
                     <div className="text-[10px] uppercase text-slate-500">{fmtWeekday(d)}</div>
-                    <div className={cn('text-sm font-semibold', isToday ? 'text-blue-600' : 'text-slate-900 dark:text-slate-100')}>
+                    <div className={cn('text-sm font-semibold', isToday ? 'text-amber-600' : 'text-slate-900 dark:text-slate-100')}>
                       {fmtDayMonth(d)}
                     </div>
                   </div>
@@ -186,7 +186,7 @@ export default function SchedulePage() {
                       <button
                         key={m}
                         onClick={() => setCreateSlot({ date: d, minute: m })}
-                        className="block w-full border-b border-slate-100 hover:bg-blue-50/50 dark:border-slate-800 dark:hover:bg-blue-950/20"
+                        className="block w-full border-b border-slate-100 hover:bg-amber-50/50 dark:border-slate-800 dark:hover:bg-amber-950/20"
                         style={{ height: SLOT_HEIGHT }}
                         aria-label="Создать запись"
                       />
@@ -489,7 +489,7 @@ function EditAppointmentModal({
                 className={cn(
                   'rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors',
                   appointment.status === st
-                    ? 'border-blue-600 bg-blue-600 text-white'
+                    ? 'border-amber-600 bg-amber-600 text-white'
                     : 'border-slate-300 text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800',
                 )}
               >

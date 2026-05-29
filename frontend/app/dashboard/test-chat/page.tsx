@@ -307,8 +307,8 @@ export default function TestChatPage() {
         <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-6 md:px-8">
           {messages.length === 0 && !sending ? (
             <div className="flex h-full flex-col items-center justify-center text-center">
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 dark:bg-blue-950/40">
-                <Sparkles className="h-7 w-7 text-blue-600 dark:text-blue-400" />
+              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-50 dark:bg-amber-950/40">
+                <Sparkles className="h-7 w-7 text-amber-600 dark:text-amber-400" />
               </div>
               <div className="text-base font-medium text-slate-700 dark:text-slate-200">Поговорите с ИИ как клиент</div>
               <div className="mt-1 max-w-md text-sm text-slate-500">
@@ -325,7 +325,7 @@ export default function TestChatPage() {
                     <div
                       className={cn(
                         'flex h-8 w-8 shrink-0 items-center justify-center rounded-full',
-                        isUser ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200',
+                        isUser ? 'bg-amber-600 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200',
                       )}
                     >
                       {isUser ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
@@ -352,7 +352,7 @@ export default function TestChatPage() {
                           className={cn(
                             'whitespace-pre-wrap rounded-2xl px-4 py-2 text-sm',
                             isUser
-                              ? 'rounded-br-sm bg-blue-600 text-white'
+                              ? 'rounded-br-sm bg-amber-600 text-white'
                               : 'rounded-bl-sm bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-100',
                           )}
                         >
@@ -415,7 +415,7 @@ export default function TestChatPage() {
                     <button
                       type="button"
                       onClick={togglePlayVoice}
-                      className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-700"
+                      className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-600 text-white hover:bg-amber-700"
                       aria-label={voicePlaying ? 'Пауза' : 'Воспроизвести'}
                     >
                       {voicePlaying ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
@@ -508,7 +508,7 @@ export default function TestChatPage() {
                 }
                 rows={1}
                 disabled={sending || recording}
-                className="flex-1 resize-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-60 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                className="flex-1 resize-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 disabled:opacity-60 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
               />
               <Button onClick={send} disabled={!canSend}>
                 {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}

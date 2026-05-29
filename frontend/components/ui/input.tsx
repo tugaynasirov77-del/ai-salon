@@ -9,8 +9,8 @@ export const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttribute
       ref={ref}
       className={cn(
         'h-10 w-full rounded-lg border px-3 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-60 transition-colors',
-        'border-slate-300 bg-white text-slate-900 focus:border-blue-500 focus:ring-blue-500/20',
-        'dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-violet-400 dark:focus:ring-violet-400/30',
+        'border-slate-300 bg-white text-slate-900 focus:border-amber-500 focus:ring-amber-500/20',
+        'dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-amber-400 dark:focus:ring-amber-400/30',
         className,
       )}
       {...props}
@@ -25,8 +25,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, React.TextareaHTML
       ref={ref}
       className={cn(
         'min-h-[120px] w-full rounded-lg border px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 transition-colors',
-        'border-slate-300 bg-white text-slate-900 focus:border-blue-500 focus:ring-blue-500/20',
-        'dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-violet-400 dark:focus:ring-violet-400/30',
+        'border-slate-300 bg-white text-slate-900 focus:border-amber-500 focus:ring-amber-500/20',
+        'dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-500 dark:focus:border-amber-400 dark:focus:ring-amber-400/30',
         className,
       )}
       {...props}

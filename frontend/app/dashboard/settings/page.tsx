@@ -101,7 +101,7 @@ export default function SettingsPage() {
               className={cn(
                 'flex items-center gap-2 border-b-2 px-4 py-2 text-sm font-medium transition-colors',
                 active
-                  ? 'border-blue-600 text-blue-700 dark:text-blue-300'
+                  ? 'border-amber-600 text-amber-700 dark:text-amber-300'
                   : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300',
               )}
             >
@@ -333,7 +333,7 @@ function YclientsCard({ salonId, salon, refetch, notify }: TabProps) {
                 key={c.id}
                 onClick={() => mut.mutate(c.id)}
                 disabled={mut.isPending}
-                className="flex w-full items-center justify-between rounded-lg border border-slate-200 px-3 py-2 text-left text-sm hover:border-blue-400 hover:bg-blue-50 disabled:opacity-50 dark:border-slate-700 dark:hover:bg-blue-950/30"
+                className="flex w-full items-center justify-between rounded-lg border border-slate-200 px-3 py-2 text-left text-sm hover:border-amber-400 hover:bg-amber-50 disabled:opacity-50 dark:border-slate-700 dark:hover:bg-amber-950/30"
               >
                 <span>{c.title}</span>
                 <span className="text-xs text-slate-400">id: {c.id}</span>

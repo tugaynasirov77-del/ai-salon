@@ -108,7 +108,7 @@ export default function AnalyticsPage() {
               className={cn(
                 'rounded-md px-3 py-1 text-sm font-medium transition-colors',
                 period === p.days
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-amber-600 text-white'
                   : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800',
               )}
             >

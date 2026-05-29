@@ -10,7 +10,7 @@ const UPDATED = '26 мая 2026';
 export default function TermsPage() {
   return (
     <>
-      <div className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-violet-300">Правовая информация</div>
+      <div className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">Правовая информация</div>
       <h1 className="text-4xl font-semibold sm:text-5xl">Публичная оферта</h1>
       <p className="!mt-3 text-sm text-slate-400">Последнее обновление: {UPDATED}</p>
 

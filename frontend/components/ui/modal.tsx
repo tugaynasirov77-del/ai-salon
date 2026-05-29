@@ -39,7 +39,7 @@ export function Modal({ open, onClose, title, children, footer, maxWidth = 'md' 
         onClick={(e) => e.stopPropagation()}
         className={cn(
           'relative w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl',
-          'dark:border-white/10 dark:bg-slate-900 dark:shadow-[0_0_60px_rgba(139,92,246,0.15)]',
+          'dark:border-white/10 dark:bg-slate-900 dark:shadow-[0_0_60px_rgba(217,146,32,0.15)]',
           WIDTH[maxWidth],
         )}
       >

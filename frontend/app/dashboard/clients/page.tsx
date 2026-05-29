@@ -95,7 +95,7 @@ export default function ClientsPage() {
                 className={cn(
                   'rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                   channelFilter === c
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-amber-600 text-white'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700',
                 )}
               >
@@ -139,7 +139,7 @@ export default function ClientsPage() {
                       onClick={() => setSelectedId(c.id)}
                       className={cn(
                         'cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50',
-                        selectedId === c.id && 'bg-blue-50 dark:bg-blue-950/30',
+                        selectedId === c.id && 'bg-amber-50 dark:bg-amber-950/30',
                       )}
                     >
                       <td className="px-5 py-3 font-medium text-slate-900 dark:text-slate-100">
@@ -272,7 +272,7 @@ function ClientDrawer({
                       'rounded-lg p-3 text-sm',
                       m.direction === 'in'
                         ? 'bg-slate-100 dark:bg-slate-800'
-                        : 'ml-8 bg-blue-50 dark:bg-blue-950/30',
+                        : 'ml-8 bg-amber-50 dark:bg-amber-950/30',
                     )}
                   >
                     <div className="text-slate-900 dark:text-slate-100">{m.text}</div>

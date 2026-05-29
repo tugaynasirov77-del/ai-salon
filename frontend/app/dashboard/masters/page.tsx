@@ -159,8 +159,8 @@ export default function MastersPage() {
       ) : list.length === 0 ? (
         <Card>
           <div className="flex flex-col items-center px-6 py-16 text-center">
-            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 dark:bg-blue-950/40">
-              <UserCog className="h-7 w-7 text-blue-600 dark:text-blue-400" />
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-50 dark:bg-amber-950/40">
+              <UserCog className="h-7 w-7 text-amber-600 dark:text-amber-400" />
             </div>
             <div className="mb-1 text-base font-medium text-slate-700 dark:text-slate-200">Пока нет мастеров</div>
             <div className="mb-4 max-w-sm text-sm text-slate-500">
@@ -181,7 +181,7 @@ export default function MastersPage() {
             return (
               <Card key={m.id} className={cn('flex flex-col p-4', !m.isActive && 'opacity-60')}>
                 <div className="mb-3 flex items-start gap-3">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-100 text-base font-semibold text-blue-700 dark:bg-blue-950/40 dark:text-blue-300">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-amber-100 text-base font-semibold text-amber-700 dark:bg-amber-950/40 dark:text-amber-300">
                     {m.name.charAt(0).toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -222,7 +222,7 @@ export default function MastersPage() {
                 <div className="flex items-center justify-end gap-1 border-t border-slate-100 pt-2 dark:border-slate-800">
                   <button
                     onClick={() => openEdit(m)}
-                    className="rounded p-1.5 text-slate-500 hover:bg-slate-100 hover:text-blue-600 dark:hover:bg-slate-800"
+                    className="rounded p-1.5 text-slate-500 hover:bg-slate-100 hover:text-amber-600 dark:hover:bg-slate-800"
                     aria-label="Редактировать"
                   >
                     <Pencil className="h-4 w-4" />
@@ -297,7 +297,7 @@ export default function MastersPage() {
                       className={cn(
                         'rounded-full border px-3 py-1 text-xs font-medium transition-colors',
                         active
-                          ? 'border-blue-500 bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300'
+                          ? 'border-amber-500 bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300'
                           : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300',
                       )}
                     >

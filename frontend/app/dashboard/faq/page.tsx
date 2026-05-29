@@ -135,8 +135,8 @@ export default function FaqPage() {
       ) : list.length === 0 ? (
         <Card>
           <div className="flex flex-col items-center px-6 py-16 text-center">
-            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 dark:bg-blue-950/40">
-              <HelpCircle className="h-7 w-7 text-blue-600 dark:text-blue-400" />
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-50 dark:bg-amber-950/40">
+              <HelpCircle className="h-7 w-7 text-amber-600 dark:text-amber-400" />
             </div>
             <div className="mb-1 text-base font-medium text-slate-700 dark:text-slate-200">Пока нет FAQ</div>
             <div className="mb-4 max-w-sm text-sm text-slate-500">
@@ -156,7 +156,7 @@ export default function FaqPage() {
                 <button
                   onClick={() => move(idx, -1)}
                   disabled={idx === 0 || swapMut.isPending}
-                  className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-blue-600 disabled:opacity-30 disabled:hover:bg-transparent dark:hover:bg-slate-800"
+                  className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-amber-600 disabled:opacity-30 disabled:hover:bg-transparent dark:hover:bg-slate-800"
                   aria-label="Выше"
                 >
                   <ArrowUp className="h-4 w-4" />
@@ -164,7 +164,7 @@ export default function FaqPage() {
                 <button
                   onClick={() => move(idx, 1)}
                   disabled={idx === list.length - 1 || swapMut.isPending}
-                  className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-blue-600 disabled:opacity-30 disabled:hover:bg-transparent dark:hover:bg-slate-800"
+                  className="rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-amber-600 disabled:opacity-30 disabled:hover:bg-transparent dark:hover:bg-slate-800"
                   aria-label="Ниже"
                 >
                   <ArrowDown className="h-4 w-4" />
@@ -179,7 +179,7 @@ export default function FaqPage() {
               <div className="flex items-start gap-1">
                 <button
                   onClick={() => openEdit(f)}
-                  className="rounded p-1.5 text-slate-500 hover:bg-slate-100 hover:text-blue-600 dark:hover:bg-slate-800"
+                  className="rounded p-1.5 text-slate-500 hover:bg-slate-100 hover:text-amber-600 dark:hover:bg-slate-800"
                   aria-label="Редактировать"
                 >
                   <Pencil className="h-4 w-4" />

@@ -22,9 +22,9 @@ const CHANNEL_ICON: Record<Channel, React.ComponentType<{ className?: string }>>
 };
 
 const CHANNEL_COLOR: Record<Channel, string> = {
-  telegram: 'text-blue-500',
+  telegram: 'text-amber-500',
   max: 'text-purple-500',
-  vk: 'text-sky-500',
+  vk: 'text-amber-500',
   sms: 'text-slate-500',
   webchat: 'text-emerald-500',
 };
@@ -73,7 +73,7 @@ export function RecentConversations({ items, loading, limit = 5 }: Props) {
               const msg = it.lastMessage;
               return (
                 <li key={it.client.id} className="flex gap-3 px-5 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700 dark:bg-blue-950 dark:text-blue-300">
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-amber-100 text-sm font-semibold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
                     {initials(it.client.name)}
                   </div>
                   <div className="min-w-0 flex-1">

@@ -28,7 +28,7 @@ import {
 const STEPS = ['Услуги', 'Расписание', 'Telegram', 'Готово'] as const;
 
 const inputCls =
-  'h-10 w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 text-sm text-white placeholder:text-slate-500 focus:border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-400/30';
+  'h-10 w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 text-sm text-white placeholder:text-slate-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/30';
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -44,7 +44,7 @@ export default function OnboardingPage() {
   return (
     <div className="mx-auto max-w-2xl">
       <div className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-medium text-cyan-200">
+        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-medium text-amber-200">
           <Sparkles className="h-3.5 w-3.5" />
           Быстрая настройка
         </div>
@@ -61,7 +61,7 @@ export default function OnboardingPage() {
                 i < step
                   ? 'bg-emerald-500/20 text-emerald-300 ring-1 ring-inset ring-emerald-400/30'
                   : i === step
-                    ? 'bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-white'
+                    ? 'bg-gradient-to-br from-amber-500 to-amber-500 text-white'
                     : 'bg-white/[0.04] text-slate-500 ring-1 ring-inset ring-white/10'
               }`}
             >
@@ -260,7 +260,7 @@ function StepSchedule({ onNext, onBack }: { onNext: () => void; onBack: () => vo
           return (
             <div key={d} className={`flex items-center gap-3 rounded-lg border px-3 py-2 ${weekend ? 'border-orange-400/10 bg-orange-500/[0.03]' : 'border-white/[0.06] bg-white/[0.02]'}`}>
               <label className="flex w-20 shrink-0 cursor-pointer items-center gap-2 text-sm text-slate-200">
-                <input type="checkbox" checked={st.open} onChange={(e) => upd(d, { open: e.target.checked })} className="accent-violet-500" />
+                <input type="checkbox" checked={st.open} onChange={(e) => upd(d, { open: e.target.checked })} className="accent-amber-500" />
                 {DAY_LABEL[d]}
               </label>
               {st.open ? (
@@ -362,7 +362,7 @@ function StepDone({ onFinish }: { onFinish: () => void }) {
   const salon = useAuthStore((s) => s.salon);
   return (
     <div className="text-center">
-      <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500/30 to-fuchsia-500/30 text-fuchsia-200 ring-1 ring-inset ring-white/10">
+      <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500/30 to-amber-500/30 text-amber-200 ring-1 ring-inset ring-white/10">
         <PartyPopper className="h-8 w-8" />
       </div>
       <h2 className="mt-5 text-xl font-semibold text-white">Готово{salon?.name ? `, ${salon.name}` : ''}!</h2>
@@ -371,7 +371,7 @@ function StepDone({ onFinish }: { onFinish: () => void }) {
       </p>
       <button
         onClick={onFinish}
-        className="mt-7 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-7 py-3 text-sm font-semibold text-white shadow-[0_0_30px_rgba(139,92,246,0.4)] transition-transform hover:scale-[1.02]"
+        className="mt-7 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-amber-500 to-amber-500 px-7 py-3 text-sm font-semibold text-white shadow-[0_0_30px_rgba(217,146,32,0.4)] transition-transform hover:scale-[1.02]"
       >
         Перейти в дашборд
         <ArrowRight className="h-4 w-4" />
@@ -387,7 +387,7 @@ function StepDone({ onFinish }: { onFinish: () => void }) {
 function Head({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
   return (
     <div>
-      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400/20 via-indigo-500/20 to-fuchsia-500/20 text-cyan-200 ring-1 ring-inset ring-white/10">
+      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400/20 via-amber-500/20 to-amber-500/20 text-amber-200 ring-1 ring-inset ring-white/10">
         {icon}
       </div>
       <h2 className="mt-4 text-lg font-semibold text-white">{title}</h2>
@@ -414,7 +414,7 @@ function NextBtn({ onClick, label, disabled, loading }: { onClick: () => void; l
     <button
       onClick={onClick}
       disabled={disabled}
-      className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-2.5 text-sm font-semibold text-white shadow-[0_0_24px_rgba(139,92,246,0.4)] transition-transform hover:scale-[1.02] disabled:opacity-60 disabled:hover:scale-100"
+      className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-amber-500 to-amber-500 px-6 py-2.5 text-sm font-semibold text-white shadow-[0_0_24px_rgba(217,146,32,0.4)] transition-transform hover:scale-[1.02] disabled:opacity-60 disabled:hover:scale-100"
     >
       {loading && <Loader2 className="h-4 w-4 animate-spin" />}
       {label}

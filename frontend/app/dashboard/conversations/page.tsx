@@ -26,9 +26,9 @@ const CHANNEL_ICON: Record<Channel, React.ComponentType<{ className?: string }>>
   webchat: Globe,
 };
 const CHANNEL_COLOR: Record<Channel, string> = {
-  telegram: 'text-blue-500',
+  telegram: 'text-amber-500',
   max: 'text-purple-500',
-  vk: 'text-sky-500',
+  vk: 'text-amber-500',
   sms: 'text-slate-500',
   webchat: 'text-emerald-500',
 };
@@ -155,11 +155,11 @@ export default function ConversationsPage() {
                           className={cn(
                             'flex w-full gap-3 px-3 py-3 text-left transition-colors',
                             active
-                              ? 'bg-blue-50 dark:bg-blue-950/30'
+                              ? 'bg-amber-50 dark:bg-amber-950/30'
                               : 'hover:bg-slate-50 dark:hover:bg-slate-800/50',
                           )}
                         >
-                          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700 dark:bg-blue-950 dark:text-blue-300">
+                          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-amber-100 text-sm font-semibold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
                             {initials(it.client.name)}
                           </div>
                           <div className="min-w-0 flex-1">
@@ -188,7 +188,7 @@ export default function ConversationsPage() {
                                 {it.lastMessage?.text || 'Нет сообщений'}
                               </div>
                               {(it.unreadCount || 0) > 0 ? (
-                                <span className="rounded-full bg-blue-600 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                                <span className="rounded-full bg-amber-600 px-1.5 py-0.5 text-[10px] font-semibold text-white">
                                   {it.unreadCount}
                                 </span>
                               ) : it.messagesCount > 0 ? (
@@ -280,7 +280,7 @@ function ConversationDetail({
       {/* Шапка */}
       <header className="border-b border-slate-200 bg-white px-5 py-3 dark:border-slate-800 dark:bg-slate-900">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700 dark:bg-blue-950 dark:text-blue-300">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-sm font-semibold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
             {initials(client.name)}
           </div>
           <div className="min-w-0 flex-1">
@@ -347,17 +347,17 @@ function ConversationDetail({
                       out && byOwner
                         ? 'rounded-br-md bg-emerald-600 text-white'
                         : out
-                          ? 'rounded-br-md bg-blue-600 text-white'
+                          ? 'rounded-br-md bg-amber-600 text-white'
                           : 'rounded-bl-md bg-white text-slate-900 shadow-sm dark:bg-slate-800 dark:text-slate-100',
                     )}
                   >
                     {out && (
-                      <div className={cn('mb-0.5 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider', byOwner ? 'text-emerald-100' : 'text-blue-100')}>
+                      <div className={cn('mb-0.5 flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider', byOwner ? 'text-emerald-100' : 'text-amber-100')}>
                         {byOwner ? <><UserIcon className="h-2.5 w-2.5" /> Вы</> : <><Bot className="h-2.5 w-2.5" /> AI</>}
                       </div>
                     )}
                     <div className="whitespace-pre-wrap break-words">{m.text}</div>
-                    <div className={cn('mt-1 text-[10px]', out ? (byOwner ? 'text-emerald-100' : 'text-blue-100') : 'text-slate-400')}>
+                    <div className={cn('mt-1 text-[10px]', out ? (byOwner ? 'text-emerald-100' : 'text-amber-100') : 'text-slate-400')}>
                       {new Date(m.createdAt).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}
                       {m.intent && <span className="ml-1">· {m.intent}</span>}
                     </div>
@@ -387,7 +387,7 @@ function ConversationDetail({
             placeholder={`Написать клиенту через ${CHANNEL_LABEL[ch] || 'канал клиента'}…`}
             rows={1}
             disabled={sending}
-            className="flex-1 resize-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-60 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+            className="flex-1 resize-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 disabled:opacity-60 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
           />
           <button
             onClick={send}

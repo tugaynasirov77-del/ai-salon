@@ -30,12 +30,14 @@ import { ScrollTracker } from '@/components/analytics/ScrollTracker';
 import { RevealInit } from '@/components/landing/RevealInit';
 import { CountUp } from '@/components/landing/CountUp';
 import { TypingDemo } from '@/components/landing/TypingDemo';
+import { ScrollProgress } from '@/components/landing/ScrollProgress';
 
 export default function LandingPage() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-slate-950 text-slate-100">
       <ScrollTracker />
       <RevealInit />
+      <ScrollProgress />
       {/* === Animated futuristic background (фиксированный) === */}
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#05060f]">
         {/* Aurora-mesh blobs */}

@@ -53,7 +53,7 @@ export function ComparisonTable() {
   return (
     <section className="relative py-24">
       <div className="mx-auto max-w-5xl px-4">
-        <div className="text-center">
+        <div className="reveal text-center">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">Сравнение</span>
           <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
             Администратор vs <br /> Liva ai
@@ -63,7 +63,7 @@ export function ComparisonTable() {
           </p>
         </div>
 
-        <div className="glass mt-12 overflow-hidden rounded-2xl">
+        <div className="glass reveal mt-12 overflow-hidden rounded-2xl">
           {/* Header row */}
           <div className="grid grid-cols-[1fr_auto_auto] gap-4 border-b border-white/[0.08] px-5 py-4 sm:gap-8 sm:px-8 sm:py-5">
             <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">Что важно</div>
@@ -97,7 +97,7 @@ export function ComparisonTable() {
           </div>
         </div>
 
-        <div className="border-gradient relative mt-10 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-cyan-500/10 via-violet-500/10 to-fuchsia-500/10 p-6 text-center backdrop-blur-sm sm:p-8">
+        <div className="border-gradient reveal relative mt-10 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-cyan-500/10 via-violet-500/10 to-fuchsia-500/10 p-6 text-center backdrop-blur-sm sm:p-8">
           <p className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
             В{' '}
             <span className="bg-gradient-to-r from-indigo-300 via-violet-300 to-fuchsia-300 bg-clip-text text-transparent">

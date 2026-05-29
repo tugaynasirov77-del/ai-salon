@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og';
+import { FLAME_PATH } from '../flame-path';
 
 export const runtime = 'edge';
 export const alt = 'Живое демо Liva ai — ИИ-администратор для малого бизнеса';
@@ -15,9 +16,9 @@ export default function OGDemoImage() {
           display: 'flex',
           flexDirection: 'column',
           padding: 60,
-          background: '#0f0a1f',
+          background: '#0B0B12',
           backgroundImage:
-            'radial-gradient(circle at 15% 25%, rgba(99,102,241,0.45) 0%, transparent 50%), radial-gradient(circle at 85% 75%, rgba(236,72,153,0.4) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(139,92,246,0.25) 0%, transparent 60%)',
+            'radial-gradient(circle at 15% 25%, rgba(207,160,73,0.45) 0%, transparent 50%), radial-gradient(circle at 85% 75%, rgba(207,160,73,0.4) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(207,160,73,0.25) 0%, transparent 60%)',
           color: 'white',
           fontFamily: 'sans-serif',
         }}
@@ -32,38 +33,9 @@ export default function OGDemoImage() {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <div
-              style={{
-                width: 56,
-                height: 56,
-                borderRadius: 14,
-                background:
-                  'linear-gradient(135deg, #6366F1 0%, #8B5CF6 55%, #EC4899 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <svg width="38" height="38" viewBox="0 0 40 40" fill="none">
-                <path
-                  d="M11 13 C11 11, 12.5 9.5, 14.5 9.5 L20 9.5 C20 14, 17 17, 14 17 L13 17 L13 21 L11 21 Z"
-                  fill="white"
-                  fillOpacity="0.94"
-                />
-                <path
-                  d="M29 27 C29 29, 27.5 30.5, 25.5 30.5 L20 30.5 C20 26, 23 23, 26 23 L27 23 L27 19 L29 19 Z"
-                  fill="white"
-                  fillOpacity="0.85"
-                />
-                <circle cx="20" cy="20" r="2.4" fill="white" />
-                <g transform="translate(30 9)">
-                  <path
-                    d="M0 -3 L0.7 -0.7 L3 0 L0.7 0.7 L0 3 L-0.7 0.7 L-3 0 L-0.7 -0.7 Z"
-                    fill="white"
-                  />
-                </g>
-              </svg>
-            </div>
+            <svg width="60" height="60" viewBox="0 0 1024 1024" fill="none">
+              <path d={FLAME_PATH} fill="#CFA049" fillRule="evenodd" clipRule="evenodd" />
+            </svg>
             <div
               style={{
                 display: 'flex',
@@ -142,7 +114,7 @@ export default function OGDemoImage() {
               style={{
                 display: 'flex',
                 backgroundImage:
-                  'linear-gradient(90deg, #818CF8 0%, #C084FC 50%, #F472B6 100%)',
+                  'linear-gradient(90deg, #E6C480 0%, #CFA049 50%, #A9742E 100%)',
                 backgroundClip: 'text',
                 color: 'transparent',
               }}
@@ -189,7 +161,7 @@ export default function OGDemoImage() {
                   height: 24,
                   borderRadius: 999,
                   background:
-                    'linear-gradient(135deg, #6366F1 0%, #EC4899 100%)',
+                    'linear-gradient(135deg, #CFA049 0%, #A9742E 100%)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -214,7 +186,7 @@ export default function OGDemoImage() {
                   borderRadius: 14,
                   borderBottomRightRadius: 4,
                   background:
-                    'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)',
+                    'linear-gradient(135deg, #CFA049 0%, #A9742E 100%)',
                   fontSize: 18,
                   lineHeight: 1.3,
                 }}
@@ -338,7 +310,7 @@ export default function OGDemoImage() {
               padding: '14px 28px',
               borderRadius: 14,
               background:
-                'linear-gradient(90deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%)',
+                'linear-gradient(90deg, #CFA049 0%, #A9742E 50%, #A9742E 100%)',
               fontSize: 26,
               fontWeight: 600,
             }}
@@ -367,8 +339,8 @@ function Metric({
     tone === 'emerald'
       ? '#6EE7B7'
       : tone === 'fuchsia'
-      ? '#F0ABFC'
-      : '#A5B4FC';
+      ? '#E6C480'
+      : '#E6C480';
   return (
     <div
       style={{

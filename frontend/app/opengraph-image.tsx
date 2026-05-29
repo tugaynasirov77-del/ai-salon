@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og';
+import { FLAME_PATH } from './flame-path';
 
 export const runtime = 'edge';
 export const alt = 'Liva ai — AI-администратор для малого бизнеса';
@@ -16,37 +17,20 @@ export default function OGImage() {
           flexDirection: 'column',
           justifyContent: 'space-between',
           padding: 80,
-          background: '#0f0a1f',
+          background: '#0B0B12',
           backgroundImage:
-            'radial-gradient(circle at 20% 20%, rgba(99,102,241,0.4) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(236,72,153,0.35) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(139,92,246,0.25) 0%, transparent 60%)',
+            'radial-gradient(circle at 20% 20%, rgba(207,160,73,0.40) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(169,116,46,0.35) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(230,196,128,0.20) 0%, transparent 60%)',
           color: 'white',
           fontFamily: 'sans-serif',
         }}
       >
         {/* Brand */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-          <div
-            style={{
-              width: 80,
-              height: 80,
-              borderRadius: 20,
-              background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 55%, #EC4899 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <svg width="56" height="56" viewBox="0 0 40 40" fill="none">
-              <path d="M11 13 C11 11, 12.5 9.5, 14.5 9.5 L20 9.5 C20 14, 17 17, 14 17 L13 17 L13 21 L11 21 Z" fill="white" fillOpacity="0.94" />
-              <path d="M29 27 C29 29, 27.5 30.5, 25.5 30.5 L20 30.5 C20 26, 23 23, 26 23 L27 23 L27 19 L29 19 Z" fill="white" fillOpacity="0.85" />
-              <circle cx="20" cy="20" r="2.4" fill="white" />
-              <g transform="translate(30 9)">
-                <path d="M0 -3 L0.7 -0.7 L3 0 L0.7 0.7 L0 3 L-0.7 0.7 L-3 0 L-0.7 -0.7 Z" fill="white" />
-              </g>
-            </svg>
-          </div>
+          <svg width="88" height="88" viewBox="0 0 1024 1024" fill="none">
+            <path d={FLAME_PATH} fill="#CFA049" fillRule="evenodd" clipRule="evenodd" />
+          </svg>
           <div style={{ display: 'flex', fontSize: 56, fontWeight: 700, letterSpacing: -1 }}>
-            Liva<span style={{ opacity: 0.6 }}>&nbsp;ai</span>
+            Liva<span style={{ color: '#CFA049' }}>&nbsp;ai</span>
           </div>
         </div>
 
@@ -70,8 +54,7 @@ export default function OGImage() {
               который&nbsp;
               <span
                 style={{
-                  backgroundImage:
-                    'linear-gradient(90deg, #818CF8 0%, #C084FC 50%, #F472B6 100%)',
+                  backgroundImage: 'linear-gradient(90deg, #F0D9A8 0%, #CFA049 55%, #A9742E 100%)',
                   backgroundClip: 'text',
                   color: 'transparent',
                 }}
@@ -105,9 +88,10 @@ export default function OGImage() {
             style={{
               padding: '14px 32px',
               borderRadius: 16,
-              background: 'linear-gradient(90deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%)',
+              background: 'linear-gradient(90deg, #E6C480 0%, #CFA049 50%, #A9742E 100%)',
               fontSize: 28,
               fontWeight: 600,
+              color: '#1a1206',
             }}
           >
             Начать бесплатно →

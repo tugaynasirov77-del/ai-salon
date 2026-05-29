@@ -4,7 +4,7 @@
  * Если есть SVG — заменить путь на /brand/liva-flame.svg.
  */
 
-const FLAME_SRC = '/brand/liva-flame.png';
+const FLAME_SRC = '/brand/liva-flame.svg';
 
 export function LogoMark({ size = 32, className = '' }: { size?: number; className?: string }) {
   return (

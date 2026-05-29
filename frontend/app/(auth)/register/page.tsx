@@ -65,7 +65,7 @@ export default function RegisterPage() {
         has_phone: !!form.phone?.trim(),
         has_address: !!form.address?.trim(),
       });
-      router.replace('/dashboard');
+      router.replace('/dashboard/onboarding');
     } catch (e: any) {
       setError(e?.message || 'Не удалось зарегистрироваться');
     } finally {

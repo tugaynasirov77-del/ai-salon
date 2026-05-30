@@ -67,13 +67,13 @@ export function PricingSection() {
 
           {/* === TURNKEY === */}
           <TiltCard className="h-full">
-          <div className="border-gradient relative flex h-full flex-col rounded-2xl border border-[#8A8E96]/30 bg-gradient-to-b from-amber-950/30 via-amber-950/10 to-transparent p-8 backdrop-blur-sm shadow-[0_0_80px_-12px_rgba(138,142,150,0.45)]">
+          <div className="border-gradient relative flex h-full flex-col rounded-2xl border border-[#8A8E96]/30 bg-gradient-to-b from-amber-950/30 via-amber-950/10 to-transparent p-8 backdrop-blur-sm shadow-[0_0_80px_-12px_rgba(59,130,246,0.45)]">
             <div className="mb-4 flex items-center justify-between gap-2">
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#C0C4CB]">
                 <Briefcase className="h-3.5 w-3.5" />
                 Под ключ
               </div>
-              <span className="rounded-full bg-gradient-to-r from-[#8A8E96] via-[#8A8E96] to-[#5A5E66] px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white shadow-[0_0_18px_rgba(138,142,150,0.5)]">
+              <span className="rounded-full bg-gradient-to-r from-[#3B82F6] via-[#3B82F6] to-[#2563EB] px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white shadow-[0_0_18px_rgba(59,130,246,0.5)]">
                 Рекомендуем
               </span>
             </div>
@@ -100,7 +100,7 @@ export function PricingSection() {
 
             <button
               onClick={() => { track('cta_turnkey_open', { location: 'pricing_turnkey' }); setOpen(true); }}
-              className="group relative mt-8 inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#8A8E96] via-[#8A8E96] to-[#5A5E66] px-6 py-3 text-center text-sm font-semibold text-white shadow-[0_0_30px_rgba(138,142,150,0.4)] transition-transform hover:scale-[1.02]"
+              className="group relative mt-8 inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#3B82F6] via-[#3B82F6] to-[#2563EB] px-6 py-3 text-center text-sm font-semibold text-white shadow-[0_0_30px_rgba(59,130,246,0.4)] transition-transform hover:scale-[1.02]"
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
               Оставить заявку
@@ -196,7 +196,7 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
               </div>
               <div className="mb-2 text-base font-semibold text-white">Заявка отправлена!</div>
               <p className="mb-4 text-sm text-slate-400">Менеджер свяжется с вами в течение дня.</p>
-              <button onClick={reset} className="rounded-xl bg-gradient-to-r from-[#8A8E96] via-[#8A8E96] to-[#5A5E66] px-6 py-2 text-sm font-semibold text-white">
+              <button onClick={reset} className="rounded-xl bg-gradient-to-r from-[#3B82F6] via-[#3B82F6] to-[#2563EB] px-6 py-2 text-sm font-semibold text-white">
                 Закрыть
               </button>
             </div>
@@ -257,7 +257,7 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
               <button
                 onClick={submit}
                 disabled={state === 'sending'}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#8A8E96] via-[#8A8E96] to-[#5A5E66] px-6 py-2.5 text-sm font-semibold text-white shadow-[0_0_30px_rgba(138,142,150,0.4)] transition-transform hover:scale-[1.01] disabled:opacity-60"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#3B82F6] via-[#3B82F6] to-[#2563EB] px-6 py-2.5 text-sm font-semibold text-white shadow-[0_0_30px_rgba(59,130,246,0.4)] transition-transform hover:scale-[1.01] disabled:opacity-60"
               >
                 {state === 'sending' && <Loader2 className="h-4 w-4 animate-spin" />}
                 Отправить заявку

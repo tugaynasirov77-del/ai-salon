@@ -61,7 +61,7 @@ export default function OnboardingPage() {
                 i < step
                   ? 'bg-emerald-500/20 text-emerald-300 ring-1 ring-inset ring-emerald-400/30'
                   : i === step
-                    ? 'bg-gradient-to-br from-amber-500 to-amber-500 text-white'
+                    ? 'bg-gradient-to-br from-[#3B82F6] to-[#2563EB] text-white'
                     : 'bg-white/[0.04] text-slate-500 ring-1 ring-inset ring-white/10'
               }`}
             >
@@ -371,7 +371,7 @@ function StepDone({ onFinish }: { onFinish: () => void }) {
       </p>
       <button
         onClick={onFinish}
-        className="mt-7 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-amber-500 to-amber-500 px-7 py-3 text-sm font-semibold text-white shadow-[0_0_30px_rgba(138,142,150,0.4)] transition-transform hover:scale-[1.02]"
+        className="mt-7 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#3B82F6] via-[#3B82F6] to-[#2563EB] px-7 py-3 text-sm font-semibold text-white shadow-[0_0_30px_rgba(59,130,246,0.4)] transition-transform hover:scale-[1.02]"
       >
         Перейти в дашборд
         <ArrowRight className="h-4 w-4" />
@@ -414,7 +414,7 @@ function NextBtn({ onClick, label, disabled, loading }: { onClick: () => void; l
     <button
       onClick={onClick}
       disabled={disabled}
-      className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-amber-500 to-amber-500 px-6 py-2.5 text-sm font-semibold text-white shadow-[0_0_24px_rgba(138,142,150,0.4)] transition-transform hover:scale-[1.02] disabled:opacity-60 disabled:hover:scale-100"
+      className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#3B82F6] via-[#3B82F6] to-[#2563EB] px-6 py-2.5 text-sm font-semibold text-white shadow-[0_0_24px_rgba(59,130,246,0.4)] transition-transform hover:scale-[1.02] disabled:opacity-60 disabled:hover:scale-100"
     >
       {loading && <Loader2 className="h-4 w-4 animate-spin" />}
       {label}

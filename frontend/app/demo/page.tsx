@@ -311,7 +311,7 @@ export default function DemoPage() {
           <Link
             href="/register"
             onClick={() => track('cta_register', { location: 'demo_header' })}
-            className="group inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-amber-500 via-amber-500 to-amber-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_rgba(138,142,150,0.45)] transition-transform hover:scale-[1.02]"
+            className="group inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-[#3B82F6] via-[#3B82F6] to-[#2563EB] px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_rgba(59,130,246,0.45)] transition-transform hover:scale-[1.02]"
           >
             Попробовать бесплатно
             <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
@@ -340,10 +340,10 @@ export default function DemoPage() {
       <section className="px-4 pb-16">
         <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-2">
           {/* === CHAT (LEFT) === */}
-          <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#1F232A]/70 shadow-[0_30px_80px_-20px_rgba(138,142,150,0.4)] backdrop-blur-xl">
+          <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#1F232A]/70 shadow-[0_30px_80px_-20px_rgba(59,130,246,0.4)] backdrop-blur-xl">
             <div className="flex items-center justify-between border-b border-white/[0.06] bg-white/[0.02] px-5 py-3.5">
               <div className="flex items-center gap-2.5">
-                <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-amber-500 to-amber-500 text-sm font-semibold text-white">Л</span>
+                <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-[#3B82F6] to-[#2563EB] text-sm font-semibold text-white">Л</span>
                 <div>
                   <div className="text-sm font-semibold text-white">Демо-салон Liva ai</div>
                   <div className="flex items-center gap-1.5 text-[11px] text-emerald-300">
@@ -427,7 +427,7 @@ export default function DemoPage() {
                     <button
                       type="button"
                       onClick={togglePlayVoice}
-                      className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-amber-500 text-white"
+                      className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#3B82F6] to-[#2563EB] text-white"
                       aria-label={voicePlaying ? 'Пауза' : 'Воспроизвести'}
                     >
                       {voicePlaying ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
@@ -499,7 +499,7 @@ export default function DemoPage() {
               <button
                 type="submit"
                 disabled={!canSend}
-                className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 via-amber-500 to-amber-500 text-white shadow-[0_0_20px_rgba(138,142,150,0.4)] transition-transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
+                className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#3B82F6] via-[#3B82F6] to-[#2563EB] text-white shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-transform hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100"
               >
                 {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
               </button>
@@ -507,7 +507,7 @@ export default function DemoPage() {
           </div>
 
           {/* === ADMIN (RIGHT) === */}
-          <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#1F232A]/70 shadow-[0_30px_80px_-20px_rgba(138,142,150,0.3)] backdrop-blur-xl">
+          <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#1F232A]/70 shadow-[0_30px_80px_-20px_rgba(59,130,246,0.3)] backdrop-blur-xl">
             <div className="flex items-center justify-between border-b border-white/[0.06] bg-white/[0.02] px-5 py-3.5">
               <div className="flex items-center gap-2">
                 <span className="h-2.5 w-2.5 rounded-full bg-red-400/60" />
@@ -562,7 +562,7 @@ export default function DemoPage() {
                 <Link
                   href="/register"
                   onClick={() => track('cta_register', { location: 'demo_footer' })}
-                  className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-amber-500 via-amber-500 to-amber-500 px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(138,142,150,0.5)] transition-transform hover:scale-[1.02] sm:w-auto"
+                  className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#3B82F6] via-[#3B82F6] to-[#2563EB] px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(59,130,246,0.5)] transition-transform hover:scale-[1.02] sm:w-auto"
                 >
                   Попробовать бесплатно
                   <ArrowRight className="h-4 w-4" />
@@ -598,7 +598,7 @@ function Bubble({ from, text, imageUrl, voiceUrl }: { from: 'user' | 'bot'; text
           <audio controls src={voiceUrl} className="h-9 max-w-[80%] rounded-full" />
         )}
         {text && (
-          <div className="max-w-[80%] whitespace-pre-wrap rounded-2xl rounded-br-sm bg-gradient-to-br from-amber-500 to-amber-500 px-4 py-2.5 text-sm leading-relaxed text-white shadow-lg">
+          <div className="max-w-[80%] whitespace-pre-wrap rounded-2xl rounded-br-sm bg-gradient-to-br from-[#3B82F6] to-[#2563EB] px-4 py-2.5 text-sm leading-relaxed text-white shadow-lg">
             {text}
           </div>
         )}
@@ -607,7 +607,7 @@ function Bubble({ from, text, imageUrl, voiceUrl }: { from: 'user' | 'bot'; text
   }
   return (
     <div className="flex items-end gap-2">
-      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-gradient-to-br from-amber-500 to-amber-500 text-[11px] font-semibold text-white">Л</span>
+      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#3B82F6] to-[#2563EB] text-[11px] font-semibold text-white">Л</span>
       <div className="max-w-[80%] whitespace-pre-wrap rounded-2xl rounded-bl-sm border border-white/10 bg-white/[0.06] px-4 py-2.5 text-sm leading-relaxed text-slate-100">
         {text}
       </div>
@@ -618,7 +618,7 @@ function Bubble({ from, text, imageUrl, voiceUrl }: { from: 'user' | 'bot'; text
 function BubbleTyping() {
   return (
     <div className="flex items-end gap-2">
-      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-gradient-to-br from-amber-500 to-amber-500 text-[11px] font-semibold text-white">Л</span>
+      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#3B82F6] to-[#2563EB] text-[11px] font-semibold text-white">Л</span>
       <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-sm border border-white/10 bg-white/[0.06] px-4 py-3">
         <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400 [animation-delay:-0.3s]" />
         <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400 [animation-delay:-0.15s]" />

@@ -9,7 +9,7 @@ export default function NotFound() {
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute -top-32 -left-40 h-[520px] w-[520px] rounded-full bg-amber-600/25 blur-[140px]" />
         <div className="absolute top-[30%] -right-32 h-[480px] w-[480px] rounded-full bg-amber-600/20 blur-[140px]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(138,142,150,0.08),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(59,130,246,0.08),transparent_60%)]" />
       </div>
 
       {/* Header */}
@@ -20,7 +20,7 @@ export default function NotFound() {
           </Link>
           <Link
             href="/"
-            className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-lg bg-gradient-to-r from-amber-500 via-amber-500 to-amber-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_rgba(138,142,150,0.35)]"
+            className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-lg bg-gradient-to-r from-[#3B82F6] via-[#3B82F6] to-[#2563EB] px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_rgba(59,130,246,0.35)]"
           >
             <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
             На главную
@@ -49,7 +49,7 @@ export default function NotFound() {
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             href="/"
-            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-amber-500 via-amber-500 to-amber-500 px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(138,142,150,0.5)] transition-transform hover:scale-[1.02]"
+            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#3B82F6] via-[#3B82F6] to-[#2563EB] px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(59,130,246,0.5)] transition-transform hover:scale-[1.02]"
           >
             <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
             <Home className="h-4 w-4" />

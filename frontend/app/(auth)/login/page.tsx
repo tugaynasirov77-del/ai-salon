@@ -74,7 +74,7 @@ function LoginForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-amber-500 via-amber-500 to-amber-500 px-6 py-3 text-sm font-semibold text-white shadow-[0_0_30px_rgba(138,142,150,0.4)] transition-transform hover:scale-[1.01] disabled:opacity-60"
+        className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#3B82F6] via-[#3B82F6] to-[#2563EB] px-6 py-3 text-sm font-semibold text-white shadow-[0_0_30px_rgba(59,130,246,0.4)] transition-transform hover:scale-[1.01] disabled:opacity-60"
       >
         <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
         {submitting && <Loader2 className="h-4 w-4 animate-spin" />}

@@ -39,21 +39,21 @@ body {
     -webkit-backdrop-filter: blur(4px);
   }
 
-  /* Hover-glow для интерактивных карточек (сталь/серебро) */
+  /* Hover-glow для интерактивных карточек (электрический синий — акцент бренда) */
   .glow-hover {
     transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
   }
   .glow-hover:hover {
-    border-color: rgba(138, 142, 150, 0.45);
+    border-color: rgba(59, 130, 246, 0.45);
     box-shadow:
-      0 0 0 1px rgba(138, 142, 150, 0.18),
-      0 12px 40px -12px rgba(90, 94, 102, 0.55);
+      0 0 0 1px rgba(59, 130, 246, 0.20),
+      0 12px 40px -12px rgba(37, 99, 235, 0.60);
     transform: translateY(-3px);
   }
 
-  /* Градиентный текст-акцент бренда (сталь) */
+  /* Градиентный текст-акцент бренда (электрический синий) */
   .text-gradient {
-    background-image: linear-gradient(100deg, #E8EBEF 0%, #C0C4CB 30%, #8A8E96 70%, #5A5E66 100%);
+    background-image: linear-gradient(100deg, #BAE6FD 0%, #38BDF8 30%, #3B82F6 70%, #2563EB 100%);
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;

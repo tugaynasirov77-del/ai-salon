@@ -19,7 +19,7 @@ export default function OGImage() {
           padding: 80,
           background: '#0F1216',
           backgroundImage:
-            'radial-gradient(circle at 20% 20%, rgba(138,142,150,0.40) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(90,94,102,0.35) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(192,196,203,0.20) 0%, transparent 60%)',
+            'radial-gradient(circle at 20% 20%, rgba(59,130,246,0.40) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(37,99,235,0.35) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(96,165,250,0.20) 0%, transparent 60%)',
           color: 'white',
           fontFamily: 'sans-serif',
         }}

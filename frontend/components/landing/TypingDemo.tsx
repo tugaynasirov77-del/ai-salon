@@ -94,7 +94,7 @@ function Bubble({ role, text }: { role: 'user' | 'ai'; text: string }) {
       <div
         className={
           isUser
-            ? 'max-w-[80%] rounded-2xl rounded-br-sm bg-gradient-to-br from-[#8A8E96] to-[#8A8E96] px-3.5 py-2 text-[12.5px] leading-snug text-white shadow-[0_8px_24px_-12px_rgba(138,142,150,0.8)]'
+            ? 'max-w-[80%] rounded-2xl rounded-br-sm bg-gradient-to-br from-[#8A8E96] to-[#8A8E96] px-3.5 py-2 text-[12.5px] leading-snug text-white shadow-[0_8px_24px_-12px_rgba(59,130,246,0.8)]'
             : 'max-w-[80%] rounded-2xl rounded-bl-sm border border-white/10 bg-white/[0.06] px-3.5 py-2 text-[12.5px] leading-snug text-slate-100'
         }
         style={{ animation: 'liva-pop 0.32s cubic-bezier(0.16,1,0.3,1)' }}

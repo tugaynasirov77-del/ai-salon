@@ -18,7 +18,7 @@ export default function OGDemoImage() {
           padding: 60,
           background: '#0F1216',
           backgroundImage:
-            'radial-gradient(circle at 15% 25%, rgba(138,142,150,0.45) 0%, transparent 50%), radial-gradient(circle at 85% 75%, rgba(138,142,150,0.4) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(138,142,150,0.25) 0%, transparent 60%)',
+            'radial-gradient(circle at 15% 25%, rgba(59,130,246,0.45) 0%, transparent 50%), radial-gradient(circle at 85% 75%, rgba(59,130,246,0.4) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(59,130,246,0.25) 0%, transparent 60%)',
           color: 'white',
           fontFamily: 'sans-serif',
         }}

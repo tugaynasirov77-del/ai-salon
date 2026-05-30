@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Loader2, ArrowRight } from 'lucide-react';
 import { NICHES } from '@shared/niches';
@@ -22,6 +22,7 @@ const labelCls = 'mb-1 block text-xs font-medium uppercase tracking-wider text-s
 
 export default function RegisterPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const setSession = useAuthStore((s) => s.setSession);
   const [form, setForm] = useState({
     email: '',
@@ -35,6 +36,14 @@ export default function RegisterPage() {
   });
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  // Пред-выбор ниши, если в URL ?niche=barbershop (с лендинга через плитки 9 ниш).
+  useEffect(() => {
+    const q = searchParams.get('niche') as NicheKey | null;
+    if (q && (NICHE_ORDER as string[]).includes(q)) {
+      setForm((f) => ({ ...f, niche: q }));
+    }
+  }, [searchParams]);
 
   function upd<K extends keyof typeof form>(k: K, v: (typeof form)[K]) {
     setForm((f) => ({ ...f, [k]: v }));

@@ -338,13 +338,16 @@ export default function LandingPage() {
 
           <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-3 sm:grid-cols-3">
             {Object.values(NICHES).map((n: any) => (
-              <div
+              <Link
                 key={n.key}
-                className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.025] px-4 py-3.5 text-sm text-slate-200 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C0C4CB]/30 hover:bg-white/[0.05] hover:shadow-[0_8px_30px_-12px_rgba(96,165,250,0.5)]"
+                href={`/register?niche=${n.key}`}
+                onClick={() => track('cta_niche', { niche: n.key })}
+                aria-label={`Зарегистрироваться, ниша ${n.label}`}
+                className="group flex cursor-pointer items-center gap-3 rounded-xl border border-white/10 bg-white/[0.025] px-4 py-3.5 text-sm text-slate-200 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C0C4CB]/30 hover:bg-white/[0.05] hover:shadow-[0_8px_30px_-12px_rgba(96,165,250,0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]/60"
               >
                 <span className="text-xl leading-none transition-transform duration-300 group-hover:scale-110">{n.icon}</span>
                 <span>{n.label}</span>
-              </div>
+              </Link>
             ))}
           </div>
 

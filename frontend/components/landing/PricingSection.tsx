@@ -179,8 +179,8 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={reset}>
-      <div className="absolute inset-0 bg-[#14181F]/80 backdrop-blur-sm" />
-      <div onClick={(e) => e.stopPropagation()} className="relative w-full max-w-md overflow-hidden rounded-2xl border border-white/10 bg-[#1E2329] shadow-2xl">
+      <div className="absolute inset-0 bg-[#0E121A]/80 backdrop-blur-sm" />
+      <div onClick={(e) => e.stopPropagation()} className="relative w-full max-w-md overflow-hidden rounded-2xl border border-white/10 bg-[#181B22] shadow-2xl">
         <header className="flex items-center justify-between border-b border-white/10 px-5 py-4">
           <h3 className="text-base font-semibold text-white">Заявка «Под ключ»</h3>
           <button onClick={reset} aria-label="Закрыть" className="text-slate-400 transition-colors hover:text-white">

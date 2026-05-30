@@ -3,7 +3,7 @@ import { Logo } from '@/components/landing/Logo';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#14181F] text-slate-100">
+    <div className="relative min-h-screen overflow-hidden bg-[#0E121A] text-slate-100">
       {/* Ambient glow */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute -top-32 -left-40 h-[520px] w-[520px] rounded-full bg-amber-600/25 blur-[140px]" />
@@ -11,7 +11,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(59,130,246,0.08),transparent_60%)]" />
       </div>
 
-      <header className="border-b border-white/[0.06] bg-[#14181F]/70 backdrop-blur-xl">
+      <header className="border-b border-white/[0.06] bg-[#0E121A]/70 backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
           <Link href="/" className="inline-flex">
             <Logo size={30} variant="light" />

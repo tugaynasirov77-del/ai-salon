@@ -388,7 +388,7 @@ export default function TestChatPage() {
           </div>
         )}
 
-        <div className="border-t border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-[#1F232A]">
+        <div className="border-t border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-[#232831]">
           <div className="mx-auto flex max-w-3xl flex-col gap-2">
             {/* Превью прикреплённого контента */}
             {(attachedImageUrl || voiceUrl) && (
@@ -474,7 +474,7 @@ export default function TestChatPage() {
                 disabled={sending || recording || !!attachedImage}
                 title={attachedImage ? 'Фото уже прикреплено' : 'Прикрепить фото'}
                 aria-label="Прикрепить фото"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-600 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-[#0F1216] dark:text-slate-300 dark:hover:bg-slate-800"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-600 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-[#181C24] dark:text-slate-300 dark:hover:bg-slate-800"
               >
                 <Paperclip className="h-4 w-4" />
               </button>
@@ -488,7 +488,7 @@ export default function TestChatPage() {
                   'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border transition-colors disabled:cursor-not-allowed disabled:opacity-50',
                   recording
                     ? 'border-red-300 bg-red-600 text-white hover:bg-red-700 dark:border-red-700'
-                    : 'border-slate-300 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-[#0F1216] dark:text-slate-300 dark:hover:bg-slate-800',
+                    : 'border-slate-300 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-[#181C24] dark:text-slate-300 dark:hover:bg-slate-800',
                 )}
               >
                 {recording ? <Square className="h-4 w-4 fill-current" /> : <Mic className="h-4 w-4" />}
@@ -508,7 +508,7 @@ export default function TestChatPage() {
                 }
                 rows={1}
                 disabled={sending || recording}
-                className="flex-1 resize-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-[#1F232A] placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 disabled:opacity-60 dark:border-slate-700 dark:bg-[#0F1216] dark:text-slate-100"
+                className="flex-1 resize-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-[#232831] placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 disabled:opacity-60 dark:border-slate-700 dark:bg-[#181C24] dark:text-slate-100"
               />
               <Button onClick={send} disabled={!canSend}>
                 {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}

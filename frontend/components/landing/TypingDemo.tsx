@@ -61,7 +61,7 @@ export function TypingDemo() {
   }, [msgs, typing]);
 
   return (
-    <div className="flex h-[300px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0F1216]/60">
+    <div className="flex h-[300px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#181C24]/60">
       {/* Header */}
       <div className="flex items-center gap-2.5 border-b border-white/[0.06] bg-white/[0.02] px-4 py-2.5">
         <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#C0C4CB]/30 to-[#8A8E96]/30 text-[11px] font-semibold text-[#E8EBEF] ring-1 ring-inset ring-white/10">

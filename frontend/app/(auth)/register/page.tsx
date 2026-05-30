@@ -104,7 +104,7 @@ export default function RegisterPage() {
             <select id="niche" required value={form.niche}
               onChange={(e) => upd('niche', e.target.value as NicheKey)} className={inputCls + ' px-2'}>
               {NICHE_ORDER.map((k) => (
-                <option key={k} value={k} className="bg-[#1F232A] text-white">
+                <option key={k} value={k} className="bg-[#232831] text-white">
                   {NICHES[k].icon} {NICHES[k].label}
                 </option>
               ))}

@@ -158,7 +158,7 @@ export default function WorkingHoursPage() {
               id="wh-target"
               value={masterId ?? ''}
               onChange={(e) => setMasterId(e.target.value || null)}
-              className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-[#1F232A] focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 dark:border-slate-700 dark:bg-[#1F232A] dark:text-slate-100"
+              className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-[#232831] focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 dark:border-slate-700 dark:bg-[#232831] dark:text-slate-100"
             >
               <option value="">Расписание салона (по умолчанию)</option>
               {(masters.data || []).map((m) => (
@@ -196,7 +196,7 @@ export default function WorkingHoursPage() {
                   key={w.weekday}
                   className={cn(
                     'flex flex-wrap items-center gap-4 px-5 py-3',
-                    !d?.open && 'bg-slate-50/50 dark:bg-[#1F232A]/30',
+                    !d?.open && 'bg-slate-50/50 dark:bg-[#232831]/30',
                   )}
                 >
                   <label className="flex w-44 cursor-pointer items-center gap-3">
@@ -209,7 +209,7 @@ export default function WorkingHoursPage() {
                     <span
                       className={cn(
                         'text-sm font-medium',
-                        d?.open ? 'text-[#1F232A] dark:text-slate-100' : 'text-slate-400',
+                        d?.open ? 'text-[#232831] dark:text-slate-100' : 'text-slate-400',
                         w.weekend && 'text-orange-600 dark:text-orange-400',
                       )}
                     >
@@ -225,7 +225,7 @@ export default function WorkingHoursPage() {
                           value={d.from}
                           onChange={(e) => update(w.weekday, { from: e.target.value })}
                           className={cn(
-                            'h-9 rounded-md border bg-white px-2 text-sm dark:bg-[#1F232A]',
+                            'h-9 rounded-md border bg-white px-2 text-sm dark:bg-[#232831]',
                             invalid ? 'border-red-400' : 'border-slate-300 dark:border-slate-700',
                           )}
                         />
@@ -235,7 +235,7 @@ export default function WorkingHoursPage() {
                           value={d.to}
                           onChange={(e) => update(w.weekday, { to: e.target.value })}
                           className={cn(
-                            'h-9 rounded-md border bg-white px-2 text-sm dark:bg-[#1F232A]',
+                            'h-9 rounded-md border bg-white px-2 text-sm dark:bg-[#232831]',
                             invalid ? 'border-red-400' : 'border-slate-300 dark:border-slate-700',
                           )}
                         />

@@ -50,7 +50,7 @@ function ChannelHeader({ icon: Icon, title, status }: { icon: React.ComponentTyp
   return (
     <div className="mb-3 flex items-center gap-2">
       <Icon className="h-4 w-4 text-slate-500" />
-      <h3 className="text-sm font-semibold text-[#1F232A] dark:text-slate-100">{title}</h3>
+      <h3 className="text-sm font-semibold text-[#232831] dark:text-slate-100">{title}</h3>
       {status}
     </div>
   );
@@ -456,7 +456,7 @@ function WidgetTab({ salonId, salon, refetch, notify }: TabProps) {
 
         <div>
           <Label>Превью</Label>
-          <div className="relative h-64 overflow-hidden rounded-lg border border-slate-200 bg-gradient-to-br from-slate-50 to-slate-100 dark:border-slate-800 dark:from-[#1F232A] dark:to-[#0F1216]">
+          <div className="relative h-64 overflow-hidden rounded-lg border border-slate-200 bg-gradient-to-br from-slate-50 to-slate-100 dark:border-slate-800 dark:from-[#232831] dark:to-[#181C24]">
             <div className="absolute right-4 top-4 max-w-[220px] rounded-2xl rounded-tr-sm bg-white px-3 py-2 text-xs text-slate-700 shadow-md dark:bg-slate-800 dark:text-slate-200">
               {greeting}
             </div>
@@ -476,7 +476,7 @@ function WidgetTab({ salonId, salon, refetch, notify }: TabProps) {
         <Label>Сниппет для сайта</Label>
         <p className="mb-2 text-xs text-slate-500">Вставьте перед закрывающим <code className="rounded bg-slate-100 px-1 dark:bg-slate-800">&lt;/body&gt;</code>.</p>
         <div className="flex flex-wrap items-stretch gap-2">
-          <pre className="flex-1 min-w-0 overflow-x-auto rounded-lg bg-[#1F232A] px-3 py-2 text-xs text-slate-100">
+          <pre className="flex-1 min-w-0 overflow-x-auto rounded-lg bg-[#232831] px-3 py-2 text-xs text-slate-100">
             <code>{snippet}</code>
           </pre>
           <Button variant="outline" onClick={copySnippet}>
@@ -513,7 +513,7 @@ function AccountTab({ email, notify }: { email?: string; notify: (k: 'ok' | 'err
       <ChannelHeader icon={UserIcon} title="Аккаунт" />
       <div className="mb-6">
         <Label>Email</Label>
-        <Input value={email || ''} readOnly disabled className="cursor-not-allowed bg-slate-50 dark:bg-[#1F232A]/50" />
+        <Input value={email || ''} readOnly disabled className="cursor-not-allowed bg-slate-50 dark:bg-[#232831]/50" />
         <p className="mt-1 text-xs text-slate-500">Email пока нельзя изменить.</p>
       </div>
 

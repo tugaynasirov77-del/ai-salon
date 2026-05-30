@@ -185,7 +185,7 @@ export default function MastersPage() {
                     {m.name.charAt(0).toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="truncate font-medium text-[#1F232A] dark:text-slate-100">{m.name}</div>
+                    <div className="truncate font-medium text-[#232831] dark:text-slate-100">{m.name}</div>
                     {m.phone ? (
                       <div className="mt-0.5 flex items-center gap-1 text-xs text-slate-500">
                         <Phone className="h-3 w-3" />
@@ -298,7 +298,7 @@ export default function MastersPage() {
                         'rounded-full border px-3 py-1 text-xs font-medium transition-colors',
                         active
                           ? 'border-amber-500 bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300'
-                          : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-[#1F232A] dark:text-slate-300',
+                          : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-[#232831] dark:text-slate-300',
                       )}
                     >
                       {s.name}

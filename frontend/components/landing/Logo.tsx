@@ -7,6 +7,10 @@
 const FLAME_SRC = '/brand/liva-flame.svg';
 
 export function LogoMark({ size = 32, className = '' }: { size?: number; className?: string }) {
+  // Мягкое синее свечение вокруг пламени через drop-shadow (следует контуру SVG).
+  // Радиус блюра пропорционален размеру: красиво в шапке/футере, деликатно в мелких.
+  const blur = Math.max(6, Math.round(size * 0.45));
+  const tight = Math.max(2, Math.round(size * 0.12));
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
@@ -15,7 +19,12 @@ export function LogoMark({ size = 32, className = '' }: { size?: number; classNa
       width={size}
       height={size}
       className={className}
-      style={{ width: size, height: size, objectFit: 'contain' }}
+      style={{
+        width: size,
+        height: size,
+        objectFit: 'contain',
+        filter: `drop-shadow(0 0 ${blur}px rgba(59, 130, 246, 0.55)) drop-shadow(0 0 ${tight}px rgba(96, 165, 250, 0.40))`,
+      }}
       aria-hidden="true"
     />
   );

@@ -1,7 +1,7 @@
 export function PageHeader({ title, description }: { title: string; description?: string }) {
   return (
     <header className="mb-6">
-      <h1 className="bg-gradient-to-b from-[#1F232A] to-slate-700 bg-clip-text text-2xl font-semibold tracking-tight text-transparent dark:from-white dark:to-white/70">
+      <h1 className="bg-gradient-to-b from-[#232831] to-slate-700 bg-clip-text text-2xl font-semibold tracking-tight text-transparent dark:from-white dark:to-white/70">
         {title}
       </h1>
       {description && (

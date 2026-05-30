@@ -165,7 +165,7 @@ export default function ConversationsPage() {
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center justify-between gap-2">
                               <div className="flex min-w-0 items-center gap-1.5">
-                                <span className="truncate text-sm font-medium text-[#1F232A] dark:text-slate-100">
+                                <span className="truncate text-sm font-medium text-[#232831] dark:text-slate-100">
                                   {it.client.name || 'Без имени'}
                                 </span>
                                 <Icon className={cn('h-3.5 w-3.5 flex-shrink-0', CHANNEL_COLOR[ch])} />
@@ -181,7 +181,7 @@ export default function ConversationsPage() {
                                 className={cn(
                                   'min-w-0 flex-1 truncate text-xs',
                                   (it.unreadCount || 0) > 0
-                                    ? 'font-semibold text-[#1F232A] dark:text-slate-100'
+                                    ? 'font-semibold text-[#232831] dark:text-slate-100'
                                     : 'text-slate-500 dark:text-slate-400',
                                 )}
                               >
@@ -208,7 +208,7 @@ export default function ConversationsPage() {
           </aside>
 
           {/* ===== Правая панель — тред ===== */}
-          <section className="flex min-h-0 flex-col bg-slate-50 dark:bg-[#1F232A]/40">
+          <section className="flex min-h-0 flex-col bg-slate-50 dark:bg-[#232831]/40">
             {!selectedId ? (
               <div className="flex flex-1 flex-col items-center justify-center text-slate-400">
                 <MessageSquare className="mb-3 h-12 w-12" />
@@ -278,13 +278,13 @@ function ConversationDetail({
   return (
     <>
       {/* Шапка */}
-      <header className="border-b border-slate-200 bg-white px-5 py-3 dark:border-slate-800 dark:bg-[#1F232A]">
+      <header className="border-b border-slate-200 bg-white px-5 py-3 dark:border-slate-800 dark:bg-[#232831]">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-sm font-semibold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
             {initials(client.name)}
           </div>
           <div className="min-w-0 flex-1">
-            <div className="truncate font-semibold text-[#1F232A] dark:text-slate-100">
+            <div className="truncate font-semibold text-[#232831] dark:text-slate-100">
               {client.name || 'Без имени'}
             </div>
             <div className="mt-0.5 flex items-center gap-1.5 text-xs text-slate-500">
@@ -298,7 +298,7 @@ function ConversationDetail({
 
       {/* Записи клиента (если есть) */}
       {appointments.length > 0 && (
-        <div className="border-b border-slate-200 bg-white px-5 py-2 dark:border-slate-800 dark:bg-[#1F232A]">
+        <div className="border-b border-slate-200 bg-white px-5 py-2 dark:border-slate-800 dark:bg-[#232831]">
           <div className="mb-1.5 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
             <Calendar className="h-3 w-3" />
             Записи ({appointments.length})
@@ -348,7 +348,7 @@ function ConversationDetail({
                         ? 'rounded-br-md bg-emerald-600 text-white'
                         : out
                           ? 'rounded-br-md bg-amber-600 text-white'
-                          : 'rounded-bl-md bg-white text-[#1F232A] shadow-sm dark:bg-slate-800 dark:text-slate-100',
+                          : 'rounded-bl-md bg-white text-[#232831] shadow-sm dark:bg-slate-800 dark:text-slate-100',
                     )}
                   >
                     {out && (
@@ -371,7 +371,7 @@ function ConversationDetail({
       </div>
 
       {/* Форма ручного ответа */}
-      <footer className="border-t border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-[#1F232A]">
+      <footer className="border-t border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-[#232831]">
         {sendError && (
           <div className="mb-2 flex items-center gap-2 rounded-md bg-red-50 px-3 py-1.5 text-xs text-red-700 dark:bg-red-950/30 dark:text-red-300">
             <AlertCircle className="h-3.5 w-3.5" />
@@ -387,7 +387,7 @@ function ConversationDetail({
             placeholder={`Написать клиенту через ${CHANNEL_LABEL[ch] || 'канал клиента'}…`}
             rows={1}
             disabled={sending}
-            className="flex-1 resize-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-[#1F232A] placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 disabled:opacity-60 dark:border-slate-700 dark:bg-[#0F1216] dark:text-slate-100"
+            className="flex-1 resize-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-[#232831] placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 disabled:opacity-60 dark:border-slate-700 dark:bg-[#181C24] dark:text-slate-100"
           />
           <button
             onClick={send}

@@ -17,12 +17,12 @@ export default function DashboardError({ error, reset }: { error: Error & { dige
         <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-50 dark:bg-red-950/30">
           <AlertTriangle className="h-7 w-7 text-red-600 dark:text-red-400" />
         </div>
-        <h2 className="mb-2 text-lg font-semibold text-[#1A1612] dark:text-slate-100">Что-то пошло не так</h2>
+        <h2 className="mb-2 text-lg font-semibold text-[#1F232A] dark:text-slate-100">Что-то пошло не так</h2>
         <p className="mb-4 text-sm text-slate-600 dark:text-slate-400">
           Эта страница упала. Можно попробовать перезагрузить или вернуться на главную.
         </p>
         {error?.message && (
-          <pre className="mb-4 max-h-32 overflow-auto rounded-md bg-slate-100 px-3 py-2 text-left text-xs text-slate-700 dark:bg-[#1A1612] dark:text-slate-300">
+          <pre className="mb-4 max-h-32 overflow-auto rounded-md bg-slate-100 px-3 py-2 text-left text-xs text-slate-700 dark:bg-[#1F232A] dark:text-slate-300">
             {error.message}
           </pre>
         )}

@@ -60,12 +60,12 @@ export function AppointmentTimeline({ appointments, clients, loading }: Props) {
                 <li key={a.id} className="relative">
                   <span
                     className={cn(
-                      'absolute -left-[31px] top-1.5 h-3 w-3 rounded-full ring-4 ring-white dark:ring-[#1A1612]',
+                      'absolute -left-[31px] top-1.5 h-3 w-3 rounded-full ring-4 ring-white dark:ring-[#1F232A]',
                       s.color,
                     )}
                   />
                   <div className="flex items-baseline gap-3">
-                    <span className="text-sm font-semibold text-[#1A1612] dark:text-slate-100">
+                    <span className="text-sm font-semibold text-[#1F232A] dark:text-slate-100">
                       {fmtTime(a.datetime)}
                     </span>
                     <span className="text-xs text-slate-400">{s.label}</span>

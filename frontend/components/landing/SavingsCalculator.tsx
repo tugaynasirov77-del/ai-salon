@@ -70,8 +70,8 @@ export function SavingsCalculator() {
           </div>
 
           {/* Results */}
-          <div className="relative overflow-hidden rounded-2xl border border-[#CD9842]/20 bg-gradient-to-br from-amber-950/40 via-amber-950/30 to-amber-900/30 p-6 backdrop-blur-sm sm:p-8">
-            <div className="absolute -top-20 right-0 h-[200px] w-[200px] rounded-full bg-[#AC6824]/30 blur-[80px]" />
+          <div className="relative overflow-hidden rounded-2xl border border-[#8A8E96]/20 bg-gradient-to-br from-amber-950/40 via-amber-950/30 to-amber-900/30 p-6 backdrop-blur-sm sm:p-8">
+            <div className="absolute -top-20 right-0 h-[200px] w-[200px] rounded-full bg-[#5A5E66]/30 blur-[80px]" />
             <div className="relative">
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-300">
                 <Sparkles className="h-3.5 w-3.5" />
@@ -150,9 +150,9 @@ function Slider({
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="mt-2.5 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-[#CD9842]"
+        className="mt-2.5 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-[#8A8E96]"
         style={{
-          background: `linear-gradient(to right, #CD9842 0%, #E4BC74 ${((value - min) / (max - min)) * 100}%, rgba(255,255,255,0.1) ${((value - min) / (max - min)) * 100}%)`,
+          background: `linear-gradient(to right, #8A8E96 0%, #C0C4CB ${((value - min) / (max - min)) * 100}%, rgba(255,255,255,0.1) ${((value - min) / (max - min)) * 100}%)`,
         }}
       />
     </div>

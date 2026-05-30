@@ -147,7 +147,7 @@ export default function AnalyticsPage() {
 
       {/* График по дням */}
       <Card className="mb-4">
-        <h3 className="mb-3 text-sm font-semibold text-[#1A1612] dark:text-slate-100">Записи по дням</h3>
+        <h3 className="mb-3 text-sm font-semibold text-[#1F232A] dark:text-slate-100">Записи по дням</h3>
         {loading ? (
           <div className="py-12"><LoadingSpinner /></div>
         ) : (
@@ -172,7 +172,7 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {/* Топ-5 услуг */}
         <Card>
-          <h3 className="mb-3 text-sm font-semibold text-[#1A1612] dark:text-slate-100">Топ-5 услуг</h3>
+          <h3 className="mb-3 text-sm font-semibold text-[#1F232A] dark:text-slate-100">Топ-5 услуг</h3>
           {loading ? (
             <div className="py-12"><LoadingSpinner /></div>
           ) : topServices.length === 0 ? (
@@ -206,7 +206,7 @@ export default function AnalyticsPage() {
 
         {/* Pie каналов */}
         <Card>
-          <h3 className="mb-3 text-sm font-semibold text-[#1A1612] dark:text-slate-100">Источники клиентов</h3>
+          <h3 className="mb-3 text-sm font-semibold text-[#1F232A] dark:text-slate-100">Источники клиентов</h3>
           {loading ? (
             <div className="py-12"><LoadingSpinner /></div>
           ) : totalChannels === 0 ? (

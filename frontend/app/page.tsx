@@ -34,19 +34,19 @@ import { ScrollProgress } from '@/components/landing/ScrollProgress';
 
 export default function LandingPage() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#14100A] text-slate-100">
+    <div className="relative min-h-screen overflow-hidden bg-[#0F1216] text-slate-100">
       <ScrollTracker />
       <RevealInit />
       <ScrollProgress />
       {/* === Animated futuristic background (фиксированный) === */}
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#14100A]">
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#0F1216]">
         {/* Aurora-mesh blobs */}
-        <div className="liva-aurora absolute -top-40 -left-40 h-[560px] w-[560px] rounded-full bg-[#AC6824]/30 blur-[150px]" />
-        <div className="liva-aurora-2 absolute top-[12%] -right-40 h-[520px] w-[520px] rounded-full bg-[#AC6824]/25 blur-[150px]" />
-        <div className="liva-aurora absolute top-[55%] left-1/4 h-[460px] w-[460px] rounded-full bg-[#CD9842]/20 blur-[150px]" />
-        <div className="liva-aurora-2 absolute bottom-0 right-1/4 h-[420px] w-[420px] rounded-full bg-[#AC6824]/20 blur-[150px]" />
+        <div className="liva-aurora absolute -top-40 -left-40 h-[560px] w-[560px] rounded-full bg-[#5A5E66]/30 blur-[150px]" />
+        <div className="liva-aurora-2 absolute top-[12%] -right-40 h-[520px] w-[520px] rounded-full bg-[#5A5E66]/25 blur-[150px]" />
+        <div className="liva-aurora absolute top-[55%] left-1/4 h-[460px] w-[460px] rounded-full bg-[#8A8E96]/20 blur-[150px]" />
+        <div className="liva-aurora-2 absolute bottom-0 right-1/4 h-[420px] w-[420px] rounded-full bg-[#5A5E66]/20 blur-[150px]" />
         {/* Top glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(228,188,116,0.10),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(192,196,203,0.10),transparent_60%)]" />
         {/* Neural grid */}
         <div className="liva-grid absolute inset-0 opacity-35" />
       </div>
@@ -57,10 +57,10 @@ export default function LandingPage() {
       {/* === Hero === */}
       <section className="relative">
         <div className="mx-auto max-w-6xl px-4 pt-24 pb-28 text-center sm:pt-32 sm:pb-36">
-          <div className="reveal is-visible inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs font-medium text-slate-300 shadow-[0_0_30px_-8px_rgba(228,188,116,0.5)] backdrop-blur">
+          <div className="reveal is-visible inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs font-medium text-slate-300 shadow-[0_0_30px_-8px_rgba(192,196,203,0.5)] backdrop-blur">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#E4BC74] opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#E4BC74]" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#C0C4CB] opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#C0C4CB]" />
             </span>
             <span>ИИ-администратор для малого бизнеса</span>
           </div>
@@ -82,7 +82,7 @@ export default function LandingPage() {
             <Link
               href="/register"
               onClick={() => track('cta_register', { location: 'hero' })}
-              className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#E4BC74] via-[#CD9842] to-[#AC6824] px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_50px_-6px_rgba(205,152,66,0.7)] transition-all hover:scale-[1.02] hover:shadow-[0_0_60px_-4px_rgba(228,188,116,0.7)] sm:w-auto"
+              className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#C0C4CB] via-[#8A8E96] to-[#5A5E66] px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_50px_-6px_rgba(138,142,150,0.7)] transition-all hover:scale-[1.02] hover:shadow-[0_0_60px_-4px_rgba(192,196,203,0.7)] sm:w-auto"
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
               Попробовать бесплатно
@@ -93,7 +93,7 @@ export default function LandingPage() {
               onClick={() => track('cta_demo', { location: 'hero' })}
               className="group inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.03] px-7 py-3.5 text-base font-medium text-slate-200 backdrop-blur transition-colors hover:border-white/25 hover:bg-white/[0.07] hover:text-white sm:w-auto"
             >
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10 transition-colors group-hover:bg-[#E4BC74]/20">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10 transition-colors group-hover:bg-[#C0C4CB]/20">
                 <ArrowRight className="h-3 w-3" />
               </span>
               Смотреть демо
@@ -121,8 +121,8 @@ export default function LandingPage() {
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 lg:flex-row lg:justify-between lg:gap-10">
           {/* Honest trust signal вместо «1000+ компаний» */}
           <div className="flex shrink-0 items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#E4BC74]/20 to-[#CD9842]/20 ring-1 ring-inset ring-white/10">
-              <Sparkles className="h-4 w-4 text-[#E4BC74]" strokeWidth={1.5} />
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#C0C4CB]/20 to-[#8A8E96]/20 ring-1 ring-inset ring-white/10">
+              <Sparkles className="h-4 w-4 text-[#C0C4CB]" strokeWidth={1.5} />
             </span>
             <div className="text-left">
               <div className="text-sm font-semibold text-white">Работает на Claude</div>
@@ -181,7 +181,7 @@ export default function LandingPage() {
       <section id="demo" className="relative py-24">
         <div className="mx-auto max-w-5xl px-4">
           <div className="reveal text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E4BC74]">Демо</span>
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C0C4CB]">Демо</span>
             <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
               Попробуйте, как это<br className="hidden sm:block" /> работает изнутри
             </h2>
@@ -193,9 +193,9 @@ export default function LandingPage() {
           <Link
             href="/demo"
             onClick={() => track('cta_demo', { location: 'demo_card' })}
-            className="border-gradient reveal group relative mx-auto mt-12 block max-w-3xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-amber-950/40 via-amber-950/30 to-amber-900/40 p-1 transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_20px_70px_-20px_rgba(228,188,116,0.5)]"
+            className="border-gradient reveal group relative mx-auto mt-12 block max-w-3xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-amber-950/40 via-amber-950/30 to-amber-900/40 p-1 transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_20px_70px_-20px_rgba(192,196,203,0.5)]"
           >
-            <div className="relative rounded-[22px] bg-[#14100A]/70 p-6 sm:p-10">
+            <div className="relative rounded-[22px] bg-[#0F1216]/70 p-6 sm:p-10">
               <div className="grid items-center gap-8 sm:grid-cols-2 sm:gap-10">
                 {/* Живой печатающийся чат */}
                 <div className="order-2 sm:order-1">
@@ -222,7 +222,7 @@ export default function LandingPage() {
                     <Channel icon={<Calendar className="h-3.5 w-3.5" />} label="YClients" tone="cyan" />
                   </div>
 
-                  <span className="mt-7 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#CD9842] via-[#CD9842] to-[#AC6824] px-6 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(205,152,66,0.5)] transition-transform group-hover:scale-[1.03]">
+                  <span className="mt-7 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#8A8E96] via-[#8A8E96] to-[#5A5E66] px-6 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(138,142,150,0.5)] transition-transform group-hover:scale-[1.03]">
                     Открыть полное демо
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                   </span>
@@ -237,7 +237,7 @@ export default function LandingPage() {
       <section id="features" className="relative py-24">
         <div className="mx-auto max-w-6xl px-4">
           <div className="reveal text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E4BC74]">Возможности</span>
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C0C4CB]">Возможности</span>
             <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
               Всё, что делает живой администратор<br className="hidden sm:block" /> — и больше
             </h2>
@@ -284,7 +284,7 @@ export default function LandingPage() {
       <section id="how" className="relative py-24">
         <div className="mx-auto max-w-6xl px-4">
           <div className="reveal text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E4BC74]">Как это работает</span>
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C0C4CB]">Как это работает</span>
             <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
               Запуск проще, чем настройка<br className="hidden sm:block" /> Wi-Fi в кафе
             </h2>
@@ -327,7 +327,7 @@ export default function LandingPage() {
       <section className="relative py-24">
         <div className="mx-auto max-w-6xl px-4">
           <div className="reveal text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E4BC74]">9 ниш</span>
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C0C4CB]">9 ниш</span>
             <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
               Готовые пресеты<br className="hidden sm:block" /> под ваш бизнес
             </h2>
@@ -340,7 +340,7 @@ export default function LandingPage() {
             {Object.values(NICHES).map((n: any) => (
               <div
                 key={n.key}
-                className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.025] px-4 py-3.5 text-sm text-slate-200 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#E4BC74]/30 hover:bg-white/[0.05] hover:shadow-[0_8px_30px_-12px_rgba(228,188,116,0.5)]"
+                className="group flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.025] px-4 py-3.5 text-sm text-slate-200 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C0C4CB]/30 hover:bg-white/[0.05] hover:shadow-[0_8px_30px_-12px_rgba(192,196,203,0.5)]"
               >
                 <span className="text-xl leading-none transition-transform duration-300 group-hover:scale-110">{n.icon}</span>
                 <span>{n.label}</span>
@@ -394,7 +394,7 @@ export default function LandingPage() {
       <section id="faq" className="relative py-24">
         <div className="mx-auto max-w-3xl px-4">
           <div className="reveal text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E4BC74]">Частые вопросы</span>
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C0C4CB]">Частые вопросы</span>
             <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
               Отвечаем заранее
             </h2>
@@ -430,7 +430,7 @@ export default function LandingPage() {
           </div>
           <p className="mt-10 text-center text-sm text-slate-400">
             Другой вопрос? Напишите{' '}
-            <a href="mailto:hello@ailiva.ru" className="text-[#E4BC74] hover:text-white">
+            <a href="mailto:hello@ailiva.ru" className="text-[#C0C4CB] hover:text-white">
               hello@ailiva.ru
             </a>
           </p>
@@ -444,8 +444,8 @@ export default function LandingPage() {
       <section className="relative py-20">
         <div className="mx-auto max-w-4xl px-4">
           <div className="border-gradient reveal relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-amber-950/40 via-amber-950/30 to-amber-900/40 p-10 text-center sm:p-14">
-            <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-[300px] w-[600px] rounded-full bg-[#AC6824]/25 blur-[100px]" />
-            <div className="absolute -bottom-32 left-1/4 h-[260px] w-[460px] rounded-full bg-[#CD9842]/15 blur-[110px]" />
+            <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-[300px] w-[600px] rounded-full bg-[#5A5E66]/25 blur-[100px]" />
+            <div className="absolute -bottom-32 left-1/4 h-[260px] w-[460px] rounded-full bg-[#8A8E96]/15 blur-[110px]" />
             <div className="relative">
               <h2 className="bg-gradient-to-b from-white to-white/70 bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl">
                 Каждый день без Liva ai —<br className="hidden sm:block" /> это упущенные клиенты после 19:00
@@ -457,7 +457,7 @@ export default function LandingPage() {
                 <Link
                   href="/register"
                   onClick={() => track('cta_register', { location: 'final_cta' })}
-                  className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#CD9842] via-[#CD9842] to-[#AC6824] px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(205,152,66,0.5)] transition-transform hover:scale-[1.02] sm:w-auto"
+                  className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#8A8E96] via-[#8A8E96] to-[#5A5E66] px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(138,142,150,0.5)] transition-transform hover:scale-[1.02] sm:w-auto"
                 >
                   <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
                   Попробовать бесплатно
@@ -535,7 +535,7 @@ function SpotlightGrid({ children }: { children: React.ReactNode }) {
         className="pointer-events-none absolute inset-0 z-10 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
           background:
-            'radial-gradient(260px circle at var(--x) var(--y), rgba(228,188,116,0.10), transparent 65%)',
+            'radial-gradient(260px circle at var(--x) var(--y), rgba(192,196,203,0.10), transparent 65%)',
         }}
       />
       <div className="relative grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:grid-cols-3">
@@ -547,10 +547,10 @@ function SpotlightGrid({ children }: { children: React.ReactNode }) {
 
 function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
   return (
-    <div className="group relative bg-[#14100A]/40 p-7 transition-colors duration-300 hover:bg-white/[0.04]">
+    <div className="group relative bg-[#0F1216]/40 p-7 transition-colors duration-300 hover:bg-white/[0.04]">
       {/* hover glow */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_0%,rgba(228,188,116,0.12),transparent_60%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-      <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-[#E4BC74]/20 via-[#CD9842]/20 to-[#AC6824]/20 text-[#ECD09A] ring-1 ring-inset ring-white/10 transition-all duration-300 group-hover:ring-[#E4BC74]/40 group-hover:shadow-[0_0_24px_-4px_rgba(228,188,116,0.6)]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_0%,rgba(192,196,203,0.12),transparent_60%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-[#C0C4CB]/20 via-[#8A8E96]/20 to-[#5A5E66]/20 text-[#E8EBEF] ring-1 ring-inset ring-white/10 transition-all duration-300 group-hover:ring-[#C0C4CB]/40 group-hover:shadow-[0_0_24px_-4px_rgba(192,196,203,0.6)]">
         {icon}
       </div>
       <h3 className="relative mt-5 text-base font-semibold text-white">{title}</h3>
@@ -564,8 +564,8 @@ function FloatingHeader() {
     <header className="fixed inset-x-0 top-3 z-40 px-3 sm:top-5 sm:px-4">
       <div className="relative mx-auto max-w-4xl">
         {/* Свечение под капсулой */}
-        <div className="pointer-events-none absolute -inset-x-10 -top-6 -z-10 h-24 bg-[radial-gradient(ellipse_50%_100%_at_50%_0%,rgba(205,152,66,0.4),transparent_70%)] blur-xl" />
-        <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[#14100A]/40 px-3 py-2.5 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] backdrop-blur-md sm:rounded-full sm:px-5">
+        <div className="pointer-events-none absolute -inset-x-10 -top-6 -z-10 h-24 bg-[radial-gradient(ellipse_50%_100%_at_50%_0%,rgba(138,142,150,0.4),transparent_70%)] blur-xl" />
+        <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[#0F1216]/40 px-3 py-2.5 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] backdrop-blur-md sm:rounded-full sm:px-5">
           <Logo size={30} variant="light" />
           <nav className="hidden gap-7 text-sm text-slate-300 lg:flex">
             <a href="#demo" className="transition-colors hover:text-white">Демо</a>
@@ -581,7 +581,7 @@ function FloatingHeader() {
             <Link
               href="/register"
               onClick={() => track('cta_register', { location: 'header' })}
-              className="group relative hidden items-center gap-1.5 overflow-hidden rounded-full bg-gradient-to-r from-[#E4BC74] via-[#CD9842] to-[#AC6824] px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_-4px_rgba(205,152,66,0.7)] transition-transform hover:scale-[1.03] sm:inline-flex"
+              className="group relative hidden items-center gap-1.5 overflow-hidden rounded-full bg-gradient-to-r from-[#C0C4CB] via-[#8A8E96] to-[#5A5E66] px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_-4px_rgba(138,142,150,0.7)] transition-transform hover:scale-[1.03] sm:inline-flex"
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
               Попробовать бесплатно
@@ -619,11 +619,11 @@ function MobileMenu() {
         <div className="fixed inset-0 z-50 lg:hidden">
           {/* Backdrop */}
           <div
-            className="absolute inset-0 bg-[#14100A]/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#0F1216]/80 backdrop-blur-sm"
             onClick={() => setOpen(false)}
           />
           {/* Panel */}
-          <div className="absolute inset-x-0 top-0 border-b border-white/10 bg-[#14100A]/95 px-4 pb-6 pt-4 shadow-2xl backdrop-blur-xl">
+          <div className="absolute inset-x-0 top-0 border-b border-white/10 bg-[#0F1216]/95 px-4 pb-6 pt-4 shadow-2xl backdrop-blur-xl">
             <div className="mx-auto flex max-w-6xl items-center justify-between">
               <Logo size={32} variant="light" />
               <button
@@ -653,7 +653,7 @@ function MobileMenu() {
               <Link
                 href="/register"
                 onClick={() => { track('cta_register', { location: 'mobile_menu' }); setOpen(false); }}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#CD9842] via-[#CD9842] to-[#AC6824] px-6 py-3 text-base font-semibold text-white shadow-[0_0_24px_rgba(205,152,66,0.45)]"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#8A8E96] via-[#8A8E96] to-[#5A5E66] px-6 py-3 text-base font-semibold text-white shadow-[0_0_24px_rgba(138,142,150,0.45)]"
               >
                 Попробовать бесплатно
                 <ArrowRight className="h-4 w-4" />
@@ -688,7 +688,7 @@ function FloatingDemoLink() {
       href="/demo"
       onClick={() => track('cta_demo', { location: 'floating' })}
       aria-label="Открыть полное демо"
-      className="group fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-gradient-to-r from-[#CD9842] via-[#CD9842] to-[#AC6824] px-4 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_-4px_rgba(205,152,66,0.6)] backdrop-blur-xl transition-transform hover:scale-[1.03] sm:bottom-6 sm:right-6 sm:px-5 sm:py-3.5"
+      className="group fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-gradient-to-r from-[#8A8E96] via-[#8A8E96] to-[#5A5E66] px-4 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_-4px_rgba(138,142,150,0.6)] backdrop-blur-xl transition-transform hover:scale-[1.03] sm:bottom-6 sm:right-6 sm:px-5 sm:py-3.5"
     >
       <MessageSquare className="h-4 w-4" strokeWidth={2} />
       <span className="hidden sm:inline">Открыть демо</span>
@@ -729,10 +729,10 @@ function BulletBadge({ children }: { children: React.ReactNode }) {
 }
 
 const CHANNEL_TONES: Record<string, string> = {
-  indigo: 'border-[#E4BC74]/30 bg-[#CD9842]/10 text-[#ECD09A]',
+  indigo: 'border-[#C0C4CB]/30 bg-[#8A8E96]/10 text-[#E8EBEF]',
   emerald: 'border-emerald-400/30 bg-emerald-500/10 text-emerald-200',
   orange: 'border-orange-400/30 bg-orange-500/10 text-orange-200',
-  cyan: 'border-[#E4BC74]/30 bg-[#CD9842]/10 text-[#ECD09A]',
+  cyan: 'border-[#C0C4CB]/30 bg-[#8A8E96]/10 text-[#E8EBEF]',
 };
 
 function InteractiveMockup() {
@@ -753,7 +753,7 @@ function InteractiveMockup() {
   return (
     <div className="relative mx-auto mt-14 max-w-5xl px-4">
       {/* Ambient glow за окном */}
-      <div className="absolute -inset-x-12 -inset-y-10 -z-10 rounded-[48px] bg-gradient-to-b from-[#CD9842]/15 via-[#CD9842]/15 to-transparent blur-3xl" />
+      <div className="absolute -inset-x-12 -inset-y-10 -z-10 rounded-[48px] bg-gradient-to-b from-[#8A8E96]/15 via-[#8A8E96]/15 to-transparent blur-3xl" />
 
       <div
         ref={setRef}
@@ -789,7 +789,7 @@ function InteractiveMockup() {
 
             <FloatCard className="absolute -right-8 top-8 hidden w-[250px] lg:block" depth={180} delay="-2s">
               <div className="flex items-start gap-2.5">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#CD9842] to-[#AC6824] text-[11px] font-semibold text-white">К</span>
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#8A8E96] to-[#5A5E66] text-[11px] font-semibold text-white">К</span>
                 <div className="min-w-0">
                   <div className="text-[11px] text-slate-400">Telegram · сейчас</div>
                   <div className="mt-0.5 rounded-lg rounded-tl-sm bg-white/[0.06] px-2.5 py-1.5 text-[12px] text-slate-100">
@@ -801,7 +801,7 @@ function InteractiveMockup() {
 
             <FloatCard className="absolute -bottom-8 left-10 hidden w-[240px] md:block" depth={100} delay="-4s">
               <div className="flex items-center gap-2.5">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#CD9842]/15 text-[#E4BC74] ring-1 ring-inset ring-[#E4BC74]/30">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#8A8E96]/15 text-[#C0C4CB] ring-1 ring-inset ring-[#C0C4CB]/30">
                   <BellRing className="h-4 w-4" />
                 </span>
                 <div className="min-w-0">
@@ -844,7 +844,7 @@ function FloatCard({
 
 function DashboardMockup() {
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#1A1612]/95 shadow-[0_30px_80px_-20px_rgba(205,152,66,0.4)] backdrop-blur-sm">
+    <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#1F232A]/95 shadow-[0_30px_80px_-20px_rgba(138,142,150,0.4)] backdrop-blur-sm">
       {/* Window chrome */}
       <div className="flex items-center gap-2 border-b border-white/[0.06] bg-white/[0.02] px-4 py-3">
         <span className="h-3 w-3 rounded-full bg-red-400/60" />
@@ -893,8 +893,8 @@ function DashboardMockup() {
               <svg viewBox="0 0 300 100" className="mt-3 h-24 w-full">
                 <defs>
                   <linearGradient id="mock-grad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#CD9842" stopOpacity="0.5" />
-                    <stop offset="100%" stopColor="#CD9842" stopOpacity="0" />
+                    <stop offset="0%" stopColor="#8A8E96" stopOpacity="0.5" />
+                    <stop offset="100%" stopColor="#8A8E96" stopOpacity="0" />
                   </linearGradient>
                 </defs>
                 <path
@@ -904,7 +904,7 @@ function DashboardMockup() {
                 <path
                   className="liva-draw-path"
                   d="M0,75 C30,72 50,55 75,55 C100,55 120,68 150,52 C180,40 210,28 240,32 C270,38 290,22 300,18"
-                  stroke="#E4BC74"
+                  stroke="#C0C4CB"
                   strokeWidth="2"
                   fill="none"
                 />
@@ -932,18 +932,18 @@ function MockNavItem({ children, active }: { children: React.ReactNode; active?:
     <div
       className={
         active
-          ? 'relative rounded-md bg-gradient-to-r from-[#CD9842]/20 via-[#CD9842]/15 to-[#AC6824]/10 px-2.5 py-1.5 text-[11px] font-medium text-white'
+          ? 'relative rounded-md bg-gradient-to-r from-[#8A8E96]/20 via-[#8A8E96]/15 to-[#5A5E66]/10 px-2.5 py-1.5 text-[11px] font-medium text-white'
           : 'rounded-md px-2.5 py-1.5 text-[11px] font-medium text-slate-400'
       }
     >
-      {active && <span className="absolute left-0 top-1/2 h-3 w-0.5 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-[#E4BC74] via-[#CD9842] to-[#CD9842]" />}
+      {active && <span className="absolute left-0 top-1/2 h-3 w-0.5 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-[#C0C4CB] via-[#8A8E96] to-[#8A8E96]" />}
       {children}
     </div>
   );
 }
 
 function MockMetric({ label, to, format, trend, tone = 'indigo' }: { label: string; to: number; format?: (n: number) => string; trend?: string; tone?: 'emerald' | 'indigo' | 'violet' }) {
-  const trendColor = tone === 'emerald' ? 'text-emerald-400' : tone === 'violet' ? 'text-[#E4BC74]' : 'text-[#E4BC74]';
+  const trendColor = tone === 'emerald' ? 'text-emerald-400' : tone === 'violet' ? 'text-[#C0C4CB]' : 'text-[#C0C4CB]';
   return (
     <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-3">
       <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">{label}</div>
@@ -960,7 +960,7 @@ function MockMetric({ label, to, format, trend, tone = 'indigo' }: { label: stri
 function MockDialog({ name, channel, text, time }: { name: string; channel: string; text: string; time: string }) {
   return (
     <div className="flex items-start gap-2.5">
-      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#CD9842]/40 to-[#AC6824]/40 text-[10px] font-semibold text-white">
+      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#8A8E96]/40 to-[#5A5E66]/40 text-[10px] font-semibold text-white">
         {name.charAt(0)}
       </div>
       <div className="min-w-0 flex-1">
@@ -969,7 +969,7 @@ function MockDialog({ name, channel, text, time }: { name: string; channel: stri
           <div className="shrink-0 text-[9px] text-slate-500">{time}</div>
         </div>
         <div className="mt-0.5 flex items-center gap-1.5">
-          <span className="text-[9px] uppercase tracking-wider text-[#E4BC74]">{channel}</span>
+          <span className="text-[9px] uppercase tracking-wider text-[#C0C4CB]">{channel}</span>
           <span className="truncate text-[10px] text-slate-400">{text}</span>
         </div>
       </div>
@@ -997,7 +997,7 @@ function FaqItem({ q, children }: { q: string; children: React.ReactNode }) {
     <details className="group rounded-2xl border border-white/10 bg-white/[0.025] backdrop-blur-sm transition-colors open:bg-white/[0.04]">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-left">
         <span className="text-base font-medium text-white">{q}</span>
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/15 text-slate-400 transition-transform group-open:rotate-45 group-open:border-[#CD9842] group-open:text-[#E4BC74]">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/15 text-slate-400 transition-transform group-open:rotate-45 group-open:border-[#8A8E96] group-open:text-[#C0C4CB]">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
             <line x1="12" y1="5" x2="12" y2="19" />
             <line x1="5" y1="12" x2="19" y2="12" />

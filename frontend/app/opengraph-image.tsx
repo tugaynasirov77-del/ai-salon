@@ -17,9 +17,9 @@ export default function OGImage() {
           flexDirection: 'column',
           justifyContent: 'space-between',
           padding: 80,
-          background: '#14100A',
+          background: '#0F1216',
           backgroundImage:
-            'radial-gradient(circle at 20% 20%, rgba(205,152,66,0.40) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(172,104,36,0.35) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(228,188,116,0.20) 0%, transparent 60%)',
+            'radial-gradient(circle at 20% 20%, rgba(138,142,150,0.40) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(90,94,102,0.35) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(192,196,203,0.20) 0%, transparent 60%)',
           color: 'white',
           fontFamily: 'sans-serif',
         }}
@@ -54,7 +54,7 @@ export default function OGImage() {
               который&nbsp;
               <span
                 style={{
-                  backgroundImage: 'linear-gradient(90deg, #ECD09A 0%, #CD9842 55%, #AC6824 100%)',
+                  backgroundImage: 'linear-gradient(90deg, #E8EBEF 0%, #8A8E96 55%, #5A5E66 100%)',
                   backgroundClip: 'text',
                   color: 'transparent',
                 }}
@@ -88,7 +88,7 @@ export default function OGImage() {
             style={{
               padding: '14px 32px',
               borderRadius: 16,
-              background: 'linear-gradient(90deg, #E4BC74 0%, #CD9842 50%, #AC6824 100%)',
+              background: 'linear-gradient(90deg, #C0C4CB 0%, #8A8E96 50%, #5A5E66 100%)',
               fontSize: 28,
               fontWeight: 600,
               color: '#1a1206',

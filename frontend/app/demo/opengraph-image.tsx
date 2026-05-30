@@ -16,9 +16,9 @@ export default function OGDemoImage() {
           display: 'flex',
           flexDirection: 'column',
           padding: 60,
-          background: '#14100A',
+          background: '#0F1216',
           backgroundImage:
-            'radial-gradient(circle at 15% 25%, rgba(205,152,66,0.45) 0%, transparent 50%), radial-gradient(circle at 85% 75%, rgba(205,152,66,0.4) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(205,152,66,0.25) 0%, transparent 60%)',
+            'radial-gradient(circle at 15% 25%, rgba(138,142,150,0.45) 0%, transparent 50%), radial-gradient(circle at 85% 75%, rgba(138,142,150,0.4) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(138,142,150,0.25) 0%, transparent 60%)',
           color: 'white',
           fontFamily: 'sans-serif',
         }}
@@ -114,7 +114,7 @@ export default function OGDemoImage() {
               style={{
                 display: 'flex',
                 backgroundImage:
-                  'linear-gradient(90deg, #E4BC74 0%, #CD9842 50%, #AC6824 100%)',
+                  'linear-gradient(90deg, #C0C4CB 0%, #8A8E96 50%, #5A5E66 100%)',
                 backgroundClip: 'text',
                 color: 'transparent',
               }}
@@ -161,7 +161,7 @@ export default function OGDemoImage() {
                   height: 24,
                   borderRadius: 999,
                   background:
-                    'linear-gradient(135deg, #CD9842 0%, #AC6824 100%)',
+                    'linear-gradient(135deg, #8A8E96 0%, #5A5E66 100%)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -186,7 +186,7 @@ export default function OGDemoImage() {
                   borderRadius: 14,
                   borderBottomRightRadius: 4,
                   background:
-                    'linear-gradient(135deg, #CD9842 0%, #AC6824 100%)',
+                    'linear-gradient(135deg, #8A8E96 0%, #5A5E66 100%)',
                   fontSize: 18,
                   lineHeight: 1.3,
                 }}
@@ -310,7 +310,7 @@ export default function OGDemoImage() {
               padding: '14px 28px',
               borderRadius: 14,
               background:
-                'linear-gradient(90deg, #CD9842 0%, #AC6824 50%, #AC6824 100%)',
+                'linear-gradient(90deg, #8A8E96 0%, #5A5E66 50%, #5A5E66 100%)',
               fontSize: 26,
               fontWeight: 600,
             }}
@@ -339,8 +339,8 @@ function Metric({
     tone === 'emerald'
       ? '#6EE7B7'
       : tone === 'fuchsia'
-      ? '#E4BC74'
-      : '#E4BC74';
+      ? '#C0C4CB'
+      : '#C0C4CB';
   return (
     <div
       style={{

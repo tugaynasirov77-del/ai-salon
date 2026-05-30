@@ -8,6 +8,8 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
+import { EmptyState } from '@/components/dashboard/EmptyState';
+import { ListSkeleton } from '@/components/dashboard/Skeleton';
 import { fetchClients, fetchAppointments, fetchMessages } from '@/lib/api';
 import { useSalonId } from '@/lib/config';
 import { cn, timeAgo } from '@/lib/utils';
@@ -106,15 +108,27 @@ export default function ClientsPage() {
         </div>
       </Card>
 
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden p-0">
         {clientsQ.isLoading ? (
-          <LoadingSpinner label="Загружаем клиентов…" />
+          <div className="p-4">
+            <ListSkeleton rows={6} withAvatar />
+          </div>
         ) : filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-slate-400">
-            <UsersIcon className="mb-3 h-10 w-10" />
-            <div className="text-sm">
-              {clients.length === 0 ? 'Клиентов пока нет' : 'По фильтру ничего не найдено'}
-            </div>
+          <div className="p-4">
+            {clients.length === 0 ? (
+              <EmptyState
+                icon={<UsersIcon className="h-6 w-6" />}
+                title="Клиентов пока нет"
+                text="Они появятся автоматически, как только начнут писать вашему ИИ в любом из подключённых каналов."
+                action={{ label: 'Подключить канал', href: '/dashboard/settings' }}
+              />
+            ) : (
+              <EmptyState
+                icon={<UsersIcon className="h-6 w-6" />}
+                title="По фильтру ничего не найдено"
+                text="Попробуйте сбросить фильтр канала или изменить поисковый запрос."
+              />
+            )}
           </div>
         ) : (
           <div className="overflow-x-auto">

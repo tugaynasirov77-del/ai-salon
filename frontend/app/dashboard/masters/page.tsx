@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Input, Label } from '@/components/ui/input';
 import { Modal } from '@/components/ui/modal';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
+import { EmptyState } from '@/components/dashboard/EmptyState';
+import { CardGridSkeleton } from '@/components/dashboard/Skeleton';
 import {
   fetchMasters,
   fetchServices,
@@ -147,31 +149,18 @@ export default function MastersPage() {
       </div>
 
       {masters.isLoading ? (
-        <Card className="p-0">
-          <div className="py-12">
-            <LoadingSpinner label="Загружаем мастеров…" />
-          </div>
-        </Card>
+        <CardGridSkeleton count={6} />
       ) : masters.isError ? (
         <Card>
-          <div className="py-8 text-center text-sm text-red-600">Не удалось загрузить мастеров.</div>
+          <div className="py-8 text-center text-sm text-red-300">Не удалось загрузить мастеров.</div>
         </Card>
       ) : list.length === 0 ? (
-        <Card>
-          <div className="flex flex-col items-center px-6 py-16 text-center">
-            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-50 dark:bg-amber-950/40">
-              <UserCog className="h-7 w-7 text-amber-600 dark:text-amber-400" />
-            </div>
-            <div className="mb-1 text-base font-medium text-slate-700 dark:text-slate-200">Пока нет мастеров</div>
-            <div className="mb-4 max-w-sm text-sm text-slate-500">
-              Добавьте сотрудников — AI сможет распределять записи по мастерам.
-            </div>
-            <Button onClick={openCreate}>
-              <Plus className="h-4 w-4" />
-              Добавить первого мастера
-            </Button>
-          </div>
-        </Card>
+        <EmptyState
+          icon={<UserCog className="h-6 w-6" />}
+          title="Пока нет мастеров"
+          text="Добавьте сотрудников — AI сможет распределять записи по мастерам."
+          action={{ label: 'Добавить первого мастера', onClick: openCreate }}
+        />
       ) : (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {list.map((m) => {

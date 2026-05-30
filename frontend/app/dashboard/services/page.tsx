@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Input, Label } from '@/components/ui/input';
 import { Modal } from '@/components/ui/modal';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
+import { EmptyState } from '@/components/dashboard/EmptyState';
+import { ListSkeleton } from '@/components/dashboard/Skeleton';
 import {
   fetchServices,
   fetchMasters,
@@ -154,26 +156,21 @@ export default function ServicesPage() {
 
       <Card className="overflow-hidden p-0">
         {services.isLoading ? (
-          <div className="py-12">
-            <LoadingSpinner label="Загружаем услуги…" />
+          <div className="p-4">
+            <ListSkeleton rows={5} />
           </div>
         ) : services.isError ? (
-          <div className="px-6 py-12 text-center text-sm text-red-600">
+          <div className="px-6 py-12 text-center text-sm text-red-300">
             Не удалось загрузить услуги. Попробуйте обновить страницу.
           </div>
         ) : list.length === 0 ? (
-          <div className="flex flex-col items-center px-6 py-16 text-center">
-            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-50 dark:bg-amber-950/40">
-              <Scissors className="h-7 w-7 text-amber-600 dark:text-amber-400" />
-            </div>
-            <div className="mb-1 text-base font-medium text-slate-700 dark:text-slate-200">Пока нет услуг</div>
-            <div className="mb-4 max-w-sm text-sm text-slate-500">
-              Добавьте хотя бы одну услугу — без этого ИИ не сможет предлагать запись клиентам.
-            </div>
-            <Button onClick={openCreate}>
-              <Plus className="h-4 w-4" />
-              Добавить первую услугу
-            </Button>
+          <div className="p-4">
+            <EmptyState
+              icon={<Scissors className="h-6 w-6" />}
+              title="Пока нет услуг"
+              text="Добавьте хотя бы одну услугу — без этого ИИ не сможет предлагать запись клиентам."
+              action={{ label: 'Добавить первую услугу', onClick: openCreate }}
+            />
           </div>
         ) : (
           <div className="overflow-x-auto">

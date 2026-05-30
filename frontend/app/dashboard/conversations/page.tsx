@@ -10,6 +10,8 @@ import { PageHeader } from '@/components/shared/PageHeader';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
+import { EmptyState } from '@/components/dashboard/EmptyState';
+import { ListSkeleton } from '@/components/dashboard/Skeleton';
 import {
   fetchConversations, fetchConversationDetail,
   sendOwnerMessage, markConversationRead,
@@ -134,13 +136,21 @@ export default function ConversationsPage() {
 
             <div className="flex-1 overflow-y-auto">
               {listQ.isLoading ? (
-                <LoadingSpinner label="Загружаем диалоги…" />
+                <div className="p-3">
+                  <ListSkeleton rows={6} withAvatar />
+                </div>
               ) : filtered.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-12 text-slate-400">
-                  <MailX className="mb-3 h-10 w-10" />
-                  <div className="text-sm">
-                    {(listQ.data || []).length === 0 ? 'Диалогов пока нет' : 'Ничего не найдено'}
-                  </div>
+                <div className="p-4">
+                  {(listQ.data || []).length === 0 ? (
+                    <EmptyState
+                      icon={<MailX className="h-6 w-6" />}
+                      title="Диалогов пока нет"
+                      text="Когда клиенты начнут писать в подключённые каналы, диалоги появятся здесь."
+                      action={{ label: 'Подключить канал', href: '/dashboard/settings' }}
+                    />
+                  ) : (
+                    <EmptyState icon={<MailX className="h-6 w-6" />} title="Ничего не найдено" text="Попробуйте изменить поисковый запрос." />
+                  )}
                 </div>
               ) : (
                 <ul className="divide-y divide-slate-100 dark:divide-slate-800">

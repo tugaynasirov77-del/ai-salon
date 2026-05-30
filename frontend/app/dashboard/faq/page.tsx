@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Input, Textarea, Label } from '@/components/ui/input';
 import { Modal } from '@/components/ui/modal';
 import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
+import { EmptyState } from '@/components/dashboard/EmptyState';
+import { ListSkeleton } from '@/components/dashboard/Skeleton';
 import { fetchFaqs, createFaq, updateFaq, deleteFaq, type IFaq } from '@/lib/api';
 import { useSalonId } from '@/lib/config';
 
@@ -127,27 +129,14 @@ export default function FaqPage() {
       </div>
 
       {faqs.isLoading ? (
-        <Card className="p-0">
-          <div className="py-12">
-            <LoadingSpinner label="Загружаем FAQ…" />
-          </div>
-        </Card>
+        <ListSkeleton rows={5} />
       ) : list.length === 0 ? (
-        <Card>
-          <div className="flex flex-col items-center px-6 py-16 text-center">
-            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-50 dark:bg-amber-950/40">
-              <HelpCircle className="h-7 w-7 text-amber-600 dark:text-amber-400" />
-            </div>
-            <div className="mb-1 text-base font-medium text-slate-700 dark:text-slate-200">Пока нет FAQ</div>
-            <div className="mb-4 max-w-sm text-sm text-slate-500">
-              Добавьте часто задаваемые вопросы — например, «Где вы находитесь?» или «Принимаете ли вы карту?».
-            </div>
-            <Button onClick={openCreate}>
-              <Plus className="h-4 w-4" />
-              Добавить первый вопрос
-            </Button>
-          </div>
-        </Card>
+        <EmptyState
+          icon={<HelpCircle className="h-6 w-6" />}
+          title="Пока нет FAQ"
+          text="Добавьте часто задаваемые вопросы — например, «Где вы находитесь?» или «Принимаете ли вы карту?»."
+          action={{ label: 'Добавить первый вопрос', onClick: openCreate }}
+        />
       ) : (
         <div className="space-y-2">
           {list.map((f, idx) => (

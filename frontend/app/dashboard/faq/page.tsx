@@ -172,7 +172,7 @@ export default function FaqPage() {
               </div>
 
               <div className="flex-1 min-w-0">
-                <div className="font-medium text-[#232831] dark:text-slate-100">{f.question}</div>
+                <div className="font-medium text-[#1E2329] dark:text-slate-100">{f.question}</div>
                 <div className="mt-1 whitespace-pre-wrap text-sm text-slate-600 dark:text-slate-400">{f.answer}</div>
               </div>
 

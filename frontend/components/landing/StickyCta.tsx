@@ -38,7 +38,7 @@ export function StickyCta() {
       }
     >
       <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-20 bg-[radial-gradient(ellipse_50%_100%_at_50%_100%,rgba(59,130,246,0.4),transparent_70%)] blur-xl" />
-      <div className="pointer-events-auto relative flex w-full max-w-3xl items-center gap-3 rounded-2xl border border-white/10 bg-[#181C24]/40 px-4 py-2.5 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] backdrop-blur-md sm:gap-4 sm:rounded-full sm:px-5 sm:py-3">
+      <div className="pointer-events-auto relative flex w-full max-w-3xl items-center gap-3 rounded-2xl border border-white/10 bg-[#14181F]/40 px-4 py-2.5 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] backdrop-blur-md sm:gap-4 sm:rounded-full sm:px-5 sm:py-3">
         <div className="flex shrink-0 items-center gap-2.5">
           <LogoMark size={32} />
           <div className="hidden text-xs leading-tight sm:block">

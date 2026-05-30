@@ -16,7 +16,7 @@ export default function OGDemoImage() {
           display: 'flex',
           flexDirection: 'column',
           padding: 60,
-          background: '#181C24',
+          background: '#14181F',
           backgroundImage:
             'radial-gradient(circle at 15% 25%, rgba(59,130,246,0.45) 0%, transparent 50%), radial-gradient(circle at 85% 75%, rgba(59,130,246,0.4) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(59,130,246,0.25) 0%, transparent 60%)',
           color: 'white',

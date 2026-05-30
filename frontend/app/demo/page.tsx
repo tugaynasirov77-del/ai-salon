@@ -294,7 +294,7 @@ export default function DemoPage() {
     : null;
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#181C24] text-slate-100">
+    <div className="relative min-h-screen overflow-hidden bg-[#14181F] text-slate-100">
       {/* Ambient */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute -top-32 -left-40 h-[520px] w-[520px] rounded-full bg-amber-600/20 blur-[140px]" />
@@ -302,7 +302,7 @@ export default function DemoPage() {
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-[#181C24]/70 backdrop-blur-xl">
+      <header className="sticky top-0 z-30 border-b border-white/[0.06] bg-[#14181F]/70 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
           <Link href="/" className="flex items-center gap-3 text-sm text-slate-300 transition-colors hover:text-white">
             <ArrowLeft className="h-4 w-4" />
@@ -340,7 +340,7 @@ export default function DemoPage() {
       <section className="px-4 pb-16">
         <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-2">
           {/* === CHAT (LEFT) === */}
-          <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#232831]/70 shadow-[0_30px_80px_-20px_rgba(59,130,246,0.4)] backdrop-blur-xl">
+          <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#1E2329]/70 shadow-[0_30px_80px_-20px_rgba(59,130,246,0.4)] backdrop-blur-xl">
             <div className="flex items-center justify-between border-b border-white/[0.06] bg-white/[0.02] px-5 py-3.5">
               <div className="flex items-center gap-2.5">
                 <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-[#3B82F6] to-[#2563EB] text-sm font-semibold text-white">Л</span>
@@ -357,7 +357,7 @@ export default function DemoPage() {
               </span>
             </div>
 
-            <div ref={scrollRef} className="flex h-[480px] flex-col gap-3 overflow-y-auto bg-[#181C24]/40 px-4 py-5 sm:px-6">
+            <div ref={scrollRef} className="flex h-[480px] flex-col gap-3 overflow-y-auto bg-[#14181F]/40 px-4 py-5 sm:px-6">
               {messages.map(m => (
                 <Bubble key={m.id} from={m.from} text={m.text} imageUrl={m.imageUrl} voiceUrl={m.voiceUrl} />
               ))}
@@ -507,7 +507,7 @@ export default function DemoPage() {
           </div>
 
           {/* === ADMIN (RIGHT) === */}
-          <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#232831]/70 shadow-[0_30px_80px_-20px_rgba(59,130,246,0.3)] backdrop-blur-xl">
+          <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#1E2329]/70 shadow-[0_30px_80px_-20px_rgba(59,130,246,0.3)] backdrop-blur-xl">
             <div className="flex items-center justify-between border-b border-white/[0.06] bg-white/[0.02] px-5 py-3.5">
               <div className="flex items-center gap-2">
                 <span className="h-2.5 w-2.5 rounded-full bg-red-400/60" />

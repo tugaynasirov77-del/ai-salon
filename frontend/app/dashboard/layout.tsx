@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import {
   LayoutDashboard,
   Users,
@@ -22,8 +23,10 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ChannelStatus } from '@/components/dashboard/ChannelStatus';
+import { NotificationManager } from '@/components/dashboard/NotificationManager';
 import { apiMe, apiLogout, hasToken, useAuthStore } from '@/lib/auth';
 import { Logo } from '@/components/landing/Logo';
+import { fetchConversations } from '@/lib/api';
 
 const NAV = [
   { href: '/dashboard', label: 'Главная', icon: LayoutDashboard, exact: true },
@@ -44,6 +47,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const { user, salon, loaded, setSession, clear } = useAuthStore();
+
+  // Поллим диалоги для бейджа непрочитанных + браузерных уведомлений.
+  const convQ = useQuery({
+    queryKey: ['conversations', salon?.id],
+    queryFn: () => fetchConversations(salon!.id),
+    enabled: !!salon?.id && loaded,
+    refetchInterval: 15_000,
+  });
+  const totalUnread = (convQ.data || []).reduce((s, c) => s + (c.unreadCount || 0), 0);
 
   // Auth guard + загрузка профиля при первом рендере
   useEffect(() => {
@@ -126,7 +138,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     <span className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-[#38BDF8] via-[#38BDF8] to-[#3B82F6]" />
                   )}
                   <Icon className={cn('h-4 w-4', active && 'text-amber-300')} />
-                  {item.label}
+                  <span className="flex-1">{item.label}</span>
+                  {item.href === '/dashboard/conversations' && totalUnread > 0 && (
+                    <span className="rounded-full bg-gradient-to-r from-[#38BDF8] to-[#3B82F6] px-1.5 py-0.5 text-[10px] font-semibold text-white shadow-[0_0_10px_rgba(59,130,246,0.6)]">
+                      {totalUnread > 99 ? '99+' : totalUnread}
+                    </span>
+                  )}
                 </Link>
               );
             })}
@@ -137,12 +154,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
 
           <div className="flex items-center gap-3 border-t border-slate-100 px-5 py-3 dark:border-white/[0.06]">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#3B82F6] via-[#3B82F6] to-[#2563EB] text-sm font-semibold text-white">
-              {(salon?.ownerName || user.email || '?').charAt(0).toUpperCase()}
-            </div>
-            <div className="flex-1 truncate text-sm font-medium text-slate-700 dark:text-slate-300">
-              {salon?.ownerName || user.email}
-            </div>
+            <Link
+              href="/dashboard/profile"
+              onClick={() => setMobileOpen(false)}
+              className="flex flex-1 items-center gap-3 rounded-lg p-1 transition-colors hover:bg-white/[0.04]"
+              aria-label="Профиль"
+            >
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#3B82F6] via-[#3B82F6] to-[#2563EB] text-sm font-semibold text-white">
+                {(salon?.ownerName || user.email || '?').charAt(0).toUpperCase()}
+              </div>
+              <div className="flex-1 truncate text-sm font-medium text-slate-700 dark:text-slate-300">
+                {salon?.ownerName || user.email}
+              </div>
+            </Link>
             <button onClick={logout} className="text-slate-400 transition-colors hover:text-red-400" aria-label="Выход">
               <LogOut className="h-4 w-4" />
             </button>
@@ -153,6 +177,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <main className="md:ml-60">
         <div className="mx-auto max-w-7xl px-4 py-6 md:px-8">{children}</div>
       </main>
+
+      <NotificationManager unreadTotal={totalUnread} />
     </div>
   );
 }

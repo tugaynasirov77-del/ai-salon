@@ -7,6 +7,7 @@ import { MetricCard } from '@/components/dashboard/MetricCard';
 import { AppointmentTimeline } from '@/components/dashboard/AppointmentTimeline';
 import { RecentConversations } from '@/components/dashboard/RecentConversations';
 import { ByDayChart } from '@/components/dashboard/ByDayChart';
+import { SetupBanner } from '@/components/dashboard/SetupBanner';
 import { fetchAnalytics, fetchAppointments, fetchClients, fetchConversations } from '@/lib/api';
 import { useSalonId } from '@/lib/config';
 
@@ -40,6 +41,8 @@ export default function DashboardHome() {
   return (
     <div>
       <PageHeader title="Главная" description="Сводка за последние 30 дней." />
+
+      <SetupBanner />
 
       {/* Метрики */}
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

@@ -1,17 +1,21 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Unbounded, Manrope } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+// Бренд-типографика: Unbounded (заголовки, геометрический tech-vibe) + Manrope (тело).
+// Эквивалент "Tech Startup" pairing с поддержкой кириллицы.
+const unbounded = Unbounded({
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-space-grotesk",
+  display: "swap",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const manrope = Manrope({
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-dm-sans",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -53,7 +57,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${unbounded.variable} ${manrope.variable} antialiased`}
       >
         <Providers>{children}</Providers>
         <Suspense fallback={null}>

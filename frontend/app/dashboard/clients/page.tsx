@@ -119,7 +119,7 @@ export default function ClientsPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="border-b border-slate-200 bg-slate-50 text-left text-xs uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-[#181B22]/50">
+              <thead className="border-b border-slate-200 bg-slate-50 text-left text-xs uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-[#12151C]/50">
                 <tr>
                   <th className="px-5 py-3 font-medium">Имя</th>
                   <th className="px-5 py-3 font-medium">Телефон</th>
@@ -142,7 +142,7 @@ export default function ClientsPage() {
                         selectedId === c.id && 'bg-amber-50 dark:bg-amber-950/30',
                       )}
                     >
-                      <td className="px-5 py-3 font-medium text-[#181B22] dark:text-slate-100">
+                      <td className="px-5 py-3 font-medium text-[#12151C] dark:text-slate-100">
                         {c.name || '—'}
                       </td>
                       <td className="px-5 py-3 text-slate-600 dark:text-slate-400">{c.phone || '—'}</td>
@@ -207,10 +207,10 @@ function ClientDrawer({
   return (
     <>
       <div onClick={onClose} className="fixed inset-0 z-40 bg-black/30" />
-      <aside className="fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col border-l border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-[#181B22]">
+      <aside className="fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col border-l border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-[#12151C]">
         <header className="flex items-start justify-between border-b border-slate-100 px-5 py-4 dark:border-slate-800">
           <div>
-            <div className="text-lg font-semibold text-[#181B22] dark:text-slate-100">
+            <div className="text-lg font-semibold text-[#12151C] dark:text-slate-100">
               {client.name || 'Без имени'}
             </div>
             <div className="mt-0.5 flex items-center gap-1.5 text-sm text-slate-500">
@@ -238,7 +238,7 @@ function ClientDrawer({
                   .sort((a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime())
                   .map((a) => (
                     <li key={a.id} className="rounded-lg border border-slate-200 p-3 text-sm dark:border-slate-800">
-                      <div className="font-medium text-[#181B22] dark:text-slate-100">{a.service}</div>
+                      <div className="font-medium text-[#12151C] dark:text-slate-100">{a.service}</div>
                       <div className="mt-0.5 text-xs text-slate-500">
                         {new Date(a.datetime).toLocaleString('ru-RU', {
                           day: '2-digit',
@@ -275,7 +275,7 @@ function ClientDrawer({
                         : 'ml-8 bg-amber-50 dark:bg-amber-950/30',
                     )}
                   >
-                    <div className="text-[#181B22] dark:text-slate-100">{m.text}</div>
+                    <div className="text-[#12151C] dark:text-slate-100">{m.text}</div>
                     <div className="mt-1 text-[10px] text-slate-400">{timeAgo(m.createdAt)}</div>
                   </li>
                 ))}

@@ -34,12 +34,12 @@ import { ScrollProgress } from '@/components/landing/ScrollProgress';
 
 export default function LandingPage() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#0E121A] text-slate-100">
+    <div className="relative min-h-screen overflow-hidden bg-[#080C14] text-slate-100">
       <ScrollTracker />
       <RevealInit />
       <ScrollProgress />
       {/* === Animated futuristic background (фиксированный) === */}
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#0E121A]">
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#080C14]">
         {/* Aurora-mesh blobs */}
         <div className="liva-aurora absolute -top-40 -left-40 h-[560px] w-[560px] rounded-full bg-[#5A5E66]/30 blur-[150px]" />
         <div className="liva-aurora-2 absolute top-[12%] -right-40 h-[520px] w-[520px] rounded-full bg-[#5A5E66]/25 blur-[150px]" />
@@ -195,7 +195,7 @@ export default function LandingPage() {
             onClick={() => track('cta_demo', { location: 'demo_card' })}
             className="border-gradient reveal group relative mx-auto mt-12 block max-w-3xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-amber-950/40 via-amber-950/30 to-amber-900/40 p-1 transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_20px_70px_-20px_rgba(96,165,250,0.5)]"
           >
-            <div className="relative rounded-[22px] bg-[#0E121A]/70 p-6 sm:p-10">
+            <div className="relative rounded-[22px] bg-[#080C14]/70 p-6 sm:p-10">
               <div className="grid items-center gap-8 sm:grid-cols-2 sm:gap-10">
                 {/* Живой печатающийся чат */}
                 <div className="order-2 sm:order-1">
@@ -547,7 +547,7 @@ function SpotlightGrid({ children }: { children: React.ReactNode }) {
 
 function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
   return (
-    <div className="group relative bg-[#0E121A]/40 p-7 transition-colors duration-300 hover:bg-white/[0.04]">
+    <div className="group relative bg-[#080C14]/40 p-7 transition-colors duration-300 hover:bg-white/[0.04]">
       {/* hover glow */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_0%,rgba(96,165,250,0.12),transparent_60%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-[#C0C4CB]/20 via-[#8A8E96]/20 to-[#5A5E66]/20 text-[#E8EBEF] ring-1 ring-inset ring-white/10 transition-all duration-300 group-hover:ring-[#C0C4CB]/40 group-hover:shadow-[0_0_24px_-4px_rgba(96,165,250,0.6)]">
@@ -565,7 +565,7 @@ function FloatingHeader() {
       <div className="relative mx-auto max-w-4xl">
         {/* Свечение под капсулой */}
         <div className="pointer-events-none absolute -inset-x-10 -top-6 -z-10 h-24 bg-[radial-gradient(ellipse_50%_100%_at_50%_0%,rgba(59,130,246,0.4),transparent_70%)] blur-xl" />
-        <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[#0E121A]/40 px-3 py-2.5 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] backdrop-blur-md sm:rounded-full sm:px-5">
+        <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[#080C14]/40 px-3 py-2.5 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] backdrop-blur-md sm:rounded-full sm:px-5">
           <Logo size={30} variant="light" />
           <nav className="hidden gap-7 text-sm text-slate-300 lg:flex">
             <a href="#demo" className="transition-colors hover:text-white">Демо</a>
@@ -619,11 +619,11 @@ function MobileMenu() {
         <div className="fixed inset-0 z-50 lg:hidden">
           {/* Backdrop */}
           <div
-            className="absolute inset-0 bg-[#0E121A]/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#080C14]/80 backdrop-blur-sm"
             onClick={() => setOpen(false)}
           />
           {/* Panel */}
-          <div className="absolute inset-x-0 top-0 border-b border-white/10 bg-[#0E121A]/95 px-4 pb-6 pt-4 shadow-2xl backdrop-blur-xl">
+          <div className="absolute inset-x-0 top-0 border-b border-white/10 bg-[#080C14]/95 px-4 pb-6 pt-4 shadow-2xl backdrop-blur-xl">
             <div className="mx-auto flex max-w-6xl items-center justify-between">
               <Logo size={32} variant="light" />
               <button
@@ -844,7 +844,7 @@ function FloatCard({
 
 function DashboardMockup() {
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#181B22]/95 shadow-[0_30px_80px_-20px_rgba(59,130,246,0.4)] backdrop-blur-sm">
+    <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#12151C]/95 shadow-[0_30px_80px_-20px_rgba(59,130,246,0.4)] backdrop-blur-sm">
       {/* Window chrome */}
       <div className="flex items-center gap-2 border-b border-white/[0.06] bg-white/[0.02] px-4 py-3">
         <span className="h-3 w-3 rounded-full bg-red-400/60" />

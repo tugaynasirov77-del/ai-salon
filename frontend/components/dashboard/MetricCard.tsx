@@ -37,7 +37,7 @@ export function MetricCard({ label, value, trend, icon, loading }: Props) {
         {icon && <div className="text-slate-400">{icon}</div>}
       </div>
       <div className="mt-2 flex items-baseline gap-2">
-        <div className="text-3xl font-bold text-[#181B22] dark:text-slate-100">{value}</div>
+        <div className="text-3xl font-bold text-[#12151C] dark:text-slate-100">{value}</div>
         {TrendIcon && (
           <div className={cn('flex items-center gap-0.5 text-xs font-medium', trendColor)}>
             <TrendIcon className="h-3.5 w-3.5" />

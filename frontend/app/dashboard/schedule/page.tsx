@@ -125,7 +125,7 @@ export default function SchedulePage() {
             <select
               value={masterFilter}
               onChange={(e) => setMasterFilter(e.target.value)}
-              className="h-9 rounded-lg border border-slate-300 bg-white px-2 text-sm dark:border-slate-700 dark:bg-[#181B22]"
+              className="h-9 rounded-lg border border-slate-300 bg-white px-2 text-sm dark:border-slate-700 dark:bg-[#12151C]"
             >
               <option value="all">Все мастера</option>
               {(mastersQ.data || []).map((m) => (
@@ -144,19 +144,19 @@ export default function SchedulePage() {
           <div className="overflow-x-auto">
             <div className="grid min-w-[800px]" style={{ gridTemplateColumns: '60px repeat(7, minmax(0,1fr))' }}>
               {/* Заголовки дней */}
-              <div className="border-b border-r border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-[#181B22]/50" />
+              <div className="border-b border-r border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-[#12151C]/50" />
               {days.map((d) => {
                 const isToday = sameDay(new Date(), d);
                 return (
                   <div
                     key={d.toISOString()}
                     className={cn(
-                      'border-b border-r border-slate-200 bg-slate-50 py-2 text-center dark:border-slate-800 dark:bg-[#181B22]/50',
+                      'border-b border-r border-slate-200 bg-slate-50 py-2 text-center dark:border-slate-800 dark:bg-[#12151C]/50',
                       isToday && 'bg-amber-50 dark:bg-amber-950/30',
                     )}
                   >
                     <div className="text-[10px] uppercase text-slate-500">{fmtWeekday(d)}</div>
-                    <div className={cn('text-sm font-semibold', isToday ? 'text-amber-600' : 'text-[#181B22] dark:text-slate-100')}>
+                    <div className={cn('text-sm font-semibold', isToday ? 'text-amber-600' : 'text-[#12151C] dark:text-slate-100')}>
                       {fmtDayMonth(d)}
                     </div>
                   </div>
@@ -333,7 +333,7 @@ function CreateAppointmentModal({
             <select
               value={clientId}
               onChange={(e) => setClientId(e.target.value)}
-              className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm dark:border-slate-700 dark:bg-[#181B22]"
+              className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm dark:border-slate-700 dark:bg-[#12151C]"
             >
               {clients.map((c) => (
                 <option key={c.id} value={c.id}>
@@ -349,7 +349,7 @@ function CreateAppointmentModal({
             <select
               value={service}
               onChange={(e) => setService(e.target.value)}
-              className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm dark:border-slate-700 dark:bg-[#181B22]"
+              className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm dark:border-slate-700 dark:bg-[#12151C]"
             >
               {services.map((s) => (
                 <option key={s.id} value={s.name}>{s.name}</option>
@@ -365,7 +365,7 @@ function CreateAppointmentModal({
             <select
               value={master}
               onChange={(e) => setMaster(e.target.value)}
-              className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm dark:border-slate-700 dark:bg-[#181B22]"
+              className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm dark:border-slate-700 dark:bg-[#12151C]"
             >
               <option value="">Не выбран</option>
               {masters.map((m) => (
@@ -443,7 +443,7 @@ function EditAppointmentModal({
       <div className="space-y-4 text-sm">
         <div>
           <div className="text-xs uppercase text-slate-500">Услуга</div>
-          <div className="font-medium text-[#181B22] dark:text-slate-100">{appointment.service}</div>
+          <div className="font-medium text-[#12151C] dark:text-slate-100">{appointment.service}</div>
         </div>
         {appointment.master && (
           <div>

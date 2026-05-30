@@ -27,10 +27,10 @@ export default function OGImage() {
         {/* Brand */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
           <svg width="88" height="88" viewBox="0 0 1024 1024" fill="none">
-            <path d={FLAME_PATH} fill="#CD9842" fillRule="evenodd" clipRule="evenodd" />
+            <path d={FLAME_PATH} fill="#9CA0A8" fillRule="evenodd" clipRule="evenodd" />
           </svg>
           <div style={{ display: 'flex', fontSize: 56, fontWeight: 700, letterSpacing: -1 }}>
-            Liva<span style={{ color: '#CD9842' }}>&nbsp;ai</span>
+            Liva<span style={{ color: '#9CA0A8' }}>&nbsp;ai</span>
           </div>
         </div>
 

@@ -20,7 +20,7 @@ export default function Icon() {
         }}
       >
         <svg width="24" height="24" viewBox="0 0 1024 1024" fill="none">
-          <path d={FLAME_PATH} fill="#CD9842" fillRule="evenodd" clipRule="evenodd" />
+          <path d={FLAME_PATH} fill="#9CA0A8" fillRule="evenodd" clipRule="evenodd" />
         </svg>
       </div>
     ),

@@ -20,7 +20,7 @@ export default function AppleIcon() {
         }}
       >
         <svg width="120" height="120" viewBox="0 0 1024 1024" fill="none">
-          <path d={FLAME_PATH} fill="#CD9842" fillRule="evenodd" clipRule="evenodd" />
+          <path d={FLAME_PATH} fill="#9CA0A8" fillRule="evenodd" clipRule="evenodd" />
         </svg>
       </div>
     ),

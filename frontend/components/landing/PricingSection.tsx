@@ -15,7 +15,7 @@ export function PricingSection() {
     <section id="pricing" className="relative py-24">
       <div className="mx-auto max-w-5xl px-4">
         <div className="text-center">
-          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E6C480]">Тарифы</span>
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E4BC74]">Тарифы</span>
           <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
             Прозрачно. Без скрытых платежей.
           </h2>
@@ -67,13 +67,13 @@ export function PricingSection() {
 
           {/* === TURNKEY === */}
           <TiltCard className="h-full">
-          <div className="border-gradient relative flex h-full flex-col rounded-2xl border border-[#CFA049]/30 bg-gradient-to-b from-amber-950/30 via-amber-950/10 to-transparent p-8 backdrop-blur-sm shadow-[0_0_80px_-12px_rgba(207,160,73,0.45)]">
+          <div className="border-gradient relative flex h-full flex-col rounded-2xl border border-[#CD9842]/30 bg-gradient-to-b from-amber-950/30 via-amber-950/10 to-transparent p-8 backdrop-blur-sm shadow-[0_0_80px_-12px_rgba(205,152,66,0.45)]">
             <div className="mb-4 flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#E6C480]">
+              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#E4BC74]">
                 <Briefcase className="h-3.5 w-3.5" />
                 Под ключ
               </div>
-              <span className="rounded-full bg-gradient-to-r from-[#CFA049] via-[#CFA049] to-[#A9742E] px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white shadow-[0_0_18px_rgba(207,160,73,0.5)]">
+              <span className="rounded-full bg-gradient-to-r from-[#CD9842] via-[#CD9842] to-[#AC6824] px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white shadow-[0_0_18px_rgba(205,152,66,0.5)]">
                 Рекомендуем
               </span>
             </div>
@@ -100,7 +100,7 @@ export function PricingSection() {
 
             <button
               onClick={() => { track('cta_turnkey_open', { location: 'pricing_turnkey' }); setOpen(true); }}
-              className="group relative mt-8 inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#CFA049] via-[#CFA049] to-[#A9742E] px-6 py-3 text-center text-sm font-semibold text-white shadow-[0_0_30px_rgba(207,160,73,0.4)] transition-transform hover:scale-[1.02]"
+              className="group relative mt-8 inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#CD9842] via-[#CD9842] to-[#AC6824] px-6 py-3 text-center text-sm font-semibold text-white shadow-[0_0_30px_rgba(205,152,66,0.4)] transition-transform hover:scale-[1.02]"
             >
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
               Оставить заявку
@@ -179,8 +179,8 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={reset}>
-      <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" />
-      <div onClick={(e) => e.stopPropagation()} className="relative w-full max-w-md overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-2xl">
+      <div className="absolute inset-0 bg-[#14100A]/80 backdrop-blur-sm" />
+      <div onClick={(e) => e.stopPropagation()} className="relative w-full max-w-md overflow-hidden rounded-2xl border border-white/10 bg-[#1A1612] shadow-2xl">
         <header className="flex items-center justify-between border-b border-white/10 px-5 py-4">
           <h3 className="text-base font-semibold text-white">Заявка «Под ключ»</h3>
           <button onClick={reset} aria-label="Закрыть" className="text-slate-400 transition-colors hover:text-white">
@@ -196,7 +196,7 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
               </div>
               <div className="mb-2 text-base font-semibold text-white">Заявка отправлена!</div>
               <p className="mb-4 text-sm text-slate-400">Менеджер свяжется с вами в течение дня.</p>
-              <button onClick={reset} className="rounded-xl bg-gradient-to-r from-[#CFA049] via-[#CFA049] to-[#A9742E] px-6 py-2 text-sm font-semibold text-white">
+              <button onClick={reset} className="rounded-xl bg-gradient-to-r from-[#CD9842] via-[#CD9842] to-[#AC6824] px-6 py-2 text-sm font-semibold text-white">
                 Закрыть
               </button>
             </div>
@@ -257,7 +257,7 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
               <button
                 onClick={submit}
                 disabled={state === 'sending'}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#CFA049] via-[#CFA049] to-[#A9742E] px-6 py-2.5 text-sm font-semibold text-white shadow-[0_0_30px_rgba(207,160,73,0.4)] transition-transform hover:scale-[1.01] disabled:opacity-60"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#CD9842] via-[#CD9842] to-[#AC6824] px-6 py-2.5 text-sm font-semibold text-white shadow-[0_0_30px_rgba(205,152,66,0.4)] transition-transform hover:scale-[1.01] disabled:opacity-60"
               >
                 {state === 'sending' && <Loader2 className="h-4 w-4 animate-spin" />}
                 Отправить заявку
@@ -274,7 +274,7 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
 }
 
 const modalInputCls =
-  'h-10 w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 text-sm text-white placeholder:text-slate-500 focus:border-[#CFA049] focus:outline-none focus:ring-2 focus:ring-[#CFA049]/30';
+  'h-10 w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 text-sm text-white placeholder:text-slate-500 focus:border-[#CD9842] focus:outline-none focus:ring-2 focus:ring-[#CD9842]/30';
 
 function ModalField({ label, children }: { label: string; children: React.ReactNode }) {
   return (

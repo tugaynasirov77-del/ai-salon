@@ -16,11 +16,11 @@ export default function AppleIcon() {
           alignItems: 'center',
           justifyContent: 'center',
           borderRadius: 38,
-          background: '#0B0B12',
+          background: '#14100A',
         }}
       >
         <svg width="120" height="120" viewBox="0 0 1024 1024" fill="none">
-          <path d={FLAME_PATH} fill="#CFA049" fillRule="evenodd" clipRule="evenodd" />
+          <path d={FLAME_PATH} fill="#CD9842" fillRule="evenodd" clipRule="evenodd" />
         </svg>
       </div>
     ),

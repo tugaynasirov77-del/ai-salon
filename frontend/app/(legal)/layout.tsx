@@ -3,13 +3,13 @@ import { Logo } from '@/components/landing/Logo';
 
 export default function LegalLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-slate-950 text-slate-100">
+    <div className="relative min-h-screen overflow-hidden bg-[#14100A] text-slate-100">
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute -top-32 -left-40 h-[520px] w-[520px] rounded-full bg-amber-600/15 blur-[140px]" />
         <div className="absolute top-[40%] -right-32 h-[480px] w-[480px] rounded-full bg-amber-600/10 blur-[140px]" />
       </div>
 
-      <header className="border-b border-white/[0.06] bg-slate-950/70 backdrop-blur-xl">
+      <header className="border-b border-white/[0.06] bg-[#14100A]/70 backdrop-blur-xl">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-4">
           <Link href="/" className="inline-flex">
             <Logo size={28} variant="light" />

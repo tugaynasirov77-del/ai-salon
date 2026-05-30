@@ -17,9 +17,9 @@ export default function OGImage() {
           flexDirection: 'column',
           justifyContent: 'space-between',
           padding: 80,
-          background: '#0B0B12',
+          background: '#14100A',
           backgroundImage:
-            'radial-gradient(circle at 20% 20%, rgba(207,160,73,0.40) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(169,116,46,0.35) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(230,196,128,0.20) 0%, transparent 60%)',
+            'radial-gradient(circle at 20% 20%, rgba(205,152,66,0.40) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(172,104,36,0.35) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(228,188,116,0.20) 0%, transparent 60%)',
           color: 'white',
           fontFamily: 'sans-serif',
         }}
@@ -27,10 +27,10 @@ export default function OGImage() {
         {/* Brand */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
           <svg width="88" height="88" viewBox="0 0 1024 1024" fill="none">
-            <path d={FLAME_PATH} fill="#CFA049" fillRule="evenodd" clipRule="evenodd" />
+            <path d={FLAME_PATH} fill="#CD9842" fillRule="evenodd" clipRule="evenodd" />
           </svg>
           <div style={{ display: 'flex', fontSize: 56, fontWeight: 700, letterSpacing: -1 }}>
-            Liva<span style={{ color: '#CFA049' }}>&nbsp;ai</span>
+            Liva<span style={{ color: '#CD9842' }}>&nbsp;ai</span>
           </div>
         </div>
 
@@ -54,7 +54,7 @@ export default function OGImage() {
               который&nbsp;
               <span
                 style={{
-                  backgroundImage: 'linear-gradient(90deg, #F0D9A8 0%, #CFA049 55%, #A9742E 100%)',
+                  backgroundImage: 'linear-gradient(90deg, #ECD09A 0%, #CD9842 55%, #AC6824 100%)',
                   backgroundClip: 'text',
                   color: 'transparent',
                 }}
@@ -88,7 +88,7 @@ export default function OGImage() {
             style={{
               padding: '14px 32px',
               borderRadius: 16,
-              background: 'linear-gradient(90deg, #E6C480 0%, #CFA049 50%, #A9742E 100%)',
+              background: 'linear-gradient(90deg, #E4BC74 0%, #CD9842 50%, #AC6824 100%)',
               fontSize: 28,
               fontWeight: 600,
               color: '#1a1206',

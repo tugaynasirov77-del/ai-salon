@@ -48,7 +48,7 @@ export function Logo({
           className={`font-semibold tracking-tight ${textColor}`}
           style={{ fontSize: Math.round(size * 0.55) }}
         >
-          Liva<span className="text-[#CFA049]"> ai</span>
+          Liva<span className="text-[#CD9842]"> ai</span>
         </span>
       )}
     </div>

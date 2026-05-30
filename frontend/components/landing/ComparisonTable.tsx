@@ -54,7 +54,7 @@ export function ComparisonTable() {
     <section className="relative py-24">
       <div className="mx-auto max-w-5xl px-4">
         <div className="reveal text-center">
-          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E6C480]">Сравнение</span>
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#E4BC74]">Сравнение</span>
           <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
             Администратор vs <br /> Liva ai
           </h2>
@@ -74,7 +74,7 @@ export function ComparisonTable() {
             </div>
             <div className="flex items-center gap-2 text-sm font-semibold">
               <LogoMark size={20} />
-              <span className="bg-gradient-to-r from-[#E6C480] to-[#E6C480] bg-clip-text text-transparent">Liva ai</span>
+              <span className="bg-gradient-to-r from-[#E4BC74] to-[#E4BC74] bg-clip-text text-transparent">Liva ai</span>
             </div>
           </div>
 
@@ -97,10 +97,10 @@ export function ComparisonTable() {
           </div>
         </div>
 
-        <div className="border-gradient reveal relative mt-10 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[#CFA049]/10 via-[#CFA049]/10 to-[#A9742E]/10 p-6 text-center backdrop-blur-sm sm:p-8">
+        <div className="border-gradient reveal relative mt-10 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[#CD9842]/10 via-[#CD9842]/10 to-[#AC6824]/10 p-6 text-center backdrop-blur-sm sm:p-8">
           <p className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
             В{' '}
-            <span className="bg-gradient-to-r from-[#E6C480] via-[#E6C480] to-[#E6C480] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#E4BC74] via-[#E4BC74] to-[#E4BC74] bg-clip-text text-transparent">
               18 раз дешевле
             </span>{' '}
             и работает 24/7

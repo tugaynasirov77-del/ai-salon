@@ -79,7 +79,7 @@ export function RecentConversations({ items, loading, limit = 5 }: Props) {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-1.5 truncate">
-                        <span className="truncate text-sm font-medium text-slate-900 dark:text-slate-100">
+                        <span className="truncate text-sm font-medium text-[#1A1612] dark:text-slate-100">
                           {it.client.name || 'Без имени'}
                         </span>
                         <Icon className={`h-3.5 w-3.5 flex-shrink-0 ${CHANNEL_COLOR[ch]}`} />

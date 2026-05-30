@@ -16,9 +16,9 @@ export default function OGDemoImage() {
           display: 'flex',
           flexDirection: 'column',
           padding: 60,
-          background: '#0B0B12',
+          background: '#14100A',
           backgroundImage:
-            'radial-gradient(circle at 15% 25%, rgba(207,160,73,0.45) 0%, transparent 50%), radial-gradient(circle at 85% 75%, rgba(207,160,73,0.4) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(207,160,73,0.25) 0%, transparent 60%)',
+            'radial-gradient(circle at 15% 25%, rgba(205,152,66,0.45) 0%, transparent 50%), radial-gradient(circle at 85% 75%, rgba(205,152,66,0.4) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(205,152,66,0.25) 0%, transparent 60%)',
           color: 'white',
           fontFamily: 'sans-serif',
         }}
@@ -34,7 +34,7 @@ export default function OGDemoImage() {
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <svg width="60" height="60" viewBox="0 0 1024 1024" fill="none">
-              <path d={FLAME_PATH} fill="#CFA049" fillRule="evenodd" clipRule="evenodd" />
+              <path d={FLAME_PATH} fill="#CD9842" fillRule="evenodd" clipRule="evenodd" />
             </svg>
             <div
               style={{
@@ -114,7 +114,7 @@ export default function OGDemoImage() {
               style={{
                 display: 'flex',
                 backgroundImage:
-                  'linear-gradient(90deg, #E6C480 0%, #CFA049 50%, #A9742E 100%)',
+                  'linear-gradient(90deg, #E4BC74 0%, #CD9842 50%, #AC6824 100%)',
                 backgroundClip: 'text',
                 color: 'transparent',
               }}
@@ -161,7 +161,7 @@ export default function OGDemoImage() {
                   height: 24,
                   borderRadius: 999,
                   background:
-                    'linear-gradient(135deg, #CFA049 0%, #A9742E 100%)',
+                    'linear-gradient(135deg, #CD9842 0%, #AC6824 100%)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -186,7 +186,7 @@ export default function OGDemoImage() {
                   borderRadius: 14,
                   borderBottomRightRadius: 4,
                   background:
-                    'linear-gradient(135deg, #CFA049 0%, #A9742E 100%)',
+                    'linear-gradient(135deg, #CD9842 0%, #AC6824 100%)',
                   fontSize: 18,
                   lineHeight: 1.3,
                 }}
@@ -310,7 +310,7 @@ export default function OGDemoImage() {
               padding: '14px 28px',
               borderRadius: 14,
               background:
-                'linear-gradient(90deg, #CFA049 0%, #A9742E 50%, #A9742E 100%)',
+                'linear-gradient(90deg, #CD9842 0%, #AC6824 50%, #AC6824 100%)',
               fontSize: 26,
               fontWeight: 600,
             }}
@@ -339,8 +339,8 @@ function Metric({
     tone === 'emerald'
       ? '#6EE7B7'
       : tone === 'fuchsia'
-      ? '#E6C480'
-      : '#E6C480';
+      ? '#E4BC74'
+      : '#E4BC74';
   return (
     <div
       style={{

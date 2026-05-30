@@ -29,7 +29,7 @@ export function ScrollProgress() {
     <div className="fixed inset-x-0 top-0 z-50 h-0.5">
       <div
         ref={ref}
-        className="h-full origin-left bg-gradient-to-r from-[#E6C480] via-[#CFA049] to-[#A9742E] shadow-[0_0_12px_rgba(207,160,73,0.6)]"
+        className="h-full origin-left bg-gradient-to-r from-[#E4BC74] via-[#CD9842] to-[#AC6824] shadow-[0_0_12px_rgba(205,152,66,0.6)]"
         style={{ transform: 'scaleX(0)' }}
       />
     </div>

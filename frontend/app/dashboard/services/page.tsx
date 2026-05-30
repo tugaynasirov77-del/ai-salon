@@ -178,7 +178,7 @@ export default function ServicesPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="border-b border-slate-200 bg-slate-50 text-left text-xs font-medium uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-900/50">
+              <thead className="border-b border-slate-200 bg-slate-50 text-left text-xs font-medium uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-[#1A1612]/50">
                 <tr>
                   <th className="px-4 py-3">Название</th>
                   <th className="px-4 py-3 text-right">Цена, ₽</th>
@@ -194,8 +194,8 @@ export default function ServicesPage() {
                     .map((m) => mastersById.get(m.masterId)?.name)
                     .filter(Boolean) as string[];
                   return (
-                    <tr key={s.id} className={cn('hover:bg-slate-50 dark:hover:bg-slate-900/40', !s.isActive && 'opacity-60')}>
-                      <td className="px-4 py-3 font-medium text-slate-900 dark:text-slate-100">{s.name}</td>
+                    <tr key={s.id} className={cn('hover:bg-slate-50 dark:hover:bg-[#1A1612]/40', !s.isActive && 'opacity-60')}>
+                      <td className="px-4 py-3 font-medium text-[#1A1612] dark:text-slate-100">{s.name}</td>
                       <td className="px-4 py-3 text-right tabular-nums text-slate-700 dark:text-slate-300">
                         {s.price.toLocaleString('ru-RU')}
                       </td>
@@ -335,7 +335,7 @@ export default function ServicesPage() {
                         'rounded-full border px-3 py-1 text-xs font-medium transition-colors',
                         active
                           ? 'border-amber-500 bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300'
-                          : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300',
+                          : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-[#1A1612] dark:text-slate-300',
                       )}
                     >
                       {m.name}

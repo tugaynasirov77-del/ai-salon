@@ -68,21 +68,21 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (!loaded || !user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-950">
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-[#14100A]">
         <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
       </div>
     );
   }
 
   return (
-    <div className="relative min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <div className="relative min-h-screen bg-slate-50 text-[#1A1612] dark:bg-[#14100A] dark:text-slate-100">
       {/* Ambient glow для премиальной атмосферы (только в dark) */}
       <div className="pointer-events-none fixed inset-0 -z-10 hidden dark:block">
         <div className="absolute -top-40 -left-32 h-[500px] w-[500px] rounded-full bg-amber-600/15 blur-[140px]" />
         <div className="absolute bottom-[-200px] right-[-100px] h-[480px] w-[480px] rounded-full bg-amber-600/10 blur-[140px]" />
       </div>
 
-      <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 md:hidden dark:border-white/[0.06] dark:bg-slate-950/80 dark:backdrop-blur-xl">
+      <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 md:hidden dark:border-white/[0.06] dark:bg-[#14100A]/80 dark:backdrop-blur-xl">
         <Logo size={26} variant="auto" />
         <button onClick={() => setMobileOpen(!mobileOpen)} aria-label="Меню">
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -92,7 +92,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <aside
         className={cn(
           'fixed inset-y-0 left-0 z-40 w-60 border-r border-slate-200 bg-white transition-transform',
-          'dark:border-white/[0.06] dark:bg-slate-950/80 dark:backdrop-blur-xl',
+          'dark:border-white/[0.06] dark:bg-[#14100A]/80 dark:backdrop-blur-xl',
           'md:translate-x-0',
           mobileOpen ? 'translate-x-0' : '-translate-x-full',
         )}
@@ -118,7 +118,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   className={cn(
                     'group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all',
                     active
-                      ? 'bg-gradient-to-r from-amber-500/20 via-amber-500/15 to-amber-500/10 text-white shadow-[inset_0_0_0_1px_rgba(217,146,32,0.25)] dark:text-white'
+                      ? 'bg-gradient-to-r from-amber-500/20 via-amber-500/15 to-amber-500/10 text-white shadow-[inset_0_0_0_1px_rgba(205,152,66,0.25)] dark:text-white'
                       : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/[0.04] dark:hover:text-slate-200',
                   )}
                 >

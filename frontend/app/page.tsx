@@ -31,12 +31,12 @@ import { ScrollProgress } from '@/components/landing/ScrollProgress';
 
 export default function LandingPage() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#080C14] text-slate-100">
+    <div className="relative min-h-screen overflow-hidden bg-[#04060A] text-slate-100">
       <ScrollTracker />
       <RevealInit />
       <ScrollProgress />
       {/* === Animated background — синий action-color вшит в атмосферу === */}
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#080C14]">
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#04060A]">
         {/* Главный электрический акцент справа сверху — фокус взгляда */}
         <div className="liva-aurora-2 absolute -top-32 -right-40 h-[640px] w-[640px] rounded-full bg-[#3B82F6]/25 blur-[170px]" />
         {/* Холодный сине-стальной слева сверху */}
@@ -68,7 +68,7 @@ export default function LandingPage() {
                 <span>Сейчас отвечает клиентам · 24/7</span>
               </div>
 
-              <h1 className="mt-7 text-balance bg-gradient-to-b from-white via-white to-white/55 bg-clip-text text-[2.25rem] font-semibold leading-[1.04] tracking-tight text-transparent sm:text-[3.5rem] lg:text-[4rem]">
+              <h1 className="mt-7 text-balance bg-gradient-to-b from-white via-white to-white/55 bg-clip-text text-[2.25rem] font-semibold leading-[1.04] tracking-[-0.035em] text-transparent sm:text-[3.5rem] lg:text-[4rem]">
                 ИИ-администратор, которого клиенты{' '}
                 <span className="text-gradient">принимают за человека</span>
               </h1>
@@ -128,12 +128,12 @@ export default function LandingPage() {
       </section>
 
       {/* === Trust block: три причины спокойно показать продукт клиентам === */}
-      <section className="reveal relative border-y border-white/[0.06] bg-white/[0.01] py-16">
+      <section className="reveal relative border-y border-white/[0.09] bg-white/[0.01] py-16">
         <div className="mx-auto max-w-6xl px-4">
-          <p className="text-center text-[11px] font-medium uppercase tracking-[0.2em] text-slate-500">
+          <p className="text-center text-[13px] font-medium tracking-[0.02em] text-slate-500">
             Спокойно показывать клиентам
           </p>
-          <h2 className="mx-auto mt-3 max-w-2xl text-center text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h2 className="mx-auto mt-3 max-w-2xl text-center text-2xl font-semibold tracking-[-0.02em] text-white sm:text-3xl">
             Три причины, почему Liva ai не страшно подключить
           </h2>
 
@@ -162,7 +162,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-4">
           <div className="reveal text-center">
             {/* Editorial-голос: меньше H2, цветной opener, длинная строка как pull-quote */}
-            <span className="text-[11px] font-medium uppercase tracking-[0.24em] text-slate-500">Знакомо</span>
+            <span className="text-[13px] font-medium tracking-[0.02em] text-slate-500">Знакомо</span>
             <h2 className="mx-auto mt-4 max-w-3xl text-balance text-[1.65rem] font-medium leading-[1.25] text-slate-200 sm:text-[2rem]">
               <span className="text-white">Каждое неотвеченное сообщение</span>{' '}
               <span className="text-slate-400">— это клиент, который ушёл к конкуренту.</span>
@@ -190,8 +190,8 @@ export default function LandingPage() {
       <section id="demo" className="relative py-24">
         <div className="mx-auto max-w-5xl px-4">
           <div className="reveal text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C0C4CB]">Демо</span>
-            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+            <span className="text-[13px] font-medium tracking-[0.02em] text-slate-400">Демо</span>
+            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-[-0.025em] text-transparent sm:text-5xl">
               Попробуйте, как это<br className="hidden sm:block" /> работает изнутри
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-slate-400">
@@ -204,7 +204,7 @@ export default function LandingPage() {
             onClick={() => track('cta_demo', { location: 'demo_card' })}
             className="border-gradient reveal group relative mx-auto mt-12 block max-w-3xl overflow-hidden rounded-3xl border border-[#3B82F6]/20 bg-gradient-to-br from-[#3B82F6]/12 via-[#3B82F6]/6 to-transparent p-1 transition-all duration-300 hover:scale-[1.01] hover:border-[#3B82F6]/35 hover:shadow-[0_20px_70px_-20px_rgba(59,130,246,0.55)]"
           >
-            <div className="relative rounded-[22px] bg-[#080C14]/70 p-6 sm:p-10">
+            <div className="relative rounded-[22px] bg-[#04060A]/70 p-6 sm:p-10">
               <div className="grid items-center gap-8 sm:grid-cols-2 sm:gap-10">
                 {/* Живой печатающийся чат */}
                 <div className="order-2 sm:order-1">
@@ -246,8 +246,8 @@ export default function LandingPage() {
       <section id="features" className="relative py-24">
         <div className="mx-auto max-w-6xl px-4">
           <div className="reveal text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C0C4CB]">Возможности</span>
-            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+            <span className="text-[13px] font-medium tracking-[0.02em] text-slate-400">Возможности</span>
+            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-[-0.025em] text-transparent sm:text-5xl">
               Всё, что делает живой администратор<br className="hidden sm:block" /> — и больше
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-slate-400">
@@ -294,7 +294,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-4">
           <div className="reveal text-center">
             {/* Manifesto-голос: один большой выдох, no eyebrow, шире tracking */}
-            <h2 className="mx-auto max-w-4xl text-balance bg-gradient-to-b from-white via-white to-white/50 bg-clip-text text-5xl font-semibold leading-[1.02] tracking-[-0.03em] text-transparent sm:text-7xl">
+            <h2 className="mx-auto max-w-4xl text-balance bg-gradient-to-b from-white via-white to-white/50 bg-clip-text text-5xl font-semibold leading-[1.02] tracking-[-0.035em] text-transparent sm:text-7xl">
               Три шага. Один вечер. Никакого кода.
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-base text-slate-400">
@@ -336,8 +336,8 @@ export default function LandingPage() {
       <section id="faq" className="relative py-24">
         <div className="mx-auto max-w-3xl px-4">
           <div className="reveal text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C0C4CB]">Частые вопросы</span>
-            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+            <span className="text-[13px] font-medium tracking-[0.02em] text-slate-400">Частые вопросы</span>
+            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-[-0.025em] text-transparent sm:text-5xl">
               Отвечаем заранее
             </h2>
           </div>
@@ -389,7 +389,7 @@ export default function LandingPage() {
             <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-[300px] w-[600px] rounded-full bg-[#3B82F6]/30 blur-[100px]" />
             <div className="absolute -bottom-32 left-1/4 h-[260px] w-[460px] rounded-full bg-[#38BDF8]/15 blur-[110px]" />
             <div className="relative">
-              <h2 className="bg-gradient-to-b from-white to-white/70 bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl">
+              <h2 className="bg-gradient-to-b from-white to-white/70 bg-clip-text text-3xl font-semibold tracking-[-0.025em] text-transparent sm:text-4xl">
                 Каждый день без Liva ai —<br className="hidden sm:block" /> это упущенные клиенты
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-slate-300">
@@ -421,7 +421,7 @@ export default function LandingPage() {
       <StickyCta />
 
       {/* === Footer === */}
-      <footer className="border-t border-white/[0.06] py-12">
+      <footer className="border-t border-white/[0.09] py-12">
         <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 sm:grid-cols-4">
           <div className="col-span-2 sm:col-span-2">
             <Logo size={28} variant="light" />
@@ -448,7 +448,7 @@ export default function LandingPage() {
             </ul>
           </div>
         </div>
-        <div className="mx-auto mt-8 flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-white/[0.06] px-4 pt-6 text-center text-xs text-slate-500 sm:flex-row sm:text-left">
+        <div className="mx-auto mt-8 flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-white/[0.09] px-4 pt-6 text-center text-xs text-slate-500 sm:flex-row sm:text-left">
           <div>© {new Date().getFullYear()} Liva ai — AI-администратор для малого бизнеса</div>
           <div className="flex gap-4">
             <Link href="/privacy" className="hover:text-white">Конфиденциальность</Link>
@@ -489,7 +489,7 @@ function SpotlightGrid({ children }: { children: React.ReactNode }) {
 
 function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
   return (
-    <div className="group relative bg-[#080C14]/40 p-7 transition-colors duration-300 hover:bg-white/[0.04]">
+    <div className="group relative bg-[#04060A]/40 p-7 transition-colors duration-300 hover:bg-white/[0.04]">
       {/* hover glow */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_0%,rgba(96,165,250,0.12),transparent_60%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-[#C0C4CB]/20 via-[#8A8E96]/20 to-[#5A5E66]/20 text-[#E8EBEF] ring-1 ring-inset ring-white/10 transition-all duration-300 group-hover:ring-[#C0C4CB]/40 group-hover:shadow-[0_0_24px_-4px_rgba(96,165,250,0.6)]">
@@ -507,7 +507,7 @@ function FloatingHeader() {
       <div className="relative mx-auto max-w-4xl">
         {/* Свечение под капсулой */}
         <div className="pointer-events-none absolute -inset-x-10 -top-6 -z-10 h-24 bg-[radial-gradient(ellipse_50%_100%_at_50%_0%,rgba(59,130,246,0.4),transparent_70%)] blur-xl" />
-        <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[#080C14]/40 px-3 py-2.5 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] backdrop-blur-md sm:rounded-full sm:px-5">
+        <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[#04060A]/40 px-3 py-2.5 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] backdrop-blur-md sm:rounded-full sm:px-5">
           <Logo size={30} variant="light" />
           <nav className="hidden gap-7 text-sm text-slate-300 lg:flex">
             <a href="#demo" className="transition-colors hover:text-white">Демо</a>
@@ -561,11 +561,11 @@ function MobileMenu() {
         <div className="fixed inset-0 z-50 lg:hidden">
           {/* Backdrop */}
           <div
-            className="absolute inset-0 bg-[#080C14]/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#04060A]/80 backdrop-blur-sm"
             onClick={() => setOpen(false)}
           />
           {/* Panel */}
-          <div className="absolute inset-x-0 top-0 border-b border-white/10 bg-[#080C14]/95 px-4 pb-6 pt-4 shadow-2xl backdrop-blur-xl">
+          <div className="absolute inset-x-0 top-0 border-b border-white/10 bg-[#04060A]/95 px-4 pb-6 pt-4 shadow-2xl backdrop-blur-xl">
             <div className="mx-auto flex max-w-6xl items-center justify-between">
               <Logo size={32} variant="light" />
               <button
@@ -591,7 +591,7 @@ function MobileMenu() {
               ))}
             </nav>
 
-            <div className="mx-auto mt-5 flex max-w-6xl flex-col gap-3 border-t border-white/[0.06] pt-5">
+            <div className="mx-auto mt-5 flex max-w-6xl flex-col gap-3 border-t border-white/[0.09] pt-5">
               <Link
                 href="/register"
                 onClick={() => { track('cta_register', { location: 'mobile_menu' }); setOpen(false); }}

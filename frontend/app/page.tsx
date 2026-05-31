@@ -161,13 +161,12 @@ export default function LandingPage() {
       <section className="relative py-24">
         <div className="mx-auto max-w-6xl px-4">
           <div className="reveal text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-300">Знакомо?</span>
-            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
-              Каждое неотвеченное сообщение — клиент,<br className="hidden sm:block" /> который ушёл к конкуренту
+            {/* Editorial-голос: меньше H2, цветной opener, длинная строка как pull-quote */}
+            <span className="text-[11px] font-medium uppercase tracking-[0.24em] text-slate-500">Знакомо</span>
+            <h2 className="mx-auto mt-4 max-w-3xl text-balance text-[1.65rem] font-medium leading-[1.25] text-slate-200 sm:text-[2rem]">
+              <span className="text-white">Каждое неотвеченное сообщение</span>{' '}
+              <span className="text-slate-400">— это клиент, который ушёл к конкуренту, пока вы спали.</span>
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-              Живой администратор стоит 35–50 тыс ₽ в месяц и спит ночью. Liva ai отвечает за 3 секунды в любое время — и стоит в разы меньше.
-            </p>
           </div>
 
           <div className="mt-14 grid gap-5 md:grid-cols-3">
@@ -203,7 +202,7 @@ export default function LandingPage() {
           <Link
             href="/demo"
             onClick={() => track('cta_demo', { location: 'demo_card' })}
-            className="border-gradient reveal group relative mx-auto mt-12 block max-w-3xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-amber-950/40 via-amber-950/30 to-amber-900/40 p-1 transition-all duration-300 hover:scale-[1.01] hover:shadow-[0_20px_70px_-20px_rgba(96,165,250,0.5)]"
+            className="border-gradient reveal group relative mx-auto mt-12 block max-w-3xl overflow-hidden rounded-3xl border border-[#3B82F6]/20 bg-gradient-to-br from-[#3B82F6]/12 via-[#3B82F6]/6 to-transparent p-1 transition-all duration-300 hover:scale-[1.01] hover:border-[#3B82F6]/35 hover:shadow-[0_20px_70px_-20px_rgba(59,130,246,0.55)]"
           >
             <div className="relative rounded-[22px] bg-[#080C14]/70 p-6 sm:p-10">
               <div className="grid items-center gap-8 sm:grid-cols-2 sm:gap-10">
@@ -294,12 +293,12 @@ export default function LandingPage() {
       <section id="how" className="relative py-24">
         <div className="mx-auto max-w-6xl px-4">
           <div className="reveal text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C0C4CB]">Как это работает</span>
-            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
-              Запуск проще, чем настройка<br className="hidden sm:block" /> Wi-Fi в кафе
+            {/* Manifesto-голос: один большой выдох, no eyebrow, шире tracking */}
+            <h2 className="mx-auto max-w-4xl text-balance bg-gradient-to-b from-white via-white to-white/50 bg-clip-text text-5xl font-semibold leading-[1.02] tracking-[-0.03em] text-transparent sm:text-7xl">
+              Три шага. Один вечер. Никакого кода.
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-              Три шага. Никакого программирования. Всё через админку с подсказками.
+            <p className="mx-auto mt-6 max-w-xl text-base text-slate-400">
+              Подключение Liva ai проще, чем настройка Wi-Fi в кафе.
             </p>
           </div>
 
@@ -386,9 +385,9 @@ export default function LandingPage() {
       {/* === CTA === */}
       <section className="relative py-20">
         <div className="mx-auto max-w-4xl px-4">
-          <div className="border-gradient reveal relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-amber-950/40 via-amber-950/30 to-amber-900/40 p-10 text-center sm:p-14">
-            <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-[300px] w-[600px] rounded-full bg-[#5A5E66]/25 blur-[100px]" />
-            <div className="absolute -bottom-32 left-1/4 h-[260px] w-[460px] rounded-full bg-[#8A8E96]/15 blur-[110px]" />
+          <div className="border-gradient reveal relative overflow-hidden rounded-3xl border border-[#3B82F6]/25 bg-gradient-to-br from-[#3B82F6]/15 via-[#3B82F6]/8 to-transparent p-10 text-center sm:p-14">
+            <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-[300px] w-[600px] rounded-full bg-[#3B82F6]/30 blur-[100px]" />
+            <div className="absolute -bottom-32 left-1/4 h-[260px] w-[460px] rounded-full bg-[#38BDF8]/15 blur-[110px]" />
             <div className="relative">
               <h2 className="bg-gradient-to-b from-white to-white/70 bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl">
                 Каждый день без Liva ai —<br className="hidden sm:block" /> это упущенные клиенты после 19:00

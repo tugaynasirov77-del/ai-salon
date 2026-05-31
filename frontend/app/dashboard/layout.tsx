@@ -26,6 +26,7 @@ import { ChannelStatus } from '@/components/dashboard/ChannelStatus';
 import { NotificationManager } from '@/components/dashboard/NotificationManager';
 import { apiMe, apiLogout, hasToken, useAuthStore } from '@/lib/auth';
 import { Logo } from '@/components/landing/Logo';
+import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { fetchConversations } from '@/lib/api';
 
 const NAV = [
@@ -96,9 +97,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 md:hidden dark:border-white/[0.06] dark:bg-[#080C14]/80 dark:backdrop-blur-xl">
         <Logo size={26} variant="auto" />
-        <button onClick={() => setMobileOpen(!mobileOpen)} aria-label="Меню">
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="flex items-center gap-1">
+          <ThemeToggle />
+          <button onClick={() => setMobileOpen(!mobileOpen)} aria-label="Меню">
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       <aside
@@ -167,6 +171,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 {salon?.ownerName || user.email}
               </div>
             </Link>
+            <ThemeToggle />
             <button onClick={logout} className="text-slate-400 transition-colors hover:text-red-400" aria-label="Выход">
               <LogOut className="h-4 w-4" />
             </button>

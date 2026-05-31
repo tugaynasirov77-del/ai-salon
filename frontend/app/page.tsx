@@ -165,7 +165,7 @@ export default function LandingPage() {
             <span className="text-[11px] font-medium uppercase tracking-[0.24em] text-slate-500">Знакомо</span>
             <h2 className="mx-auto mt-4 max-w-3xl text-balance text-[1.65rem] font-medium leading-[1.25] text-slate-200 sm:text-[2rem]">
               <span className="text-white">Каждое неотвеченное сообщение</span>{' '}
-              <span className="text-slate-400">— это клиент, который ушёл к конкуренту, пока вы спали.</span>
+              <span className="text-slate-400">— это клиент, который ушёл к конкуренту.</span>
             </h2>
           </div>
 
@@ -390,7 +390,7 @@ export default function LandingPage() {
             <div className="absolute -bottom-32 left-1/4 h-[260px] w-[460px] rounded-full bg-[#38BDF8]/15 blur-[110px]" />
             <div className="relative">
               <h2 className="bg-gradient-to-b from-white to-white/70 bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl">
-                Каждый день без Liva ai —<br className="hidden sm:block" /> это упущенные клиенты после 19:00
+                Каждый день без Liva ai —<br className="hidden sm:block" /> это упущенные клиенты
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-slate-300">
                 Подключите AI-администратора за 15 минут. Первая 1 000 сообщений — бесплатно. Без карты.

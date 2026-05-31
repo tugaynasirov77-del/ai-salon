@@ -400,7 +400,7 @@ function ConversationDetail({
             placeholder={`Написать клиенту через ${CHANNEL_LABEL[ch] || 'канал клиента'}…`}
             rows={1}
             disabled={sending}
-            className="flex-1 resize-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-[#12151C] placeholder:text-slate-400 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 disabled:opacity-60 dark:border-slate-700 dark:bg-[#080C14] dark:text-slate-100"
+            className="flex-1 resize-none rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-[#12151C] placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-60 dark:border-slate-700 dark:bg-[#080C14] dark:text-slate-100"
           />
           <button
             onClick={send}

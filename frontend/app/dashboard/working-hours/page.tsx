@@ -158,7 +158,7 @@ export default function WorkingHoursPage() {
               id="wh-target"
               value={masterId ?? ''}
               onChange={(e) => setMasterId(e.target.value || null)}
-              className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-[#12151C] focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 dark:border-slate-700 dark:bg-[#12151C] dark:text-slate-100"
+              className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-[#12151C] focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-[#12151C] dark:text-slate-100"
             >
               <option value="">Расписание салона (по умолчанию)</option>
               {(masters.data || []).map((m) => (
@@ -204,7 +204,7 @@ export default function WorkingHoursPage() {
                       type="checkbox"
                       checked={!!d?.open}
                       onChange={(e) => update(w.weekday, { open: e.target.checked })}
-                      className="h-4 w-4 rounded border-slate-300 text-amber-600 focus:ring-amber-500"
+                      className="h-4 w-4 rounded border-slate-300 text-amber-600 focus:ring-blue-500"
                     />
                     <span
                       className={cn(

@@ -494,7 +494,7 @@ export default function DemoPage() {
                     : 'Напишите сообщение…'
                 }
                 disabled={sending || recording}
-                className="flex-1 rounded-lg border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/30 disabled:opacity-60"
+                className="flex-1 rounded-lg border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm text-white placeholder:text-slate-500 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30 disabled:opacity-60"
               />
               <button
                 type="submit"

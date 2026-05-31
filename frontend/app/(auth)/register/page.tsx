@@ -16,7 +16,7 @@ const NICHE_ORDER: NicheKey[] = [
 ];
 
 const inputCls =
-  'h-10 w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 text-sm text-white placeholder:text-slate-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/30';
+  'h-10 w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 text-sm text-white placeholder:text-slate-500 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30';
 
 const labelCls = 'mb-1 block text-xs font-medium uppercase tracking-wider text-slate-400';
 

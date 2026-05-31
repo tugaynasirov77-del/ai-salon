@@ -8,6 +8,7 @@ import {
 import { PageHeader } from '@/components/shared/PageHeader';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { EmptyState } from '@/components/dashboard/EmptyState';
 import {
   sendTestChat,
   sendTestChatMultipart,
@@ -306,15 +307,13 @@ export default function TestChatPage() {
       <Card className="flex flex-1 flex-col overflow-hidden p-0">
         <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-6 md:px-8">
           {messages.length === 0 && !sending ? (
-            <div className="flex h-full flex-col items-center justify-center text-center">
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-50 dark:bg-amber-950/40">
-                <Sparkles className="h-7 w-7 text-amber-600 dark:text-amber-400" />
-              </div>
-              <div className="text-base font-medium text-slate-700 dark:text-slate-200">Поговорите с ИИ как клиент</div>
-              <div className="mt-1 max-w-md text-sm text-slate-500">
-                Напишите «Сколько стоит стрижка?», прикрепите фото или запишите голосовое —
-                и посмотрите, что ответит ИИ вашим клиентам.
-              </div>
+            <div className="flex h-full items-center justify-center">
+              <EmptyState
+                icon={<Sparkles className="h-7 w-7" />}
+                title="Поговорите с ИИ как клиент"
+                text="Напишите «Сколько стоит стрижка?», прикрепите фото или запишите голосовое — и посмотрите, что ответит ИИ вашим клиентам."
+                action={{ label: 'Начать диалог', onClick: () => inputRef.current?.focus() }}
+              />
             </div>
           ) : (
             <div className="mx-auto flex max-w-3xl flex-col gap-4">

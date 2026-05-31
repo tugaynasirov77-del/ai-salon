@@ -32,10 +32,10 @@ function fmtDuration(sec: number) {
   return `${m}:${String(s).padStart(2, '0')}`;
 }
 
-const PRESET_INITIAL_DIALOGS = [
-  { name: 'Анна К.', initial: 'А', channel: 'Telegram', text: 'Хочу записаться на маникюр в пятницу', time: '12 мин', tone: 'indigo' as const },
-  { name: 'Дмитрий', initial: 'Д', channel: 'Авито', text: 'Сколько стоит мужская стрижка?', time: '34 мин', tone: 'orange' as const },
-  { name: 'Мария В.', initial: 'М', channel: 'Веб-чат', text: 'А вы работаете в воскресенье?', time: '1 ч', tone: 'emerald' as const },
+const PRESET_INITIAL_DIALOGS: LiveDialog[] = [
+  { name: 'Анна К.', initial: 'А', channel: 'Telegram', text: 'Хочу записаться на маникюр в пятницу', time: '12 мин', tone: 'indigo' },
+  { name: 'Дмитрий', initial: 'Д', channel: 'Авито', text: 'Сколько стоит мужская стрижка?', time: '34 мин', tone: 'orange' },
+  { name: 'Мария В.', initial: 'М', channel: 'Веб-чат', text: 'А вы работаете в воскресенье?', time: '1 ч', tone: 'emerald' },
 ];
 
 const SUGGESTED = [

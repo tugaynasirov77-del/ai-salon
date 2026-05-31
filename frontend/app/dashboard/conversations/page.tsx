@@ -26,6 +26,7 @@ const CHANNEL_ICON: Record<Channel, React.ComponentType<{ className?: string }>>
   vk: UsersIcon,
   sms: Phone,
   webchat: Globe,
+  avito: MessagesSquare,
 };
 const CHANNEL_COLOR: Record<Channel, string> = {
   telegram: 'text-amber-500',
@@ -33,6 +34,7 @@ const CHANNEL_COLOR: Record<Channel, string> = {
   vk: 'text-amber-500',
   sms: 'text-slate-500',
   webchat: 'text-emerald-500',
+  avito: 'text-orange-500',
 };
 const CHANNEL_LABEL: Record<Channel, string> = {
   telegram: 'Telegram',
@@ -40,6 +42,7 @@ const CHANNEL_LABEL: Record<Channel, string> = {
   vk: 'ВКонтакте',
   sms: 'SMS',
   webchat: 'Веб-чат',
+  avito: 'Авито',
 };
 const STATUS_LABEL: Record<AppointmentStatus, { label: string; cls: string }> = {
   confirmed: { label: 'Подтверждена', cls: 'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-300' },

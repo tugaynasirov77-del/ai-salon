@@ -32,6 +32,9 @@ export interface ISalon {
   plan: string;
   telegramBotToken?: string | null;
   maxBotToken?: string | null;
+  avitoClientId?: string | null;
+  yclientsCompanyId?: string | null;
+  city?: string | null;
   settings?: ISalonSettings | null;
   isActive: boolean;
   createdAt: Date;

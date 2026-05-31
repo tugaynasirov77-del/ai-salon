@@ -21,6 +21,7 @@ const CHANNEL_ICON: Record<Channel, React.ComponentType<{ className?: string }>>
   vk: UsersIcon,
   sms: Phone,
   webchat: Globe,
+  avito: MessagesSquare,
 };
 const CHANNEL_LABEL: Record<Channel, string> = {
   telegram: 'Telegram',
@@ -28,6 +29,7 @@ const CHANNEL_LABEL: Record<Channel, string> = {
   vk: 'ВКонтакте',
   sms: 'SMS',
   webchat: 'Веб-чат',
+  avito: 'Авито',
 };
 
 type ChannelFilter = 'all' | Channel;

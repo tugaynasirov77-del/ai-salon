@@ -160,7 +160,7 @@ export default function AnalyticsPage() {
                 <Tooltip
                   contentStyle={{ fontSize: 12, borderRadius: 8, background: '#12151C', border: '1px solid rgba(255,255,255,0.08)', color: '#E8EBEF' }}
                   labelFormatter={(label) => `${label}`}
-                  formatter={(v: number) => [v, 'Записей']}
+                  formatter={(v) => [Number(v), 'Записей']}
                 />
                 <Line type="monotone" dataKey="count" stroke="#3B82F6" strokeWidth={2} dot={false} />
               </LineChart>
@@ -195,7 +195,7 @@ export default function AnalyticsPage() {
                   />
                   <Tooltip
                     contentStyle={{ fontSize: 12, borderRadius: 8, background: '#12151C', border: '1px solid rgba(255,255,255,0.08)', color: '#E8EBEF' }}
-                    formatter={(v: number) => [v, 'Записей']}
+                    formatter={(v) => [Number(v), 'Записей']}
                   />
                   <Bar dataKey="count" fill="#3B82F6" radius={[0, 6, 6, 0]} />
                 </BarChart>
@@ -231,7 +231,7 @@ export default function AnalyticsPage() {
                   </Pie>
                   <Tooltip
                     contentStyle={{ fontSize: 12, borderRadius: 8, background: '#12151C', border: '1px solid rgba(255,255,255,0.08)', color: '#E8EBEF' }}
-                    formatter={(v: number, n: string) => [`${v} клиентов`, n]}
+                    formatter={(v, n) => [`${Number(v)} клиентов`, String(n)]}
                   />
                   <Legend
                     iconType="circle"

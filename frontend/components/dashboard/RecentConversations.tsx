@@ -19,6 +19,7 @@ const CHANNEL_ICON: Record<Channel, React.ComponentType<{ className?: string }>>
   vk: UsersIcon,
   sms: Phone,
   webchat: Globe,
+  avito: MessagesSquare,
 };
 
 const CHANNEL_COLOR: Record<Channel, string> = {
@@ -27,6 +28,7 @@ const CHANNEL_COLOR: Record<Channel, string> = {
   vk: 'text-amber-500',
   sms: 'text-slate-500',
   webchat: 'text-emerald-500',
+  avito: 'text-orange-500',
 };
 
 function initials(name?: string | null) {

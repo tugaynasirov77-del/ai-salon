@@ -69,8 +69,8 @@ export default function LandingPage() {
               </div>
 
               <h1 className="mt-7 text-balance bg-gradient-to-b from-white via-white to-white/55 bg-clip-text text-[2.25rem] font-semibold leading-[1.04] tracking-[-0.035em] text-transparent sm:text-[3.5rem] lg:text-[4rem]">
-                ИИ-администратор, которого клиенты{' '}
-                <span className="text-gradient">принимают за человека</span>
+                Ваш ИИ-администратор,{' '}
+                <span className="text-gradient">который не спит</span>
               </h1>
 
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-400 lg:max-w-none">

@@ -56,93 +56,103 @@ export default function LandingPage() {
 
       {/* === Hero === */}
       <section className="relative">
-        <div className="mx-auto max-w-6xl px-4 pt-24 pb-28 text-center sm:pt-32 sm:pb-36">
-          <div className="reveal is-visible inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs font-medium text-slate-300 shadow-[0_0_30px_-8px_rgba(96,165,250,0.5)] backdrop-blur">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#C0C4CB] opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#C0C4CB]" />
-            </span>
-            <span>ИИ-администратор для малого бизнеса</span>
-          </div>
+        <div className="mx-auto max-w-6xl px-4 pt-20 pb-24 sm:pt-28 sm:pb-32">
+          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
+            {/* Левая колонка — заявление */}
+            <div className="text-center lg:text-left">
+              <div className="reveal is-visible inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs font-medium text-slate-300 shadow-[0_0_30px_-8px_rgba(59,130,246,0.5)] backdrop-blur">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3B82F6] opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[#3B82F6]" />
+                </span>
+                <span>Сейчас отвечает клиентам · 24/7</span>
+              </div>
 
-          <h1 className="mx-auto mt-8 max-w-5xl text-balance bg-gradient-to-b from-white via-white to-white/55 bg-clip-text text-center text-[2rem] font-semibold leading-[1.05] tracking-tight text-transparent sm:text-6xl lg:text-[5rem]">
-            <span className="block">Ваш ИИ-администратор,</span>
-            <span className="block">
-              который{' '}
-              <span className="text-gradient">не спит</span>
-            </span>
-          </h1>
+              <h1 className="mt-7 text-balance bg-gradient-to-b from-white via-white to-white/55 bg-clip-text text-[2.25rem] font-semibold leading-[1.04] tracking-tight text-transparent sm:text-[3.5rem] lg:text-[4rem]">
+                ИИ-администратор, которого клиенты{' '}
+                <span className="text-gradient">принимают за человека</span>
+              </h1>
 
-          <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-slate-400">
-            Liva ai отвечает клиентам в Telegram, на Авито и на сайте, записывает на услугу
-            и напоминает о визите. Подключение за 15 минут. Работает 24/7 без выходных.
-          </p>
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-400 lg:max-w-none">
+                Отвечает в Telegram, на Авито и на сайте — и сам записывает клиента на услугу за минуту.
+              </p>
 
-          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link
-              href="/register"
-              onClick={() => track('cta_register', { location: 'hero' })}
-              className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#38BDF8] via-[#3B82F6] to-[#2563EB] px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_50px_-6px_rgba(59,130,246,0.7)] transition-all hover:scale-[1.02] hover:shadow-[0_0_60px_-4px_rgba(96,165,250,0.7)] sm:w-auto"
-            >
-              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-              Попробовать бесплатно
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-            <Link
-              href="/demo"
-              onClick={() => track('cta_demo', { location: 'hero' })}
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.03] px-7 py-3.5 text-base font-medium text-slate-200 backdrop-blur transition-colors hover:border-white/25 hover:bg-white/[0.07] hover:text-white sm:w-auto"
-            >
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10 transition-colors group-hover:bg-[#C0C4CB]/20">
-                <ArrowRight className="h-3 w-3" />
-              </span>
-              Смотреть демо
-            </Link>
-          </div>
-          <p className="mt-5 text-sm text-slate-500">
-            Без карты · 1 000 сообщений в подарок · Отмена в один клик
-          </p>
+              <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row lg:items-start lg:justify-start">
+                <Link
+                  href="/register"
+                  onClick={() => track('cta_register', { location: 'hero' })}
+                  className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#38BDF8] via-[#3B82F6] to-[#2563EB] px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_50px_-6px_rgba(59,130,246,0.7)] transition-all hover:scale-[1.02] hover:shadow-[0_0_60px_-4px_rgba(96,165,250,0.7)] sm:w-auto"
+                >
+                  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                  Попробовать бесплатно
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+                <Link
+                  href="/demo"
+                  onClick={() => track('cta_demo', { location: 'hero' })}
+                  className="group inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.03] px-7 py-3.5 text-base font-medium text-slate-200 backdrop-blur transition-colors hover:border-white/25 hover:bg-white/[0.07] hover:text-white sm:w-auto"
+                >
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10 transition-colors group-hover:bg-[#3B82F6]/30">
+                    <ArrowRight className="h-3 w-3" />
+                  </span>
+                  Смотреть демо
+                </Link>
+              </div>
 
-          {/* Bullet badges */}
-          <div className="mx-auto mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs text-slate-400">
-            <BulletBadge>Запуск за 15 минут</BulletBadge>
-            <BulletBadge>AI на Claude — не сценарий</BulletBadge>
-            <BulletBadge>Данные в России, 152-ФЗ</BulletBadge>
-            <BulletBadge>Отмена в один клик</BulletBadge>
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-slate-500 lg:justify-start">
+                <BulletBadge>Запуск за 15 минут</BulletBadge>
+                <BulletBadge>Данные в России, 152-ФЗ</BulletBadge>
+              </div>
+            </div>
+
+            {/* Правая колонка — живой чат */}
+            <div className="relative">
+              {/* Подсветка-glow позади чата */}
+              <div className="pointer-events-none absolute inset-0 -z-10 translate-x-6 translate-y-6 rounded-3xl bg-gradient-to-br from-[#3B82F6]/25 via-[#3B82F6]/5 to-transparent blur-2xl" />
+              <div className="reveal is-visible overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.02] p-2 shadow-[0_30px_80px_-30px_rgba(59,130,246,0.45)] backdrop-blur">
+                <TypingDemo />
+                {/* Confirmation strip — финальный «✓ записан», чтобы зафиксировать ценность */}
+                <div className="mx-1 mb-1 mt-2 flex items-center gap-2.5 rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.06] px-3.5 py-2.5">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-400/20 ring-1 ring-inset ring-emerald-400/30">
+                    <Check className="h-3.5 w-3.5 text-emerald-300" />
+                  </span>
+                  <div className="text-[12.5px] leading-tight">
+                    <span className="font-medium text-emerald-200">Запись создана</span>
+                    <span className="ml-1.5 text-emerald-300/70">— автоматически попала в YClients</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-
-        {/* Interactive 3D dashboard mockup + floating windows */}
-        <InteractiveMockup />
       </section>
 
-      {/* === Trust / Channels bar === */}
-      <section className="reveal relative border-y border-white/[0.06] bg-white/[0.01] py-9">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 lg:flex-row lg:justify-between lg:gap-10">
-          {/* Honest trust signal вместо «1000+ компаний» */}
-          <div className="flex shrink-0 items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#C0C4CB]/20 to-[#8A8E96]/20 ring-1 ring-inset ring-white/10">
-              <Sparkles className="h-4 w-4 text-[#C0C4CB]" strokeWidth={1.5} />
-            </span>
-            <div className="text-left">
-              <div className="text-sm font-semibold text-white">Работает на Claude</div>
-              <div className="text-xs text-slate-500">одна из сильнейших AI-моделей мира</div>
-            </div>
-          </div>
+      {/* === Trust block: три причины спокойно показать продукт клиентам === */}
+      <section className="reveal relative border-y border-white/[0.06] bg-white/[0.01] py-16">
+        <div className="mx-auto max-w-6xl px-4">
+          <p className="text-center text-[11px] font-medium uppercase tracking-[0.2em] text-slate-500">
+            Спокойно показывать клиентам
+          </p>
+          <h2 className="mx-auto mt-3 max-w-2xl text-center text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            Три причины, почему Liva ai не страшно подключить
+          </h2>
 
-          <div className="hidden h-8 w-px bg-white/10 lg:block" />
-
-          <div className="flex flex-1 flex-col items-center gap-4">
-            <p className="text-center text-[11px] font-medium uppercase tracking-[0.2em] text-slate-500">
-              Работает там, где ваши клиенты
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-slate-300">
-              <ChannelBadge icon={<Send className="h-4 w-4" />} name="Telegram" />
-              <ChannelBadge icon={<Briefcase className="h-4 w-4" />} name="Авито" />
-              <ChannelBadge icon={<Calendar className="h-4 w-4" />} name="YClients" />
-              <ChannelBadge icon={<MessageSquare className="h-4 w-4" />} name="WhatsApp" />
-              <ChannelBadge icon={<Globe className="h-4 w-4" />} name="Веб-чат" />
-            </div>
+          <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
+            <TrustCard
+              eyebrow="Под капотом"
+              title="Claude Haiku от Anthropic"
+              text="Одна из сильнейших AI-моделей мира — та же семья, что у Cursor и Notion AI. Отвечает как живой администратор: понимает контекст и неформальные формулировки, а не работает по сценарию."
+            />
+            <TrustCard
+              eyebrow="Данные клиентов"
+              title="Хранятся в России, 152-ФЗ"
+              text="Серверы внутри РФ, шифрование при передаче, разграничение доступа. Соответствует требованиям к обработке персональных данных малого бизнеса."
+            />
+            <TrustCard
+              eyebrow="Уже интегрировано"
+              title="YClients, Telegram, Авито"
+              text="Подключается к тому, что у вас уже работает. Запись попадает прямо в YClients, ответы идут из вашего Telegram-канала или Авито-аккаунта."
+            />
           </div>
         </div>
       </section>
@@ -676,11 +686,16 @@ function MobileMenu() {
   );
 }
 
-function ChannelBadge({ icon, name }: { icon: React.ReactNode; name: string }) {
+function TrustCard({ eyebrow, title, text }: { eyebrow: string; title: string; text: string }) {
   return (
-    <div className="inline-flex items-center gap-2 text-sm font-medium text-slate-300">
-      <span className="text-slate-400">{icon}</span>
-      <span>{name}</span>
+    <div className="group relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-6 transition-colors hover:border-white/[0.14]">
+      {/* Subtle blue accent halo on hover */}
+      <div className="pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full bg-[#3B82F6]/0 blur-3xl transition-colors duration-500 group-hover:bg-[#3B82F6]/15" />
+      <div className="relative">
+        <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#60A5FA]">{eyebrow}</div>
+        <div className="mt-2 text-lg font-semibold text-white">{title}</div>
+        <p className="mt-3 text-sm leading-relaxed text-slate-400">{text}</p>
+      </div>
     </div>
   );
 }

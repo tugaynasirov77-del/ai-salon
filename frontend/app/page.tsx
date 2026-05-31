@@ -127,8 +127,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* === Trust block: три причины спокойно показать продукт клиентам === */}
-      <section className="reveal relative border-y border-white/[0.09] bg-white/[0.01] py-16">
+      {/* === Trust block: три причины спокойно показать продукт клиентам ===
+          Без .reveal: секция в next-fold, IntersectionObserver не всегда успевает
+          добавить is-visible до того как пользователь её видит — оставляло пустоту. */}
+      <section className="relative border-y border-white/[0.09] bg-white/[0.01] py-16">
         <div className="mx-auto max-w-6xl px-4">
           <p className="text-center text-[13px] font-medium tracking-[0.02em] text-slate-500">
             Спокойно показывать клиентам

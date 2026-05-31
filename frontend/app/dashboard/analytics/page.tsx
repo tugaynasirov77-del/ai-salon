@@ -10,7 +10,7 @@ import { Users, Calendar, TrendingUp, MessageSquare } from 'lucide-react';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { Card } from '@/components/ui/card';
 import { MetricCard } from '@/components/dashboard/MetricCard';
-import { LoadingSpinner } from '@/components/shared/LoadingSpinner';
+import { ChartSkeleton } from '@/components/dashboard/Skeleton';
 import { fetchAnalytics } from '@/lib/api';
 import { useSalonId } from '@/lib/config';
 import { cn } from '@/lib/utils';
@@ -108,7 +108,7 @@ export default function AnalyticsPage() {
               className={cn(
                 'rounded-md px-3 py-1 text-sm font-medium transition-colors',
                 period === p.days
-                  ? 'bg-amber-600 text-white'
+                  ? 'bg-blue-600 text-white shadow-[0_0_18px_-4px_rgba(59,130,246,0.6)]'
                   : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800',
               )}
             >
@@ -149,20 +149,20 @@ export default function AnalyticsPage() {
       <Card className="mb-4">
         <h3 className="mb-3 text-sm font-semibold text-[#12151C] dark:text-slate-100">Записи по дням</h3>
         {loading ? (
-          <div className="py-12"><LoadingSpinner /></div>
+          <ChartSkeleton variant="line" />
         ) : (
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={byDayChart} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="label" tick={{ fontSize: 11, fill: '#64748b' }} interval="preserveStartEnd" />
-                <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: '#64748b' }} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+                <XAxis dataKey="label" tick={{ fontSize: 11, fill: '#8A8E96' }} interval="preserveStartEnd" />
+                <YAxis allowDecimals={false} tick={{ fontSize: 11, fill: '#8A8E96' }} />
                 <Tooltip
-                  contentStyle={{ fontSize: 12, borderRadius: 8 }}
+                  contentStyle={{ fontSize: 12, borderRadius: 8, background: '#12151C', border: '1px solid rgba(255,255,255,0.08)', color: '#E8EBEF' }}
                   labelFormatter={(label) => `${label}`}
                   formatter={(v: number) => [v, 'Записей']}
                 />
-                <Line type="monotone" dataKey="count" stroke="#2563eb" strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="count" stroke="#3B82F6" strokeWidth={2} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -174,7 +174,7 @@ export default function AnalyticsPage() {
         <Card>
           <h3 className="mb-3 text-sm font-semibold text-[#12151C] dark:text-slate-100">Топ-5 услуг</h3>
           {loading ? (
-            <div className="py-12"><LoadingSpinner /></div>
+            <ChartSkeleton variant="bar" />
           ) : topServices.length === 0 ? (
             <div className="py-12 text-center text-sm text-slate-400">Нет записей за период</div>
           ) : (
@@ -185,19 +185,19 @@ export default function AnalyticsPage() {
                   layout="vertical"
                   margin={{ top: 4, right: 24, left: 0, bottom: 0 }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" horizontal={false} />
-                  <XAxis type="number" allowDecimals={false} tick={{ fontSize: 11, fill: '#64748b' }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" horizontal={false} />
+                  <XAxis type="number" allowDecimals={false} tick={{ fontSize: 11, fill: '#8A8E96' }} />
                   <YAxis
                     type="category"
                     dataKey="name"
                     width={120}
-                    tick={{ fontSize: 11, fill: '#64748b' }}
+                    tick={{ fontSize: 11, fill: '#8A8E96' }}
                   />
                   <Tooltip
-                    contentStyle={{ fontSize: 12, borderRadius: 8 }}
+                    contentStyle={{ fontSize: 12, borderRadius: 8, background: '#12151C', border: '1px solid rgba(255,255,255,0.08)', color: '#E8EBEF' }}
                     formatter={(v: number) => [v, 'Записей']}
                   />
-                  <Bar dataKey="count" fill="#2563eb" radius={[0, 6, 6, 0]} />
+                  <Bar dataKey="count" fill="#3B82F6" radius={[0, 6, 6, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -208,7 +208,7 @@ export default function AnalyticsPage() {
         <Card>
           <h3 className="mb-3 text-sm font-semibold text-[#12151C] dark:text-slate-100">Источники клиентов</h3>
           {loading ? (
-            <div className="py-12"><LoadingSpinner /></div>
+            <ChartSkeleton variant="pie" />
           ) : totalChannels === 0 ? (
             <div className="py-12 text-center text-sm text-slate-400">Нет данных по источникам</div>
           ) : (
@@ -230,7 +230,7 @@ export default function AnalyticsPage() {
                     ))}
                   </Pie>
                   <Tooltip
-                    contentStyle={{ fontSize: 12, borderRadius: 8 }}
+                    contentStyle={{ fontSize: 12, borderRadius: 8, background: '#12151C', border: '1px solid rgba(255,255,255,0.08)', color: '#E8EBEF' }}
                     formatter={(v: number, n: string) => [`${v} клиентов`, n]}
                   />
                   <Legend

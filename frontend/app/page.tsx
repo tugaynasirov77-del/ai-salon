@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import {
   MessageSquare,
@@ -8,7 +8,6 @@ import {
   BellRing,
   BarChart3,
   Check,
-  Zap,
   Briefcase,
   Bot,
   Globe,
@@ -19,11 +18,9 @@ import {
   Menu,
   X,
 } from 'lucide-react';
-import { NICHES } from '@shared/niches';
 import { PricingSection } from '@/components/landing/PricingSection';
 import { Logo } from '@/components/landing/Logo';
 import { track } from '@/lib/analytics';
-import { SavingsCalculator } from '@/components/landing/SavingsCalculator';
 import { ComparisonTable } from '@/components/landing/ComparisonTable';
 import { StickyCta } from '@/components/landing/StickyCta';
 import { ScrollTracker } from '@/components/analytics/ScrollTracker';
@@ -38,15 +35,18 @@ export default function LandingPage() {
       <ScrollTracker />
       <RevealInit />
       <ScrollProgress />
-      {/* === Animated futuristic background (фиксированный) === */}
+      {/* === Animated background — синий action-color вшит в атмосферу === */}
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#080C14]">
-        {/* Aurora-mesh blobs */}
-        <div className="liva-aurora absolute -top-40 -left-40 h-[560px] w-[560px] rounded-full bg-[#5A5E66]/30 blur-[150px]" />
-        <div className="liva-aurora-2 absolute top-[12%] -right-40 h-[520px] w-[520px] rounded-full bg-[#5A5E66]/25 blur-[150px]" />
-        <div className="liva-aurora absolute top-[55%] left-1/4 h-[460px] w-[460px] rounded-full bg-[#8A8E96]/20 blur-[150px]" />
-        <div className="liva-aurora-2 absolute bottom-0 right-1/4 h-[420px] w-[420px] rounded-full bg-[#5A5E66]/20 blur-[150px]" />
-        {/* Top glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(96,165,250,0.10),transparent_60%)]" />
+        {/* Главный электрический акцент справа сверху — фокус взгляда */}
+        <div className="liva-aurora-2 absolute -top-32 -right-40 h-[640px] w-[640px] rounded-full bg-[#3B82F6]/25 blur-[170px]" />
+        {/* Холодный сине-стальной слева сверху */}
+        <div className="liva-aurora absolute -top-40 -left-40 h-[560px] w-[560px] rounded-full bg-[#38BDF8]/15 blur-[150px]" />
+        {/* Спокойный стальной в середине — баланс, чтобы не уйти в попсу */}
+        <div className="liva-aurora absolute top-[55%] left-1/4 h-[460px] w-[460px] rounded-full bg-[#8A8E96]/15 blur-[150px]" />
+        {/* Глубокий синий внизу справа */}
+        <div className="liva-aurora-2 absolute bottom-0 right-1/4 h-[420px] w-[420px] rounded-full bg-[#2563EB]/15 blur-[160px]" />
+        {/* Top glow — усиленный синий */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(96,165,250,0.18),transparent_60%)]" />
         {/* Neural grid */}
         <div className="liva-grid absolute inset-0 opacity-35" />
       </div>
@@ -105,8 +105,8 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Правая колонка — живой чат */}
-            <div className="relative">
+            {/* Правая колонка — живой чат с лёгким parallax-drift при скролле */}
+            <HeroChatParallax>
               {/* Подсветка-glow позади чата */}
               <div className="pointer-events-none absolute inset-0 -z-10 translate-x-6 translate-y-6 rounded-3xl bg-gradient-to-br from-[#3B82F6]/25 via-[#3B82F6]/5 to-transparent blur-2xl" />
               <div className="reveal is-visible overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.02] p-2 shadow-[0_30px_80px_-30px_rgba(59,130,246,0.45)] backdrop-blur">
@@ -122,7 +122,7 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </HeroChatParallax>
           </div>
         </div>
       </section>
@@ -163,10 +163,10 @@ export default function LandingPage() {
           <div className="reveal text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-300">Знакомо?</span>
             <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
-              Малый бизнес теряет до 40% заявок<br className="hidden sm:block" /> просто потому, что некому ответить
+              Каждое неотвеченное сообщение — клиент,<br className="hidden sm:block" /> который ушёл к конкуренту
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-              Каждая упущенная заявка — это не вернувшийся клиент. Каждый администратор — это 35–50 тыс ₽ в месяц. Liva ai закрывает обе боли.
+              Живой администратор стоит 35–50 тыс ₽ в месяц и спит ночью. Liva ai отвечает за 3 секунды в любое время — и стоит в разы меньше.
             </p>
           </div>
 
@@ -269,7 +269,7 @@ export default function LandingPage() {
             <Feature
               icon={<BellRing className="h-5 w-5" />}
               title="Напоминания 24 и 2 часа"
-              text="Автоматические напоминания клиенту за сутки и за 2 часа. Снижает неявки до 60%."
+              text="Автоматические напоминания клиенту за сутки и за 2 часа до визита. Меньше пустых слотов и забывших про запись."
             />
             <Feature
               icon={<UserCog className="h-5 w-5" />}
@@ -322,7 +322,7 @@ export default function LandingPage() {
           </div>
 
           <p className="mt-10 text-center text-sm text-slate-500">
-            В среднем салоны запускаются за <span className="font-semibold text-white">12 минут</span>
+            На Self-Start реально запуститься за вечер. На «Под ключ» — мы делаем всё сами.
           </p>
         </div>
       </section>
@@ -330,78 +330,8 @@ export default function LandingPage() {
       {/* === Comparison === */}
       <ComparisonTable />
 
-      {/* === Savings calculator === */}
-      <SavingsCalculator />
-
-      {/* === Niches === */}
-      <section className="relative py-24">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="reveal text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C0C4CB]">9 ниш</span>
-            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
-              Готовые пресеты<br className="hidden sm:block" /> под ваш бизнес
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-              Для каждой ниши — свой системный промпт, шаблоны напоминаний, набор полей записи и FAQ.
-            </p>
-          </div>
-
-          <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-3 sm:grid-cols-3">
-            {Object.values(NICHES).map((n: any) => (
-              <Link
-                key={n.key}
-                href={`/register?niche=${n.key}`}
-                onClick={() => track('cta_niche', { niche: n.key })}
-                aria-label={`Зарегистрироваться, ниша ${n.label}`}
-                className="group flex cursor-pointer items-center gap-3 rounded-xl border border-white/10 bg-white/[0.025] px-4 py-3.5 text-sm text-slate-200 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C0C4CB]/30 hover:bg-white/[0.05] hover:shadow-[0_8px_30px_-12px_rgba(96,165,250,0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3B82F6]/60"
-              >
-                <span className="text-xl leading-none transition-transform duration-300 group-hover:scale-110">{n.icon}</span>
-                <span>{n.label}</span>
-              </Link>
-            ))}
-          </div>
-
-          <p className="mx-auto mt-10 max-w-2xl text-center text-sm text-slate-400">
-            Не нашли свою? <span className="font-medium text-white">Liva ai настраивается под любую нишу за 1 день</span> — просто оставьте заявку.
-          </p>
-        </div>
-      </section>
-
       {/* === Pricing === */}
       <PricingSection />
-
-      {/* === Guarantees === */}
-      <section className="relative py-24">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="reveal text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">Гарантии</span>
-            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
-              Вы ничем не рискуете
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-              Никаких долгосрочных контрактов и скрытых условий. Уходите когда хотите, деньги за неиспользованный период вернём.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            <GuaranteeCard
-              icon="↺"
-              title="Отмена в один клик"
-              text="Без долгосрочных контрактов. Уходите когда хотите — прямо в админке, без звонков и писем."
-            />
-            <GuaranteeCard
-              icon="₽"
-              title="Возврат за неиспользованный период"
-              text="Решите остановиться — вернём деньги за оставшиеся дни оплаченного периода."
-            />
-            <GuaranteeCard
-              icon="🇷🇺"
-              title="Данные в России, 152-ФЗ"
-              text="Все данные клиентов хранятся на серверах в РФ. Третьим лицам не передаём. Полный текст — в Политике."
-            />
-          </div>
-        </div>
-      </section>
 
       {/* === FAQ === */}
       <section id="faq" className="relative py-24">
@@ -686,6 +616,58 @@ function MobileMenu() {
   );
 }
 
+// Parallax-обёртка для hero-чата: лёгкий drift вверх + scale-вниз при скролле первого экрана.
+// rAF + `transform`, никаких rerender'ов компонента-ребёнка. Уважает prefers-reduced-motion.
+function HeroChatParallax({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let raf = 0;
+    let pending = false;
+
+    function update() {
+      pending = false;
+      // Прогресс скролла: 0 на самом верху, 1 когда проскроллили один viewport.
+      const p = Math.min(1, Math.max(0, window.scrollY / window.innerHeight));
+      // Drift: до -28px вверх. Scale: до 0.97. Opacity лёгкий fade при уходе.
+      const ty = -p * 28;
+      const scale = 1 - p * 0.03;
+      const opacity = 1 - p * 0.15;
+      if (el) {
+        el.style.transform = `translate3d(0, ${ty}px, 0) scale(${scale})`;
+        el.style.opacity = String(opacity);
+      }
+    }
+
+    function onScroll() {
+      if (pending) return;
+      pending = true;
+      raf = requestAnimationFrame(update);
+    }
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className="relative will-change-transform"
+      style={{ transformOrigin: 'center top' }}
+    >
+      {children}
+    </div>
+  );
+}
+
 function TrustCard({ eyebrow, title, text }: { eyebrow: string; title: string; text: string }) {
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-6 transition-colors hover:border-white/[0.14]">
@@ -715,18 +697,6 @@ function FloatingDemoLink() {
   );
 }
 
-function GuaranteeCard({ icon, title, text }: { icon: string; title: string; text: string }) {
-  return (
-    <div className="glass glow-hover reveal rounded-2xl p-7">
-      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-400/10 text-xl text-emerald-300 ring-1 ring-inset ring-emerald-400/20">
-        {icon}
-      </div>
-      <h3 className="mt-5 text-lg font-semibold text-white">{title}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-slate-400">{text}</p>
-    </div>
-  );
-}
-
 function PainCard({ pain, gain }: { pain: string; gain: string }) {
   return (
     <div className="glass glow-hover reveal rounded-2xl p-7">
@@ -752,248 +722,6 @@ const CHANNEL_TONES: Record<string, string> = {
   orange: 'border-orange-400/30 bg-orange-500/10 text-orange-200',
   cyan: 'border-[#C0C4CB]/30 bg-[#8A8E96]/10 text-[#E8EBEF]',
 };
-
-function InteractiveMockup() {
-  const [ref, setRef] = useState<HTMLDivElement | null>(null);
-  const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
-
-  function onMove(e: React.MouseEvent<HTMLDivElement>) {
-    if (!ref) return;
-    const r = ref.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width - 0.5; // -0.5..0.5
-    const py = (e.clientY - r.top) / r.height - 0.5;
-    setTilt({ rx: -py * 10, ry: px * 13 }); // наклон до ~10-13deg — больше глубины
-  }
-  function onLeave() {
-    setTilt({ rx: 0, ry: 0 });
-  }
-
-  return (
-    <div className="relative mx-auto mt-14 max-w-5xl px-4">
-      {/* Ambient glow за окном */}
-      <div className="absolute -inset-x-12 -inset-y-10 -z-10 rounded-[48px] bg-gradient-to-b from-[#8A8E96]/15 via-[#8A8E96]/15 to-transparent blur-3xl" />
-
-      <div
-        ref={setRef}
-        onMouseMove={onMove}
-        onMouseLeave={onLeave}
-        className="relative"
-        style={{ perspective: '1000px' }}
-      >
-        {/* Float layer (только drift по Y) */}
-        <div className="liva-float">
-          {/* Tilt layer (только rotate; preserve-3d для глубины floating-окон) */}
-          <div
-            className="relative transition-transform duration-300 ease-out will-change-transform"
-            style={{
-              transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
-              transformStyle: 'preserve-3d',
-            }}
-          >
-            <DashboardMockup />
-
-            {/* Floating mini-windows — глубина через translateZ на внешнем слое */}
-            <FloatCard className="absolute -left-8 -top-8 hidden w-[230px] sm:block" depth={120} delay="0s">
-              <div className="flex items-center gap-2.5">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-300 ring-1 ring-inset ring-emerald-400/30">
-                  <Check className="h-4 w-4" />
-                </span>
-                <div className="min-w-0">
-                  <div className="text-[12px] font-semibold text-white">Новая запись</div>
-                  <div className="truncate text-[11px] text-slate-400">Анна — маникюр, пт 15:00</div>
-                </div>
-              </div>
-            </FloatCard>
-
-            <FloatCard className="absolute -right-8 top-8 hidden w-[250px] lg:block" depth={180} delay="-2s">
-              <div className="flex items-start gap-2.5">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#3B82F6] to-[#2563EB] text-[11px] font-semibold text-white">К</span>
-                <div className="min-w-0">
-                  <div className="text-[11px] text-slate-400">Telegram · сейчас</div>
-                  <div className="mt-0.5 rounded-lg rounded-tl-sm bg-white/[0.06] px-2.5 py-1.5 text-[12px] text-slate-100">
-                    Запишите на стрижку в субботу 🙏
-                  </div>
-                </div>
-              </div>
-            </FloatCard>
-
-            <FloatCard className="absolute -bottom-8 left-10 hidden w-[240px] md:block" depth={100} delay="-4s">
-              <div className="flex items-center gap-2.5">
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#8A8E96]/15 text-[#C0C4CB] ring-1 ring-inset ring-[#C0C4CB]/30">
-                  <BellRing className="h-4 w-4" />
-                </span>
-                <div className="min-w-0">
-                  <div className="text-[12px] font-semibold text-white">Напоминание отправлено</div>
-                  <div className="truncate text-[11px] text-slate-400">За 2 часа до визита</div>
-                </div>
-              </div>
-            </FloatCard>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Внешний слой держит translateZ (глубина в 3D), внутренний — float-drift,
-// чтобы CSS-анимация не перетёрла inline-transform с translateZ.
-function FloatCard({
-  children,
-  className = '',
-  depth = 60,
-  delay = '0s',
-}: {
-  children: React.ReactNode;
-  className?: string;
-  depth?: number;
-  delay?: string;
-}) {
-  return (
-    <div className={className} style={{ transform: `translateZ(${depth}px)` }}>
-      <div
-        className="glass liva-float rounded-2xl px-3.5 py-3 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.85)]"
-        style={{ animationDelay: delay }}
-      >
-        {children}
-      </div>
-    </div>
-  );
-}
-
-function DashboardMockup() {
-  return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#12151C]/95 shadow-[0_30px_80px_-20px_rgba(59,130,246,0.4)] backdrop-blur-sm">
-      {/* Window chrome */}
-      <div className="flex items-center gap-2 border-b border-white/[0.06] bg-white/[0.02] px-4 py-3">
-        <span className="h-3 w-3 rounded-full bg-red-400/60" />
-        <span className="h-3 w-3 rounded-full bg-yellow-400/60" />
-        <span className="h-3 w-3 rounded-full bg-green-400/60" />
-        <div className="ml-3 hidden items-center gap-2 rounded-md bg-white/[0.04] px-2.5 py-1 text-[11px] text-slate-400 sm:flex">
-          <Globe className="h-3 w-3" />
-          ailiva.ru/dashboard
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-[200px_1fr]">
-        {/* Sidebar */}
-        <aside className="hidden border-r border-white/[0.06] bg-white/[0.015] px-3 py-4 md:block">
-          <div className="mb-4 px-2">
-            <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Liva ai</div>
-            <div className="mt-1 text-sm font-medium text-slate-200">Студия Грация</div>
-          </div>
-          <div className="space-y-1">
-            <MockNavItem active>Главная</MockNavItem>
-            <MockNavItem>Диалоги</MockNavItem>
-            <MockNavItem>Клиенты</MockNavItem>
-            <MockNavItem>Расписание</MockNavItem>
-            <MockNavItem>Аналитика</MockNavItem>
-          </div>
-        </aside>
-
-        {/* Main */}
-        <div className="p-5 sm:p-6">
-          <div className="text-sm font-semibold text-white">Главная</div>
-          <div className="mt-0.5 text-[11px] text-slate-500">Сводка за последние 30 дней</div>
-
-          {/* Metrics */}
-          <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <MockMetric label="Записей" to={128} trend="+18%" tone="emerald" />
-            <MockMetric label="Выручка" to={247500} format={(n) => `${Math.round(n).toLocaleString('ru-RU')} ₽`} trend="+24%" tone="emerald" />
-            <MockMetric label="Конверсия" to={42} format={(n) => `${Math.round(n)}%`} trend="+6%" tone="indigo" />
-            <MockMetric label="Сообщений" to={1284} trend="" tone="violet" />
-          </div>
-
-          {/* Body row */}
-          <div className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-5">
-            {/* Chart */}
-            <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-4 lg:col-span-3">
-              <div className="text-[11px] font-medium text-slate-300">Записи по дням</div>
-              <svg viewBox="0 0 300 100" className="mt-3 h-24 w-full">
-                <defs>
-                  <linearGradient id="mock-grad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#8A8E96" stopOpacity="0.5" />
-                    <stop offset="100%" stopColor="#8A8E96" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-                <path
-                  d="M0,75 C30,72 50,55 75,55 C100,55 120,68 150,52 C180,40 210,28 240,32 C270,38 290,22 300,18 L300,100 L0,100 Z"
-                  fill="url(#mock-grad)"
-                />
-                <path
-                  className="liva-draw-path"
-                  d="M0,75 C30,72 50,55 75,55 C100,55 120,68 150,52 C180,40 210,28 240,32 C270,38 290,22 300,18"
-                  stroke="#C0C4CB"
-                  strokeWidth="2"
-                  fill="none"
-                />
-              </svg>
-            </div>
-
-            {/* Recent dialogs */}
-            <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-4 lg:col-span-2">
-              <div className="mb-3 text-[11px] font-medium text-slate-300">Последние диалоги</div>
-              <div className="space-y-2.5">
-                <MockDialog name="Анна К." channel="Telegram" text="Записаться на маникюр" time="2 мин" />
-                <MockDialog name="Мария В." channel="Авито" text="Сколько стоит стрижка?" time="14 мин" />
-                <MockDialog name="Дмитрий" channel="Веб-чат" text="Перенесите запись на завтра" time="42 мин" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function MockNavItem({ children, active }: { children: React.ReactNode; active?: boolean }) {
-  return (
-    <div
-      className={
-        active
-          ? 'relative rounded-md bg-gradient-to-r from-[#8A8E96]/20 via-[#8A8E96]/15 to-[#5A5E66]/10 px-2.5 py-1.5 text-[11px] font-medium text-white'
-          : 'rounded-md px-2.5 py-1.5 text-[11px] font-medium text-slate-400'
-      }
-    >
-      {active && <span className="absolute left-0 top-1/2 h-3 w-0.5 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-[#38BDF8] via-[#3B82F6] to-[#3B82F6]" />}
-      {children}
-    </div>
-  );
-}
-
-function MockMetric({ label, to, format, trend, tone = 'indigo' }: { label: string; to: number; format?: (n: number) => string; trend?: string; tone?: 'emerald' | 'indigo' | 'violet' }) {
-  const trendColor = tone === 'emerald' ? 'text-emerald-400' : tone === 'violet' ? 'text-[#C0C4CB]' : 'text-[#C0C4CB]';
-  return (
-    <div className="rounded-lg border border-white/[0.06] bg-white/[0.02] p-3">
-      <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">{label}</div>
-      <div className="mt-1.5 flex items-baseline gap-1.5">
-        <div className="text-base font-semibold text-white">
-          <CountUp to={to} format={format} />
-        </div>
-        {trend && <div className={`text-[10px] font-medium ${trendColor}`}>{trend}</div>}
-      </div>
-    </div>
-  );
-}
-
-function MockDialog({ name, channel, text, time }: { name: string; channel: string; text: string; time: string }) {
-  return (
-    <div className="flex items-start gap-2.5">
-      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#8A8E96]/40 to-[#5A5E66]/40 text-[10px] font-semibold text-white">
-        {name.charAt(0)}
-      </div>
-      <div className="min-w-0 flex-1">
-        <div className="flex items-center justify-between gap-2">
-          <div className="truncate text-[11px] font-medium text-slate-200">{name}</div>
-          <div className="shrink-0 text-[9px] text-slate-500">{time}</div>
-        </div>
-        <div className="mt-0.5 flex items-center gap-1.5">
-          <span className="text-[9px] uppercase tracking-wider text-[#C0C4CB]">{channel}</span>
-          <span className="truncate text-[10px] text-slate-400">{text}</span>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function Step({ num, title, text }: { num: string; title: string; text: string }) {
   return (

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Unbounded, Manrope } from "next/font/google";
+import { Unbounded, Manrope, Oswald } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 
@@ -15,6 +15,15 @@ const manrope = Manrope({
   subsets: ["latin", "cyrillic"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-dm-sans",
+  display: "swap",
+});
+// SpaceX-redesign: Oswald (condensed sans с поддержкой кириллицы) как
+// замена D-DIN-Bold. Bebas Neue без кириллицы, Oswald — самый близкий
+// родственник из Google Fonts с RU.
+const oswald = Oswald({
+  subsets: ["latin", "cyrillic"],
+  weight: ["500", "600", "700"],
+  variable: "--font-bebas",
   display: "swap",
 });
 
@@ -66,7 +75,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${unbounded.variable} ${manrope.variable} antialiased`}
+        className={`${unbounded.variable} ${manrope.variable} ${oswald.variable} antialiased`}
       >
         <Providers>{children}</Providers>
         <Suspense fallback={null}>

@@ -1,156 +1,87 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import {
-  MessageSquare,
-  Calendar,
-  BellRing,
-  BarChart3,
-  Check,
-  Briefcase,
-  Bot,
-  Globe,
-  Send,
-  ArrowRight,
-  Sparkles,
-  UserCog,
-  Menu,
-  X,
-} from 'lucide-react';
+import { ArrowRight, Menu, X, Check } from 'lucide-react';
 import { PricingSection } from '@/components/landing/PricingSection';
 import { Logo } from '@/components/landing/Logo';
 import { track } from '@/lib/analytics';
 import { ComparisonTable } from '@/components/landing/ComparisonTable';
 import { StickyCta } from '@/components/landing/StickyCta';
 import { ScrollTracker } from '@/components/analytics/ScrollTracker';
-import { RevealInit } from '@/components/landing/RevealInit';
-import { CountUp } from '@/components/landing/CountUp';
 import { TypingDemo } from '@/components/landing/TypingDemo';
-import { ScrollProgress } from '@/components/landing/ScrollProgress';
 
+/*
+ * SpaceX-inspired redesign.
+ * Источник design-токенов: VoltAgent/awesome-design-md → design-md/spacex/DESIGN.md.
+ * - Чёрный canvas (#000), без aurora/glow
+ * - Bebas Neue UPPERCASE как D-DIN-Bold
+ * - Ghost-pill кнопки с +1.17px tracking
+ * - Бренд-синий остаётся ТОЛЬКО на primary CTA («Попробовать бесплатно»)
+ * - Каждая секция = band с full-bleed визуалом или плотным брутальным копирайтом
+ */
 export default function LandingPage() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#04060A] text-slate-100">
+    <div className="relative min-h-screen bg-black text-white antialiased">
       <ScrollTracker />
-      <RevealInit />
-      <ScrollProgress />
-      {/* === Animated background — синий action-color вшит в атмосферу === */}
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#04060A]">
-        {/* Главный электрический акцент справа сверху — фокус взгляда */}
-        <div className="liva-aurora-2 absolute -top-32 -right-40 h-[640px] w-[640px] rounded-full bg-[#3B82F6]/25 blur-[170px]" />
-        {/* Холодный сине-стальной слева сверху */}
-        <div className="liva-aurora absolute -top-40 -left-40 h-[560px] w-[560px] rounded-full bg-[#38BDF8]/15 blur-[150px]" />
-        {/* Спокойный стальной в середине — баланс, чтобы не уйти в попсу */}
-        <div className="liva-aurora absolute top-[55%] left-1/4 h-[460px] w-[460px] rounded-full bg-[#8A8E96]/15 blur-[150px]" />
-        {/* Глубокий синий внизу справа */}
-        <div className="liva-aurora-2 absolute bottom-0 right-1/4 h-[420px] w-[420px] rounded-full bg-[#2563EB]/15 blur-[160px]" />
-        {/* Top glow — усиленный синий */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(96,165,250,0.18),transparent_60%)]" />
-        {/* Neural grid */}
-        <div className="liva-grid absolute inset-0 opacity-35" />
-      </div>
+      <SpaceXHeader />
 
-      {/* === Header — плавающая капсула === */}
-      <FloatingHeader />
-
-      {/* === Hero === */}
-      <section className="relative">
-        <div className="mx-auto max-w-6xl px-4 pt-20 pb-24 sm:pt-28 sm:pb-32">
-          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
-            {/* Левая колонка — заявление */}
-            <div className="text-center lg:text-left">
-              <div className="reveal is-visible inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs font-medium text-slate-300 shadow-[0_0_30px_-8px_rgba(59,130,246,0.5)] backdrop-blur">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3B82F6] opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[#3B82F6]" />
-                </span>
-                <span>Сейчас отвечает клиентам · 24/7</span>
-              </div>
-
-              <h1 className="mt-7 text-balance bg-gradient-to-b from-white via-white to-white/55 bg-clip-text text-[2.25rem] font-semibold leading-[1.04] tracking-[-0.035em] text-transparent sm:text-[3.5rem] lg:text-[4rem]">
-                Ваш ИИ-администратор,{' '}
-                <span className="text-gradient">который не спит</span>
-              </h1>
-
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-400 lg:max-w-none">
-                Отвечает в Telegram, на Авито и на сайте — и сам записывает клиента на услугу за минуту.
-              </p>
-
-              <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row lg:items-start lg:justify-start">
-                <Link
-                  href="/register"
-                  onClick={() => track('cta_register', { location: 'hero' })}
-                  className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#38BDF8] via-[#3B82F6] to-[#2563EB] px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_50px_-6px_rgba(59,130,246,0.7)] transition-all hover:scale-[1.02] hover:shadow-[0_0_60px_-4px_rgba(96,165,250,0.7)] sm:w-auto"
-                >
-                  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-                  Попробовать бесплатно
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </Link>
-                <Link
-                  href="/demo"
-                  onClick={() => track('cta_demo', { location: 'hero' })}
-                  className="group inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.03] px-7 py-3.5 text-base font-medium text-slate-200 backdrop-blur transition-colors hover:border-white/25 hover:bg-white/[0.07] hover:text-white sm:w-auto"
-                >
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/10 transition-colors group-hover:bg-[#3B82F6]/30">
-                    <ArrowRight className="h-3 w-3" />
-                  </span>
-                  Смотреть демо
-                </Link>
-              </div>
-
-              <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-slate-500 lg:justify-start">
-                <BulletBadge>Запуск за 15 минут</BulletBadge>
-                <BulletBadge>Данные в России, 152-ФЗ</BulletBadge>
-              </div>
+      {/* ───────── HERO BAND ───────── */}
+      <section className="relative flex min-h-[100svh] items-end overflow-hidden">
+        {/* Full-bleed визуал — чат справа на lg+, fade в чёрный к центру */}
+        <div className="pointer-events-none absolute inset-0 -z-0">
+          <div className="absolute inset-y-0 right-0 hidden w-[48%] items-center justify-center lg:flex">
+            <div className="w-full max-w-[460px] px-10 opacity-90">
+              <TypingDemo />
             </div>
+          </div>
+          {/* Градиент: чёрный с лево-центра к чату, чтобы текст читался */}
+          <div className="absolute inset-y-0 left-0 right-0 bg-gradient-to-r from-black via-black to-transparent lg:via-black/85 lg:to-black/0 lg:right-[48%]" />
+        </div>
 
-            {/* Правая колонка — живой чат с лёгким parallax-drift при скролле */}
-            <HeroChatParallax>
-              {/* Подсветка-glow позади чата */}
-              <div className="pointer-events-none absolute inset-0 -z-10 translate-x-6 translate-y-6 rounded-3xl bg-gradient-to-br from-[#3B82F6]/25 via-[#3B82F6]/5 to-transparent blur-2xl" />
-              <div className="reveal is-visible overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.02] p-2 shadow-[0_30px_80px_-30px_rgba(59,130,246,0.45)] backdrop-blur">
-                <TypingDemo />
-                {/* Confirmation strip — финальный «✓ записан», чтобы зафиксировать ценность */}
-                <div className="mx-1 mb-1 mt-2 flex items-center gap-2.5 rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.06] px-3.5 py-2.5">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-400/20 ring-1 ring-inset ring-emerald-400/30">
-                    <Check className="h-3.5 w-3.5 text-emerald-300" />
-                  </span>
-                  <div className="text-[12.5px] leading-tight">
-                    <span className="font-medium text-emerald-200">Запись создана</span>
-                    <span className="ml-1.5 text-emerald-300/70">— автоматически попала в YClients</span>
-                  </div>
-                </div>
-              </div>
-            </HeroChatParallax>
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-20 pt-32 sm:pb-28 sm:pt-40">
+          <Eyebrow>ИИ-администратор · сейчас отвечает клиентам</Eyebrow>
+          <h1 className="font-bebas mt-5 text-[2.75rem] uppercase leading-[0.95] tracking-[0.02em] sm:text-[4.5rem] lg:text-[3.75rem] xl:text-[5rem]">
+            Ваш
+            <br />
+            ИИ-администратор,
+            <br />
+            <span className="text-[#60A5FA]">который не спит</span>
+          </h1>
+          <p className="mt-6 max-w-md text-[15px] leading-[1.6] text-white/70">
+            Отвечает в Telegram, на Авито и на сайте — записывает клиента на услугу за минуту.
+          </p>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <CtaPrimary href="/register" onClick={() => track('cta_register', { location: 'hero' })}>
+              Попробовать бесплатно
+            </CtaPrimary>
+            <CtaGhost href="/demo" onClick={() => track('cta_demo', { location: 'hero' })}>
+              Смотреть демо
+            </CtaGhost>
           </div>
         </div>
       </section>
 
-      {/* === Trust block: три причины спокойно показать продукт клиентам ===
-          Без .reveal: секция в next-fold, IntersectionObserver не всегда успевает
-          добавить is-visible до того как пользователь её видит — оставляло пустоту. */}
-      <section className="relative border-y border-white/[0.09] bg-white/[0.01] py-16">
-        <div className="mx-auto max-w-6xl px-4">
-          <p className="text-center text-[13px] font-medium tracking-[0.02em] text-slate-500">
-            Спокойно показывать клиентам
-          </p>
-          <h2 className="mx-auto mt-3 max-w-2xl text-center text-2xl font-semibold tracking-[-0.02em] text-white sm:text-3xl">
+      {/* ───────── TRUST BAND ───────── */}
+      <section className="relative border-t border-white/[0.08] py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6">
+          <Eyebrow>Спокойно показывать клиентам</Eyebrow>
+          <h2 className="font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.02em] sm:text-[3.5rem]">
             Три причины, почему Liva ai не страшно подключить
           </h2>
 
-          <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
-            <TrustCard
+          <div className="mt-16 grid grid-cols-1 gap-px bg-white/[0.08] md:grid-cols-3">
+            <TrustCell
               eyebrow="Под капотом"
               title="Claude Haiku от Anthropic"
-              text="Одна из сильнейших AI-моделей мира — та же семья, что у Cursor и Notion AI. Отвечает как живой администратор: понимает контекст и неформальные формулировки, а не работает по сценарию."
+              text="Одна из сильнейших AI-моделей мира — та же семья, что у Cursor и Notion AI. Отвечает как живой администратор: понимает контекст и неформальные формулировки."
             />
-            <TrustCard
+            <TrustCell
               eyebrow="Данные клиентов"
               title="Хранятся в России, 152-ФЗ"
               text="Серверы внутри РФ, шифрование при передаче, разграничение доступа. Соответствует требованиям к обработке персональных данных малого бизнеса."
             />
-            <TrustCard
+            <TrustCell
               eyebrow="Уже интегрировано"
               title="YClients, Telegram, Авито"
               text="Подключается к тому, что у вас уже работает. Запись попадает прямо в YClients, ответы идут из вашего Telegram-канала или Авито-аккаунта."
@@ -159,28 +90,26 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* === Pain → Solution === */}
-      <section className="relative py-24">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="reveal text-center">
-            {/* Editorial-голос: меньше H2, цветной opener, длинная строка как pull-quote */}
-            <span className="text-[13px] font-medium tracking-[0.02em] text-slate-500">Знакомо</span>
-            <h2 className="mx-auto mt-4 max-w-3xl text-balance text-[1.65rem] font-medium leading-[1.25] text-slate-200 sm:text-[2rem]">
-              <span className="text-white">Каждое неотвеченное сообщение</span>{' '}
-              <span className="text-slate-400">— это клиент, который ушёл к конкуренту.</span>
-            </h2>
-          </div>
+      {/* ───────── PAIN BAND ───────── */}
+      <section className="relative border-t border-white/[0.08] py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6">
+          <Eyebrow>Знакомо</Eyebrow>
+          <h2 className="font-bebas mt-4 max-w-4xl text-[2.5rem] uppercase leading-[1] tracking-[0.02em] sm:text-[4rem]">
+            Каждое неотвеченное сообщение — клиент,
+            <br />
+            который ушёл к конкуренту.
+          </h2>
 
-          <div className="mt-14 grid gap-5 md:grid-cols-3">
-            <PainCard
+          <div className="mt-16 grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-10">
+            <PainBlock
               pain="Клиент написал в 22:30 — ответили утром. Он ушёл к конкуренту."
               gain="ИИ отвечает за 3 секунды в любое время суток."
             />
-            <PainCard
+            <PainBlock
               pain="Администратор за 45 000 ₽ болеет, в отпуске, увольняется."
               gain="Liva ai работает 365 дней в году. 2 500 ₽/мес."
             />
-            <PainCard
+            <PainBlock
               pain="Диалоги в трёх мессенджерах — половину забываете."
               gain="Telegram, Авито, веб-чат и записи в одной админке."
             />
@@ -188,579 +117,403 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* === Demo === */}
-      <section id="demo" className="relative py-24">
-        <div className="mx-auto max-w-5xl px-4">
-          <div className="reveal text-center">
-            <span className="text-[13px] font-medium tracking-[0.02em] text-slate-400">Демо</span>
-            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-[-0.025em] text-transparent sm:text-5xl">
-              Попробуйте, как это<br className="hidden sm:block" /> работает изнутри
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-              Откройте интерактивное демо — слева вы пишете ИИ-администратору как клиент, справа сразу видите, что отображается у владельца в админке. Без регистрации.
-            </p>
-          </div>
+      {/* ───────── DEMO BAND ───────── */}
+      <section
+        id="demo"
+        className="relative border-t border-white/[0.08] py-24 sm:py-32"
+      >
+        <div className="mx-auto max-w-7xl px-6">
+          <Eyebrow>Демо</Eyebrow>
+          <h2 className="font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.02em] sm:text-[4rem]">
+            Так выглядит диалог с клиентом
+          </h2>
+          <p className="mt-5 max-w-xl text-[15px] leading-[1.6] text-white/70">
+            Слева — живой пример работы ИИ. В полном демо вы сами пишете как клиент,
+            а справа в реальном времени видите, что появляется у владельца в админке.
+          </p>
 
-          <Link
-            href="/demo"
-            onClick={() => track('cta_demo', { location: 'demo_card' })}
-            className="border-gradient reveal group relative mx-auto mt-12 block max-w-3xl overflow-hidden rounded-3xl border border-[#3B82F6]/20 bg-gradient-to-br from-[#3B82F6]/12 via-[#3B82F6]/6 to-transparent p-1 transition-all duration-300 hover:scale-[1.01] hover:border-[#3B82F6]/35 hover:shadow-[0_20px_70px_-20px_rgba(59,130,246,0.55)]"
-          >
-            <div className="relative rounded-[22px] bg-[#04060A]/70 p-6 sm:p-10">
-              <div className="grid items-center gap-8 sm:grid-cols-2 sm:gap-10">
-                {/* Живой печатающийся чат */}
-                <div className="order-2 sm:order-1">
-                  <TypingDemo />
-                </div>
-
-                {/* Текст + CTA */}
-                <div className="order-1 text-center sm:order-2 sm:text-left">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-200">
-                    <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" /></span>
-                    Реальный AI на Claude
-                  </div>
-                  <div className="mt-4 text-2xl font-semibold text-white sm:text-3xl">
-                    Так выглядит диалог с клиентом
-                  </div>
-                  <p className="mt-2 text-sm text-slate-400">
-                    Слева — живой пример. В полном демо вы сами пишете ИИ-администратору, а справа в реальном времени видите, что появляется у владельца в админке.
-                  </p>
-
-                  <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs sm:justify-start">
-                    <Channel icon={<Send className="h-3.5 w-3.5" />} label="Telegram" tone="indigo" />
-                    <Channel icon={<Globe className="h-3.5 w-3.5" />} label="Веб-чат" tone="emerald" />
-                    <Channel icon={<Briefcase className="h-3.5 w-3.5" />} label="Авито" tone="orange" />
-                    <Channel icon={<Calendar className="h-3.5 w-3.5" />} label="YClients" tone="cyan" />
-                  </div>
-
-                  <span className="mt-7 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#3B82F6] via-[#3B82F6] to-[#2563EB] px-6 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(59,130,246,0.5)] transition-transform group-hover:scale-[1.03]">
-                    Открыть полное демо
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                  </span>
-                </div>
+          <div className="mt-12 grid grid-cols-1 items-center gap-10 md:grid-cols-2">
+            <div>
+              <TypingDemo />
+            </div>
+            <div>
+              <div className="inline-flex items-center gap-2 border border-emerald-400/40 bg-emerald-400/[0.06] px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-emerald-300">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                Запись создана автоматически
+              </div>
+              <ul className="mt-8 space-y-4 text-[15px] text-white/80">
+                <Bullet>Понимает свободные формулировки и опечатки</Bullet>
+                <Bullet>Сразу проверяет свободные слоты в YClients</Bullet>
+                <Bullet>Подтверждает запись и шлёт напоминания за 24 и 2 часа</Bullet>
+              </ul>
+              <div className="mt-10">
+                <CtaGhost href="/demo" onClick={() => track('cta_demo', { location: 'demo_card' })}>
+                  Открыть полное демо
+                </CtaGhost>
               </div>
             </div>
-          </Link>
+          </div>
         </div>
       </section>
 
-      {/* === Features === */}
-      <section id="features" className="relative py-24">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="reveal text-center">
-            <span className="text-[13px] font-medium tracking-[0.02em] text-slate-400">Возможности</span>
-            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-[-0.025em] text-transparent sm:text-5xl">
-              Всё, что делает живой администратор<br className="hidden sm:block" /> — и больше
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-              Не сценарий «если—то», а ИИ-агент, который понимает контекст, записывает на услугу и доводит клиента до визита.
-            </p>
+      {/* ───────── FEATURES BAND ───────── */}
+      <section id="features" className="relative border-t border-white/[0.08] py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6">
+          <Eyebrow>Возможности</Eyebrow>
+          <h2 className="font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.02em] sm:text-[4rem]">
+            Всё, что делает живой администратор
+          </h2>
+
+          <div className="mt-16 grid grid-cols-1 gap-px bg-white/[0.08] md:grid-cols-2 lg:grid-cols-3">
+            <FeatureCell title="AI на Claude — не сценарий" text="Отвечает на нестандартные вопросы, понимает опечатки и контекст. Не «зависает» на фразе вне сценария." />
+            <FeatureCell title="Запись в YClients" text="Свободные слоты, мастера, услуги — синхронно с вашим расписанием. Запись падает прямо в YClients." />
+            <FeatureCell title="Напоминания 24 и 2 часа" text="Автоматические напоминания клиенту за сутки и за 2 часа до визита. Меньше пустых слотов и забывших про запись." />
+            <FeatureCell title="Эскалация владельцу" text="Если AI не уверен в ответе — сразу пишет вам в Telegram. Вы всегда в курсе и можете ответить лично." />
+            <FeatureCell title="9 ниш из коробки" text="Салоны, барбершопы, фитнес, клиники, СТО, рестораны, юристы, репетиторы и другое." />
+            <FeatureCell title="Аналитика в реальном времени" text="Сколько диалогов и записей, конверсия, топ-услуги и какие вопросы клиенты задают чаще всего." />
           </div>
-          <SpotlightGrid>
-            <Feature
-              icon={<Bot className="h-5 w-5" />}
-              title="AI на Claude — не сценарий"
-              text="Отвечает на нестандартные вопросы, понимает опечатки и контекст. Не «зависает» на фразе вне сценария."
-            />
-            <Feature
-              icon={<Calendar className="h-5 w-5" />}
-              title="Запись в YClients"
-              text="Свободные слоты, мастера, услуги — синхронно с вашим расписанием. Запись падает прямо в YClients."
-            />
-            <Feature
-              icon={<BellRing className="h-5 w-5" />}
-              title="Напоминания 24 и 2 часа"
-              text="Автоматические напоминания клиенту за сутки и за 2 часа до визита. Меньше пустых слотов и забывших про запись."
-            />
-            <Feature
-              icon={<UserCog className="h-5 w-5" />}
-              title="Эскалация владельцу"
-              text="Если AI не уверен в ответе — сразу пишет вам в Telegram. Вы всегда в курсе и можете ответить лично."
-            />
-            <Feature
-              icon={<Sparkles className="h-5 w-5" />}
-              title="9 ниш из коробки"
-              text="Салоны, барбершопы, фитнес, клиники, СТО, рестораны, юристы, репетиторы и другое."
-            />
-            <Feature
-              icon={<BarChart3 className="h-5 w-5" />}
-              title="Аналитика в реальном времени"
-              text="Сколько диалогов и записей, конверсия, топ-услуги и какие вопросы клиенты задают чаще всего."
-            />
-          </SpotlightGrid>
         </div>
       </section>
 
-      {/* === How it works === */}
-      <section id="how" className="relative py-24">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="reveal text-center">
-            {/* Manifesto-голос: один большой выдох, no eyebrow, шире tracking */}
-            <h2 className="mx-auto max-w-4xl text-balance bg-gradient-to-b from-white via-white to-white/50 bg-clip-text text-5xl font-semibold leading-[1.02] tracking-[-0.035em] text-transparent sm:text-7xl">
-              Три шага. Один вечер. Никакого кода.
-            </h2>
-            <p className="mx-auto mt-6 max-w-xl text-base text-slate-400">
-              Подключение Liva ai проще, чем настройка Wi-Fi в кафе.
-            </p>
-          </div>
+      {/* ───────── HOW BAND ───────── */}
+      <section id="how" className="relative border-t border-white/[0.08] py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6">
+          <Eyebrow>Как это работает</Eyebrow>
+          <h2 className="font-bebas mt-4 max-w-4xl text-[3rem] uppercase leading-[0.95] tracking-[0.02em] sm:text-[5.5rem]">
+            Три шага. Один вечер.
+            <br />
+            Никакого кода.
+          </h2>
 
-          <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3">
-            <Step
-              num="01"
-              title="Регистрируетесь"
-              text="Почта и пароль — 30 секунд. Сразу попадаете в дашборд и выбираете нишу."
-            />
-            <Step
-              num="02"
-              title="Подключаете канал"
-              text="Вставляете токен Telegram-канала (3 клика в @BotFather, инструкция в админке) или вешаете виджет на сайт."
-            />
-            <Step
-              num="03"
-              title="AI начинает отвечать"
-              text="Загружаете прайс и расписание одним файлом — ИИ сразу отвечает клиентам и записывает на услугу."
-            />
+          <div className="mt-16 grid grid-cols-1 gap-12 md:grid-cols-3">
+            <Step num="01" title="Регистрируетесь" text="Почта и пароль — 30 секунд. Сразу попадаете в дашборд и выбираете нишу." />
+            <Step num="02" title="Подключаете канал" text="Вставляете токен Telegram-канала (3 клика в @BotFather, инструкция в админке) или вешаете виджет на сайт." />
+            <Step num="03" title="AI начинает отвечать" text="Загружаете прайс и расписание одним файлом — ИИ сразу отвечает клиентам и записывает на услугу." />
           </div>
-
-          <p className="mt-10 text-center text-sm text-slate-500">
-            На Self-Start реально запуститься за вечер. На «Под ключ» — мы делаем всё сами.
-          </p>
         </div>
       </section>
 
-      {/* === Comparison === */}
-      <ComparisonTable />
+      {/* ───────── COMPARISON (functional, существующий компонент) ───────── */}
+      <section className="relative border-t border-white/[0.08]">
+        <ComparisonTable />
+      </section>
 
-      {/* === Pricing === */}
-      <PricingSection />
+      {/* ───────── PRICING (functional, существующий компонент) ───────── */}
+      <section className="relative border-t border-white/[0.08]">
+        <PricingSection />
+      </section>
 
-      {/* === FAQ === */}
-      <section id="faq" className="relative py-24">
-        <div className="mx-auto max-w-3xl px-4">
-          <div className="reveal text-center">
-            <span className="text-[13px] font-medium tracking-[0.02em] text-slate-400">Частые вопросы</span>
-            <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-[-0.025em] text-transparent sm:text-5xl">
-              Отвечаем заранее
-            </h2>
-          </div>
-          <div className="mt-12 space-y-3">
-            <FaqItem q="Сколько времени занимает подключение?">
+      {/* ───────── FAQ BAND ───────── */}
+      <section id="faq" className="relative border-t border-white/[0.08] py-24 sm:py-32">
+        <div className="mx-auto max-w-3xl px-6">
+          <Eyebrow>Частые вопросы</Eyebrow>
+          <h2 className="font-bebas mt-4 text-[2.5rem] uppercase leading-[1] tracking-[0.02em] sm:text-[3.5rem]">
+            Отвечаем заранее
+          </h2>
+          <div className="mt-12 divide-y divide-white/[0.08] border-y border-white/[0.08]">
+            <Faq q="Сколько времени занимает подключение?">
               15 минут на тарифе Self-Start — регистрация, токен Telegram-канала и загрузка прайса. На тарифе «Под ключ» наш менеджер делает всё за вас за 1 день.
-            </FaqItem>
-            <FaqItem q="Нужно ли быть программистом?">
-              Нет. Нужен только токен Telegram-канала — мы покажем, где его взять (3 клика в @BotFather). Услуги, мастеров и расписание заносятся через простые формы, как в Excel.
-            </FaqItem>
-            <FaqItem q="AI правда понимает живой язык?">
-              Да. Мы используем Claude — одну из самых сильных AI-моделей в мире. ИИ понимает опечатки, сленг, нестандартные вопросы и контекст диалога. Это не сценарное дерево «если—то».
-            </FaqItem>
-            <FaqItem q="Что, если AI ответит неправильно?">
+            </Faq>
+            <Faq q="Нужно ли быть программистом?">
+              Нет. Нужен только токен Telegram-канала — мы покажем, где его взять (3 клика в @BotFather). Услуги, мастеров и расписание заносятся через простые формы.
+            </Faq>
+            <Faq q="AI правда понимает живой язык?">
+              Да. Мы используем Claude — одну из самых сильных AI-моделей в мире. ИИ понимает опечатки, сленг, нестандартные вопросы и контекст диалога.
+            </Faq>
+            <Faq q="Что, если AI ответит неправильно?">
               Если ИИ не уверен — он сразу пишет вам в Telegram, чтобы вы ответили лично. Все диалоги вы видите в админке и можете вмешаться в любой момент.
-            </FaqItem>
-            <FaqItem q="Работает ли с моим YClients?">
-              Да. На тарифе «Под ключ» менеджер всё подключит. На Self-Start — введёте логин/пароль YClients в админке, выберете филиал, и Liva ai сама синхронизирует услуги, мастеров и расписание.
-            </FaqItem>
-            <FaqItem q="Подойдёт ли мне, если у меня не салон?">
-              Подойдёт. Liva ai из коробки настроена под 9 ниш: салоны, барбершопы, фитнес, клиники, СТО, рестораны, юристы, репетиторы и «Другое». Если ниши нет в списке — настроим под вас за 1 день.
-            </FaqItem>
-            <FaqItem q="Что с моими клиентскими данными?">
-              Хранятся в России, соответствуют 152-ФЗ. Третьим лицам не передаём. Клиентам не звоним и не пишем без вашего согласия.
-            </FaqItem>
-            <FaqItem q="Можно ли отменить подписку?">
-              Да, в один клик прямо в админке. Никаких долгосрочных контрактов. Деньги за неиспользованный оплаченный период вернём.
-            </FaqItem>
-            <FaqItem q="А если у меня большой поток сообщений?">
-              На тарифе «Под ключ» первые 3 месяца — безлимит. Дальше обсудим индивидуально, обычно остаёмся в рамках 2 500 ₽/мес. На Self-Start включено 1 000 сообщений; сверху можно докупить блоками.
-            </FaqItem>
+            </Faq>
+            <Faq q="Работает ли с моим YClients?">
+              Да. На тарифе «Под ключ» менеджер всё подключит. На Self-Start — введёте логин/пароль YClients в админке, выберете филиал.
+            </Faq>
+            <Faq q="Что с моими клиентскими данными?">
+              Хранятся в России, соответствуют 152-ФЗ. Третьим лицам не передаём.
+            </Faq>
+            <Faq q="Можно ли отменить подписку?">
+              Да, в один клик прямо в админке. Никаких долгосрочных контрактов.
+            </Faq>
           </div>
-          <p className="mt-10 text-center text-sm text-slate-400">
-            Другой вопрос? Напишите{' '}
-            <a href="mailto:hello@ailiva.ru" className="text-[#C0C4CB] hover:text-white">
+          <p className="mt-10 text-center text-sm text-white/60">
+            Другой вопрос?{' '}
+            <a href="mailto:hello@ailiva.ru" className="text-white underline-offset-4 hover:underline">
               hello@ailiva.ru
             </a>
           </p>
         </div>
       </section>
 
-      {/* === Floating demo button (corner) === */}
-      <FloatingDemoLink />
-
-      {/* === CTA === */}
-      <section className="relative py-20">
-        <div className="mx-auto max-w-4xl px-4">
-          <div className="border-gradient reveal relative overflow-hidden rounded-3xl border border-[#3B82F6]/25 bg-gradient-to-br from-[#3B82F6]/15 via-[#3B82F6]/8 to-transparent p-10 text-center sm:p-14">
-            <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-[300px] w-[600px] rounded-full bg-[#3B82F6]/30 blur-[100px]" />
-            <div className="absolute -bottom-32 left-1/4 h-[260px] w-[460px] rounded-full bg-[#38BDF8]/15 blur-[110px]" />
-            <div className="relative">
-              <h2 className="bg-gradient-to-b from-white to-white/70 bg-clip-text text-3xl font-semibold tracking-[-0.025em] text-transparent sm:text-4xl">
-                Каждый день без Liva ai —<br className="hidden sm:block" /> это упущенные клиенты
-              </h2>
-              <p className="mx-auto mt-4 max-w-xl text-slate-300">
-                Подключите AI-администратора за 15 минут. Первая 1 000 сообщений — бесплатно. Без карты.
-              </p>
-              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <Link
-                  href="/register"
-                  onClick={() => track('cta_register', { location: 'final_cta' })}
-                  className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#3B82F6] via-[#3B82F6] to-[#2563EB] px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_rgba(59,130,246,0.5)] transition-transform hover:scale-[1.02] sm:w-auto"
-                >
-                  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-                  Попробовать бесплатно
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <a
-                  href="#pricing"
-                  onClick={() => track('cta_turnkey_anchor', { location: 'final_cta' })}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-7 py-3.5 text-base font-medium text-slate-200 transition-colors hover:bg-white/[0.08] sm:w-auto"
-                >
-                  Подключим за вас
-                </a>
-              </div>
-            </div>
+      {/* ───────── FINAL CTA BAND ───────── */}
+      <section className="relative flex min-h-[80svh] items-center justify-center border-t border-white/[0.08] py-32">
+        <div className="mx-auto max-w-4xl px-6 text-center">
+          <Eyebrow>Подключите сегодня</Eyebrow>
+          <h2 className="font-bebas mx-auto mt-5 max-w-3xl text-[3rem] uppercase leading-[0.95] tracking-[0.02em] sm:text-[6rem]">
+            Каждый день без Liva ai —
+            <br />
+            <span className="text-[#60A5FA]">упущенные клиенты</span>
+          </h2>
+          <p className="mx-auto mt-6 max-w-md text-[15px] leading-[1.6] text-white/70">
+            Подключите AI-администратора за 15 минут. Первая 1 000 сообщений — бесплатно. Без карты.
+          </p>
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            <CtaPrimary href="/register" onClick={() => track('cta_register', { location: 'final_cta' })}>
+              Попробовать бесплатно
+            </CtaPrimary>
+            <CtaGhost href="#pricing" onClick={() => track('cta_turnkey_anchor', { location: 'final_cta' })}>
+              Подключим за вас
+            </CtaGhost>
           </div>
         </div>
       </section>
 
       <StickyCta />
 
-      {/* === Footer === */}
-      <footer className="border-t border-white/[0.09] py-12">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 sm:grid-cols-4">
-          <div className="col-span-2 sm:col-span-2">
+      {/* ───────── FOOTER ───────── */}
+      <footer className="border-t border-white/[0.08] py-16">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-10 px-6 sm:grid-cols-4">
+          <div className="col-span-2">
             <Logo size={28} variant="light" />
-            <p className="mt-4 max-w-xs text-sm text-slate-400">
+            <p className="mt-4 max-w-xs text-sm text-white/60">
               AI-администратор для малого бизнеса. Отвечает клиентам и записывает на услугу 24/7.
             </p>
           </div>
-          <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">Продукт</div>
-            <ul className="mt-4 space-y-2 text-sm text-slate-300">
-              <li><a href="#features" className="hover:text-white">Возможности</a></li>
-              <li><a href="#how" className="hover:text-white">Как это работает</a></li>
-              <li><a href="#pricing" className="hover:text-white">Тарифы</a></li>
-              <li><a href="#faq" className="hover:text-white">FAQ</a></li>
-              <li><a href="#demo" className="hover:text-white">Демо</a></li>
-            </ul>
-          </div>
-          <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">Аккаунт</div>
-            <ul className="mt-4 space-y-2 text-sm text-slate-300">
-              <li><Link href="/login" className="hover:text-white">Войти</Link></li>
-              <li><Link href="/register" className="hover:text-white">Регистрация</Link></li>
-              <li><a href="mailto:hello@ailiva.ru" className="hover:text-white">hello@ailiva.ru</a></li>
-            </ul>
-          </div>
+          <FooterCol title="Продукт">
+            <FooterLink href="#features">Возможности</FooterLink>
+            <FooterLink href="#how">Как это работает</FooterLink>
+            <FooterLink href="#pricing">Тарифы</FooterLink>
+            <FooterLink href="/demo">Демо</FooterLink>
+          </FooterCol>
+          <FooterCol title="Аккаунт">
+            <FooterLink href="/login">Войти</FooterLink>
+            <FooterLink href="/register">Регистрация</FooterLink>
+            <FooterLink href="/privacy">Политика</FooterLink>
+            <FooterLink href="/terms">Условия</FooterLink>
+          </FooterCol>
         </div>
-        <div className="mx-auto mt-8 flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-white/[0.09] px-4 pt-6 text-center text-xs text-slate-500 sm:flex-row sm:text-left">
-          <div>© {new Date().getFullYear()} Liva ai — AI-администратор для малого бизнеса</div>
-          <div className="flex gap-4">
-            <Link href="/privacy" className="hover:text-white">Конфиденциальность</Link>
-            <Link href="/terms" className="hover:text-white">Оферта</Link>
-          </div>
+        <div className="mx-auto mt-12 flex max-w-7xl flex-col items-start justify-between gap-3 border-t border-white/[0.08] px-6 pt-6 text-xs text-white/50 sm:flex-row">
+          <div>© {new Date().getFullYear()} Liva ai</div>
+          <div className="uppercase tracking-[0.1em]">Сделано в России</div>
         </div>
       </footer>
     </div>
   );
 }
 
-function SpotlightGrid({ children }: { children: React.ReactNode }) {
-  const [el, setEl] = useState<HTMLDivElement | null>(null);
+/* ───────── PRIMITIVES ───────── */
 
-  function onMove(e: React.MouseEvent<HTMLDivElement>) {
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    el.style.setProperty('--x', `${e.clientX - r.left}px`);
-    el.style.setProperty('--y', `${e.clientY - r.top}px`);
-  }
-
+function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <div ref={setEl} onMouseMove={onMove} className="group reveal relative mt-16">
-      {/* Spotlight, следующий за курсором */}
-      <div
-        className="pointer-events-none absolute inset-0 z-10 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{
-          background:
-            'radial-gradient(260px circle at var(--x) var(--y), rgba(96,165,250,0.10), transparent 65%)',
-        }}
-      />
-      <div className="relative grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/5 md:grid-cols-3">
-        {children}
-      </div>
-    </div>
-  );
-}
-
-function Feature({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
-  return (
-    <div className="group relative bg-[#04060A]/40 p-7 transition-colors duration-300 hover:bg-white/[0.04]">
-      {/* hover glow */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_0%,rgba(96,165,250,0.12),transparent_60%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-      <div className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-[#C0C4CB]/20 via-[#8A8E96]/20 to-[#5A5E66]/20 text-[#E8EBEF] ring-1 ring-inset ring-white/10 transition-all duration-300 group-hover:ring-[#C0C4CB]/40 group-hover:shadow-[0_0_24px_-4px_rgba(96,165,250,0.6)]">
-        {icon}
-      </div>
-      <h3 className="relative mt-5 text-base font-semibold text-white">{title}</h3>
-      <p className="relative mt-2 text-sm leading-relaxed text-slate-400">{text}</p>
-    </div>
-  );
-}
-
-function FloatingHeader() {
-  return (
-    <header className="fixed inset-x-0 top-3 z-40 px-3 sm:top-5 sm:px-4">
-      <div className="relative mx-auto max-w-4xl">
-        {/* Свечение под капсулой */}
-        <div className="pointer-events-none absolute -inset-x-10 -top-6 -z-10 h-24 bg-[radial-gradient(ellipse_50%_100%_at_50%_0%,rgba(59,130,246,0.4),transparent_70%)] blur-xl" />
-        <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[#04060A]/40 px-3 py-2.5 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] backdrop-blur-md sm:rounded-full sm:px-5">
-          <Logo size={30} variant="light" />
-          <nav className="hidden gap-7 text-sm text-slate-300 lg:flex">
-            <a href="#demo" className="transition-colors hover:text-white">Демо</a>
-            <a href="#features" className="transition-colors hover:text-white">Возможности</a>
-            <a href="#how" className="transition-colors hover:text-white">Как это работает</a>
-            <a href="#pricing" className="transition-colors hover:text-white">Тарифы</a>
-            <a href="#faq" className="transition-colors hover:text-white">FAQ</a>
-          </nav>
-          <div className="flex items-center gap-2.5">
-            <Link href="/login" className="hidden text-sm font-medium text-slate-300 transition-colors hover:text-white sm:inline">
-              Войти
-            </Link>
-            <Link
-              href="/register"
-              onClick={() => track('cta_register', { location: 'header' })}
-              className="group relative hidden items-center gap-1.5 overflow-hidden rounded-full bg-gradient-to-r from-[#38BDF8] via-[#3B82F6] to-[#2563EB] px-4 py-2 text-sm font-semibold text-white shadow-[0_0_24px_-4px_rgba(59,130,246,0.7)] transition-transform hover:scale-[1.03] sm:inline-flex"
-            >
-              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-              Попробовать бесплатно
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-            <MobileMenu />
-          </div>
-        </div>
-      </div>
-    </header>
-  );
-}
-
-function MobileMenu() {
-  const [open, setOpen] = useState(false);
-  const links: Array<[string, string]> = [
-    ['#demo', 'Демо'],
-    ['#features', 'Возможности'],
-    ['#how', 'Как это работает'],
-    ['#pricing', 'Тарифы'],
-    ['#faq', 'FAQ'],
-  ];
-  return (
-    <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-label="Открыть меню"
-        className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-slate-200 transition-colors hover:bg-white/[0.08] lg:hidden"
-      >
-        <Menu className="h-5 w-5" />
-      </button>
-
-      {open && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-[#04060A]/80 backdrop-blur-sm"
-            onClick={() => setOpen(false)}
-          />
-          {/* Panel */}
-          <div className="absolute inset-x-0 top-0 border-b border-white/10 bg-[#04060A]/95 px-4 pb-6 pt-4 shadow-2xl backdrop-blur-xl">
-            <div className="mx-auto flex max-w-6xl items-center justify-between">
-              <Logo size={32} variant="light" />
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                aria-label="Закрыть меню"
-                className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] text-slate-200 transition-colors hover:bg-white/[0.08]"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            <nav className="mx-auto mt-6 flex max-w-6xl flex-col gap-1">
-              {links.map(([href, label]) => (
-                <a
-                  key={href}
-                  href={href}
-                  onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-3 text-base font-medium text-slate-200 transition-colors hover:bg-white/[0.06] hover:text-white"
-                >
-                  {label}
-                </a>
-              ))}
-            </nav>
-
-            <div className="mx-auto mt-5 flex max-w-6xl flex-col gap-3 border-t border-white/[0.09] pt-5">
-              <Link
-                href="/register"
-                onClick={() => { track('cta_register', { location: 'mobile_menu' }); setOpen(false); }}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#3B82F6] via-[#3B82F6] to-[#2563EB] px-6 py-3 text-base font-semibold text-white shadow-[0_0_24px_rgba(59,130,246,0.45)]"
-              >
-                Попробовать бесплатно
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/login"
-                onClick={() => setOpen(false)}
-                className="inline-flex w-full items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] px-6 py-3 text-base font-medium text-slate-200 transition-colors hover:bg-white/[0.08]"
-              >
-                Войти
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
-}
-
-// Parallax-обёртка для hero-чата: лёгкий drift вверх + scale-вниз при скролле первого экрана.
-// rAF + `transform`, никаких rerender'ов компонента-ребёнка. Уважает prefers-reduced-motion.
-function HeroChatParallax({ children }: { children: React.ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    let raf = 0;
-    let pending = false;
-
-    function update() {
-      pending = false;
-      // Прогресс скролла: 0 на самом верху, 1 когда проскроллили один viewport.
-      const p = Math.min(1, Math.max(0, window.scrollY / window.innerHeight));
-      // Drift: до -28px вверх. Scale: до 0.97. Opacity лёгкий fade при уходе.
-      const ty = -p * 28;
-      const scale = 1 - p * 0.03;
-      const opacity = 1 - p * 0.15;
-      if (el) {
-        el.style.transform = `translate3d(0, ${ty}px, 0) scale(${scale})`;
-        el.style.opacity = String(opacity);
-      }
-    }
-
-    function onScroll() {
-      if (pending) return;
-      pending = true;
-      raf = requestAnimationFrame(update);
-    }
-
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      className="relative will-change-transform"
-      style={{ transformOrigin: 'center top' }}
-    >
+    <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/55">
       {children}
     </div>
   );
 }
 
-function TrustCard({ eyebrow, title, text }: { eyebrow: string; title: string; text: string }) {
-  return (
-    <div className="group relative overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-6 transition-colors hover:border-white/[0.14]">
-      {/* Subtle blue accent halo on hover */}
-      <div className="pointer-events-none absolute -top-12 -right-12 h-32 w-32 rounded-full bg-[#3B82F6]/0 blur-3xl transition-colors duration-500 group-hover:bg-[#3B82F6]/15" />
-      <div className="relative">
-        <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#60A5FA]">{eyebrow}</div>
-        <div className="mt-2 text-lg font-semibold text-white">{title}</div>
-        <p className="mt-3 text-sm leading-relaxed text-slate-400">{text}</p>
-      </div>
-    </div>
-  );
-}
-
-function FloatingDemoLink() {
+function CtaPrimary({
+  href,
+  onClick,
+  children,
+}: {
+  href: string;
+  onClick?: () => void;
+  children: React.ReactNode;
+}) {
   return (
     <Link
-      href="/demo"
-      onClick={() => track('cta_demo', { location: 'floating' })}
-      aria-label="Открыть полное демо"
-      className="group fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-gradient-to-r from-[#3B82F6] via-[#3B82F6] to-[#2563EB] px-4 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_-4px_rgba(59,130,246,0.6)] backdrop-blur-xl transition-transform hover:scale-[1.03] sm:bottom-6 sm:right-6 sm:px-5 sm:py-3.5"
+      href={href}
+      onClick={onClick}
+      className="group inline-flex items-center justify-center gap-2 rounded-full bg-[#3B82F6] px-7 py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_0_0_1px_rgba(59,130,246,0.4),0_0_40px_-8px_rgba(59,130,246,0.7)] transition-all hover:bg-[#2563EB] hover:shadow-[0_0_0_1px_rgba(59,130,246,0.6),0_0_60px_-4px_rgba(59,130,246,0.9)]"
     >
-      <MessageSquare className="h-4 w-4" strokeWidth={2} />
-      <span className="hidden sm:inline">Открыть демо</span>
+      {children}
       <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
     </Link>
   );
 }
 
-function PainCard({ pain, gain }: { pain: string; gain: string }) {
+function CtaGhost({
+  href,
+  onClick,
+  children,
+}: {
+  href: string;
+  onClick?: () => void;
+  children: React.ReactNode;
+}) {
   return (
-    <div className="glass glow-hover reveal rounded-2xl p-7">
-      <p className="text-sm leading-relaxed text-slate-500 line-through decoration-rose-400/40 decoration-1">{pain}</p>
-      <div className="my-5 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-      <p className="text-base font-medium leading-relaxed text-white">{gain}</p>
+    <Link
+      href={href}
+      onClick={onClick}
+      className="inline-flex items-center justify-center gap-2 rounded-full border border-white/70 bg-transparent px-7 py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-white transition-colors hover:bg-white hover:text-black"
+    >
+      {children}
+    </Link>
+  );
+}
+
+function TrustCell({ eyebrow, title, text }: { eyebrow: string; title: string; text: string }) {
+  return (
+    <div className="bg-black p-8">
+      <Eyebrow>{eyebrow}</Eyebrow>
+      <h3 className="font-bebas mt-3 text-[1.75rem] uppercase leading-[1.05] tracking-[0.02em]">
+        {title}
+      </h3>
+      <p className="mt-4 text-[14px] leading-[1.6] text-white/65">{text}</p>
     </div>
   );
 }
 
-function BulletBadge({ children }: { children: React.ReactNode }) {
+function FeatureCell({ title, text }: { title: string; text: string }) {
   return (
-    <span className="inline-flex items-center gap-1.5">
-      <Check className="h-3.5 w-3.5 text-emerald-400" />
-      {children}
-    </span>
+    <div className="bg-black p-8">
+      <h3 className="font-bebas text-[1.5rem] uppercase leading-[1.1] tracking-[0.02em]">{title}</h3>
+      <p className="mt-3 text-[14px] leading-[1.6] text-white/65">{text}</p>
+    </div>
   );
 }
 
-const CHANNEL_TONES: Record<string, string> = {
-  indigo: 'border-[#C0C4CB]/30 bg-[#8A8E96]/10 text-[#E8EBEF]',
-  emerald: 'border-emerald-400/30 bg-emerald-500/10 text-emerald-200',
-  orange: 'border-orange-400/30 bg-orange-500/10 text-orange-200',
-  cyan: 'border-[#C0C4CB]/30 bg-[#8A8E96]/10 text-[#E8EBEF]',
-};
+function PainBlock({ pain, gain }: { pain: string; gain: string }) {
+  return (
+    <div>
+      <div className="text-[13px] uppercase tracking-[0.14em] text-white/45">— Проблема</div>
+      <p className="mt-3 text-[15px] leading-[1.5] text-white/70">{pain}</p>
+      <div className="mt-6 text-[13px] uppercase tracking-[0.14em] text-[#60A5FA]">+ Решение</div>
+      <p className="mt-3 text-[15px] leading-[1.5] text-white">{gain}</p>
+    </div>
+  );
+}
 
 function Step({ num, title, text }: { num: string; title: string; text: string }) {
   return (
-    <div className="glass glow-hover reveal relative rounded-2xl p-7">
-      <div
-        className="text-gradient font-semibold"
-        style={{ fontSize: 56, lineHeight: 1 }}
-      >
+    <div>
+      <div className="font-bebas text-[3.5rem] leading-[1] tracking-[0.02em] text-[#60A5FA]">
         {num}
       </div>
-      <h3 className="mt-4 text-lg font-semibold text-white">{title}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-slate-400">{text}</p>
+      <h3 className="font-bebas mt-4 text-[1.75rem] uppercase leading-[1.05] tracking-[0.02em]">
+        {title}
+      </h3>
+      <p className="mt-3 text-[14px] leading-[1.6] text-white/65">{text}</p>
     </div>
   );
 }
 
-function FaqItem({ q, children }: { q: string; children: React.ReactNode }) {
+function Bullet({ children }: { children: React.ReactNode }) {
   return (
-    <details className="group rounded-2xl border border-white/10 bg-white/[0.025] backdrop-blur-sm transition-colors open:bg-white/[0.04]">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-left">
-        <span className="text-base font-medium text-white">{q}</span>
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/15 text-slate-400 transition-transform group-open:rotate-45 group-open:border-[#8A8E96] group-open:text-[#C0C4CB]">
+    <li className="flex items-start gap-3">
+      <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#60A5FA]" />
+      <span>{children}</span>
+    </li>
+  );
+}
+
+function Faq({ q, children }: { q: string; children: React.ReactNode }) {
+  return (
+    <details className="group">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-left">
+        <span className="font-bebas text-[1.25rem] uppercase tracking-[0.02em]">{q}</span>
+        <span className="flex h-6 w-6 shrink-0 items-center justify-center text-white/60 transition-transform group-open:rotate-45">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
             <line x1="12" y1="5" x2="12" y2="19" />
             <line x1="5" y1="12" x2="19" y2="12" />
           </svg>
         </span>
       </summary>
-      <div className="px-5 pb-4 text-sm leading-relaxed text-slate-300">{children}</div>
+      <div className="pb-5 text-[14px] leading-[1.65] text-white/70">{children}</div>
     </details>
   );
 }
 
-function Channel({ icon, label, tone = 'indigo' }: { icon: React.ReactNode; label: string; tone?: string }) {
+function FooterCol({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 ${CHANNEL_TONES[tone]}`}>
-      {icon}
-      {label}
-    </span>
+    <div>
+      <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/50">{title}</div>
+      <div className="mt-4 flex flex-col gap-2.5 text-sm text-white/75">{children}</div>
+    </div>
+  );
+}
+
+function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <Link href={href} className="hover:text-white">
+      {children}
+    </Link>
+  );
+}
+
+/* ───────── HEADER ───────── */
+
+function SpaceXHeader() {
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 40);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  return (
+    <>
+      <header
+        className={
+          'fixed inset-x-0 top-0 z-50 transition-colors duration-300 ' +
+          (scrolled ? 'bg-black/75 backdrop-blur-md' : 'bg-transparent')
+        }
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+          <Link href="/" className="flex items-center">
+            <Logo size={26} variant="light" />
+          </Link>
+          <nav className="hidden items-center gap-8 text-[12px] font-bold uppercase tracking-[0.14em] text-white md:flex">
+            <a href="#demo" className="hover:text-white/70">Демо</a>
+            <a href="#features" className="hover:text-white/70">Возможности</a>
+            <a href="#how" className="hover:text-white/70">Как работает</a>
+            <a href="#pricing" className="hover:text-white/70">Тарифы</a>
+            <a href="#faq" className="hover:text-white/70">FAQ</a>
+            <Link href="/login" className="hover:text-white/70">Войти</Link>
+            <Link
+              href="/register"
+              className="rounded-full border border-white/70 px-5 py-2 text-[11px] hover:bg-white hover:text-black"
+            >
+              Начать
+            </Link>
+          </nav>
+          <button
+            onClick={() => setOpen(true)}
+            aria-label="Меню"
+            className="md:hidden"
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+        </div>
+      </header>
+
+      {open && (
+        <div className="fixed inset-0 z-[60] flex flex-col bg-black md:hidden">
+          <div className="flex items-center justify-between px-6 py-5">
+            <Logo size={26} variant="light" />
+            <button onClick={() => setOpen(false)} aria-label="Закрыть">
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+          <nav className="flex flex-1 flex-col items-center justify-center gap-7 text-[18px] font-bold uppercase tracking-[0.14em]">
+            <a href="#demo" onClick={() => setOpen(false)}>Демо</a>
+            <a href="#features" onClick={() => setOpen(false)}>Возможности</a>
+            <a href="#how" onClick={() => setOpen(false)}>Как работает</a>
+            <a href="#pricing" onClick={() => setOpen(false)}>Тарифы</a>
+            <a href="#faq" onClick={() => setOpen(false)}>FAQ</a>
+            <Link href="/login" onClick={() => setOpen(false)}>Войти</Link>
+            <Link
+              href="/register"
+              onClick={() => setOpen(false)}
+              className="mt-4 rounded-full border border-white/70 px-7 py-3"
+            >
+              Начать
+            </Link>
+          </nav>
+        </div>
+      )}
+    </>
   );
 }

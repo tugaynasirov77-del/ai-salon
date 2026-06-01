@@ -41,7 +41,7 @@ export default function LandingPage() {
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 pt-24 sm:pb-20 sm:pt-28">
           <Eyebrow>ИИ-администратор · сейчас отвечает клиентам</Eyebrow>
-          <h1 className="font-bebas mt-5 text-[2.75rem] uppercase leading-[0.95] tracking-[0.04em] sm:text-[4.5rem] lg:text-[3.75rem] xl:text-[5rem]">
+          <h1 className="font-bebas mt-5 text-[2.75rem] uppercase leading-[1.02] tracking-[0.04em] sm:text-[4.5rem] lg:text-[3.75rem] xl:text-[5rem]">
             Ваш
             <br />
             ИИ-администратор,
@@ -179,7 +179,7 @@ export default function LandingPage() {
       <section id="how" className="relative border-t border-white/[0.08] py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6">
           <Eyebrow>Как это работает</Eyebrow>
-          <h2 className="font-bebas mt-4 max-w-4xl text-[3rem] uppercase leading-[0.95] tracking-[0.04em] sm:text-[5.5rem]">
+          <h2 className="font-bebas mt-4 max-w-4xl text-[3rem] uppercase leading-[1.02] tracking-[0.04em] sm:text-[5.5rem]">
             Три шага. Один вечер.
             <br />
             Никакого кода.
@@ -246,7 +246,7 @@ export default function LandingPage() {
       <section className="relative flex min-h-[80svh] items-center justify-center border-t border-white/[0.08] py-32">
         <div className="mx-auto max-w-4xl px-6 text-center">
           <Eyebrow>Подключите сегодня</Eyebrow>
-          <h2 className="font-bebas mx-auto mt-5 max-w-3xl text-[3rem] uppercase leading-[0.95] tracking-[0.04em] sm:text-[6rem]">
+          <h2 className="font-bebas mx-auto mt-5 max-w-3xl text-[3rem] uppercase leading-[1.02] tracking-[0.04em] sm:text-[6rem]">
             Каждый день без Liva ai —
             <br />
             <span className="text-[#60A5FA]">упущенные клиенты</span>

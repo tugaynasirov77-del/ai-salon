@@ -41,7 +41,7 @@ export default function LandingPage() {
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 pt-24 sm:pb-20 sm:pt-28">
           <Eyebrow>ИИ-администратор · сейчас отвечает клиентам</Eyebrow>
-          <h1 className="font-bebas mt-5 text-[2.75rem] uppercase leading-[0.95] tracking-[0.02em] sm:text-[4.5rem] lg:text-[3.75rem] xl:text-[5rem]">
+          <h1 className="font-bebas mt-5 text-[2.75rem] uppercase leading-[0.95] tracking-[0.04em] sm:text-[4.5rem] lg:text-[3.75rem] xl:text-[5rem]">
             Ваш
             <br />
             ИИ-администратор,
@@ -66,7 +66,7 @@ export default function LandingPage() {
       <section className="relative border-t border-white/[0.08] py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6">
           <Eyebrow>Спокойно показывать клиентам</Eyebrow>
-          <h2 className="font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.02em] sm:text-[3.5rem]">
+          <h2 className="font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[3.5rem]">
             Три причины, почему Liva ai не страшно подключить
           </h2>
 
@@ -94,7 +94,7 @@ export default function LandingPage() {
       <section className="relative border-t border-white/[0.08] py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6">
           <Eyebrow>Знакомо</Eyebrow>
-          <h2 className="font-bebas mt-4 max-w-4xl text-[2.5rem] uppercase leading-[1] tracking-[0.02em] sm:text-[4rem]">
+          <h2 className="font-bebas mt-4 max-w-4xl text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[4rem]">
             Каждое неотвеченное сообщение — клиент,
             <br />
             который ушёл к конкуренту.
@@ -124,7 +124,7 @@ export default function LandingPage() {
       >
         <div className="mx-auto max-w-7xl px-6">
           <Eyebrow>Демо</Eyebrow>
-          <h2 className="font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.02em] sm:text-[4rem]">
+          <h2 className="font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[4rem]">
             Так выглядит диалог с клиентом
           </h2>
           <p className="mt-5 max-w-xl text-[15px] leading-[1.6] text-white/70">
@@ -160,7 +160,7 @@ export default function LandingPage() {
       <section id="features" className="relative border-t border-white/[0.08] py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6">
           <Eyebrow>Возможности</Eyebrow>
-          <h2 className="font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.02em] sm:text-[4rem]">
+          <h2 className="font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[4rem]">
             Всё, что делает живой администратор
           </h2>
 
@@ -179,7 +179,7 @@ export default function LandingPage() {
       <section id="how" className="relative border-t border-white/[0.08] py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6">
           <Eyebrow>Как это работает</Eyebrow>
-          <h2 className="font-bebas mt-4 max-w-4xl text-[3rem] uppercase leading-[0.95] tracking-[0.02em] sm:text-[5.5rem]">
+          <h2 className="font-bebas mt-4 max-w-4xl text-[3rem] uppercase leading-[0.95] tracking-[0.04em] sm:text-[5.5rem]">
             Три шага. Один вечер.
             <br />
             Никакого кода.
@@ -207,7 +207,7 @@ export default function LandingPage() {
       <section id="faq" className="relative border-t border-white/[0.08] py-24 sm:py-32">
         <div className="mx-auto max-w-3xl px-6">
           <Eyebrow>Частые вопросы</Eyebrow>
-          <h2 className="font-bebas mt-4 text-[2.5rem] uppercase leading-[1] tracking-[0.02em] sm:text-[3.5rem]">
+          <h2 className="font-bebas mt-4 text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[3.5rem]">
             Отвечаем заранее
           </h2>
           <div className="mt-12 divide-y divide-white/[0.08] border-y border-white/[0.08]">
@@ -246,7 +246,7 @@ export default function LandingPage() {
       <section className="relative flex min-h-[80svh] items-center justify-center border-t border-white/[0.08] py-32">
         <div className="mx-auto max-w-4xl px-6 text-center">
           <Eyebrow>Подключите сегодня</Eyebrow>
-          <h2 className="font-bebas mx-auto mt-5 max-w-3xl text-[3rem] uppercase leading-[0.95] tracking-[0.02em] sm:text-[6rem]">
+          <h2 className="font-bebas mx-auto mt-5 max-w-3xl text-[3rem] uppercase leading-[0.95] tracking-[0.04em] sm:text-[6rem]">
             Каждый день без Liva ai —
             <br />
             <span className="text-[#60A5FA]">упущенные клиенты</span>
@@ -353,7 +353,7 @@ function TrustCell({ eyebrow, title, text }: { eyebrow: string; title: string; t
   return (
     <div className="bg-black p-8">
       <Eyebrow>{eyebrow}</Eyebrow>
-      <h3 className="font-bebas mt-3 text-[1.75rem] uppercase leading-[1.05] tracking-[0.02em]">
+      <h3 className="font-bebas mt-3 text-[1.75rem] uppercase leading-[1.05] tracking-[0.04em]">
         {title}
       </h3>
       <p className="mt-4 text-[14px] leading-[1.6] text-white/65">{text}</p>
@@ -364,7 +364,7 @@ function TrustCell({ eyebrow, title, text }: { eyebrow: string; title: string; t
 function FeatureCell({ title, text }: { title: string; text: string }) {
   return (
     <div className="bg-black p-8">
-      <h3 className="font-bebas text-[1.5rem] uppercase leading-[1.1] tracking-[0.02em]">{title}</h3>
+      <h3 className="font-bebas text-[1.5rem] uppercase leading-[1.1] tracking-[0.04em]">{title}</h3>
       <p className="mt-3 text-[14px] leading-[1.6] text-white/65">{text}</p>
     </div>
   );
@@ -384,10 +384,10 @@ function PainBlock({ pain, gain }: { pain: string; gain: string }) {
 function Step({ num, title, text }: { num: string; title: string; text: string }) {
   return (
     <div>
-      <div className="font-bebas text-[3.5rem] leading-[1] tracking-[0.02em] text-[#60A5FA]">
+      <div className="font-bebas text-[3.5rem] leading-[1] tracking-[0.04em] text-[#60A5FA]">
         {num}
       </div>
-      <h3 className="font-bebas mt-4 text-[1.75rem] uppercase leading-[1.05] tracking-[0.02em]">
+      <h3 className="font-bebas mt-4 text-[1.75rem] uppercase leading-[1.05] tracking-[0.04em]">
         {title}
       </h3>
       <p className="mt-3 text-[14px] leading-[1.6] text-white/65">{text}</p>
@@ -408,7 +408,7 @@ function Faq({ q, children }: { q: string; children: React.ReactNode }) {
   return (
     <details className="group">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-left">
-        <span className="font-bebas text-[1.25rem] uppercase tracking-[0.02em]">{q}</span>
+        <span className="font-bebas text-[1.25rem] uppercase tracking-[0.04em]">{q}</span>
         <span className="flex h-6 w-6 shrink-0 items-center justify-center text-white/60 transition-transform group-open:rotate-45">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
             <line x1="12" y1="5" x2="12" y2="19" />

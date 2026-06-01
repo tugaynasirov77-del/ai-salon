@@ -27,19 +27,19 @@ export default function LandingPage() {
       <SpaceXHeader />
 
       {/* ───────── HERO BAND ───────── */}
-      <section className="relative flex min-h-[100svh] items-end overflow-hidden">
+      <section className="relative flex min-h-[85svh] items-center overflow-hidden">
         {/* Full-bleed визуал — чат справа на lg+, fade в чёрный к центру */}
         <div className="pointer-events-none absolute inset-0 -z-0">
-          <div className="absolute inset-y-0 right-0 hidden w-[48%] items-center justify-center lg:flex">
-            <div className="w-full max-w-[460px] px-10 opacity-90">
+          <div className="absolute inset-y-0 right-0 hidden w-[52%] items-center justify-center lg:flex">
+            <div className="w-full max-w-[560px] px-8 opacity-95">
               <TypingDemo />
             </div>
           </div>
           {/* Градиент: чёрный с лево-центра к чату, чтобы текст читался */}
-          <div className="absolute inset-y-0 left-0 right-0 bg-gradient-to-r from-black via-black to-transparent lg:via-black/85 lg:to-black/0 lg:right-[48%]" />
+          <div className="absolute inset-y-0 left-0 right-0 bg-gradient-to-r from-black via-black to-transparent lg:via-black/85 lg:to-black/0 lg:right-[52%]" />
         </div>
 
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-20 pt-32 sm:pb-28 sm:pt-40">
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 pt-24 sm:pb-20 sm:pt-28">
           <Eyebrow>ИИ-администратор · сейчас отвечает клиентам</Eyebrow>
           <h1 className="font-bebas mt-5 text-[2.75rem] uppercase leading-[0.95] tracking-[0.02em] sm:text-[4.5rem] lg:text-[3.75rem] xl:text-[5rem]">
             Ваш

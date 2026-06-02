@@ -292,19 +292,19 @@ export default function LandingPage() {
           <div className="uppercase tracking-[0.1em]">Сделано в России</div>
         </div>
 
-        {/* Гигантский wordmark «LIVA» — финальный визуальный аккорд.
-            Solid muted slate-blue, широкое letter-spacing, как на бренд-референсе. */}
+        {/* Гигантский wordmark «LIVΛ» — outline-stroke в slate-blue, A без
+            перекладины (греческая Λ). Совпадает с бренд-вордмарком на лого. */}
         <div
           aria-hidden
-          className="font-sans pointer-events-none mt-20 w-full select-none overflow-hidden text-center font-light uppercase leading-[0.85]"
+          className="font-sans pointer-events-none mt-20 w-full select-none overflow-hidden text-center font-light leading-[0.85]"
           style={{
-            color: '#7C8AAB',
-            opacity: 0.45,
+            color: 'transparent',
+            WebkitTextStroke: '2px rgba(124,138,171,0.55)',
             letterSpacing: '0.18em',
             fontSize: 'clamp(8rem, 36vw, 28rem)',
           }}
         >
-          Liva
+          LIVΛ
         </div>
       </footer>
     </div>

@@ -16,7 +16,7 @@ export function PricingSection() {
       <div className="mx-auto max-w-5xl px-4">
         <div className="text-center">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C0C4CB]">Тарифы</span>
-          <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+          <h2 className="font-bebas mt-3 text-[2.5rem] uppercase leading-[1.02] tracking-[0.04em] text-white sm:text-[3.5rem]">
             Прозрачно. Без скрытых платежей.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-slate-400">
@@ -229,9 +229,13 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
                     onChange={(e) => setForm((f) => ({ ...f, niche: e.target.value }))}
                     className={modalInputCls + ' px-2'}
                   >
-                    <option value="">— Не указано —</option>
+                    {/* Явный чёрный текст в <option>, иначе тёмная тема ОС
+                        наследует белый и в dropdown ничего не видно. */}
+                    <option value="" style={{ color: '#000', background: '#fff' }}>— Не указано —</option>
                     {Object.entries(NICHES).map(([key, n]: any) => (
-                      <option key={key} value={key}>{n.emoji} {n.label}</option>
+                      <option key={key} value={key} style={{ color: '#000', background: '#fff' }}>
+                        {n.emoji} {n.label}
+                      </option>
                     ))}
                   </select>
                 </ModalField>

@@ -12,6 +12,7 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
         heading: ["var(--font-space-grotesk)", "var(--font-dm-sans)", "system-ui", "sans-serif"],
+        bebas: ["var(--font-bebas)", "Arial Narrow", "Arial", "sans-serif"],
       },
       colors: {
         background: "var(--background)",

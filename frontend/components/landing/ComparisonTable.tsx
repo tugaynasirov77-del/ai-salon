@@ -53,9 +53,9 @@ export function ComparisonTable() {
   return (
     <section className="relative py-24">
       <div className="mx-auto max-w-5xl px-4">
-        <div className="reveal text-center">
+        <div className="text-center">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C0C4CB]">Сравнение</span>
-          <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+          <h2 className="font-bebas mt-3 text-[2.5rem] uppercase leading-[1.02] tracking-[0.04em] text-white sm:text-[3.5rem]">
             Администратор vs <br /> Liva ai
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-slate-400">
@@ -63,7 +63,7 @@ export function ComparisonTable() {
           </p>
         </div>
 
-        <div className="glass reveal mt-12 overflow-hidden rounded-2xl">
+        <div className="glass mt-12 overflow-hidden rounded-2xl">
           {/* Header row */}
           <div className="grid grid-cols-[1fr_auto_auto] gap-4 border-b border-white/[0.08] px-5 py-4 sm:gap-8 sm:px-8 sm:py-5">
             <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">Что важно</div>
@@ -78,12 +78,13 @@ export function ComparisonTable() {
             </div>
           </div>
 
-          {/* Rows */}
-          <div className="divide-y divide-white/[0.05]">
-            {ROWS.map((row) => (
+          {/* Rows — каждая строка появляется со stagger-задержкой при выходе в viewport */}
+          <div className="reveal stagger divide-y divide-white/[0.05]">
+            {ROWS.map((row, i) => (
               <div
                 key={row.label}
                 className="grid grid-cols-[1fr_auto_auto] items-center gap-4 px-5 py-4 transition-colors hover:bg-white/[0.02] sm:gap-8 sm:px-8"
+                style={{ ['--row-i' as any]: i }}
               >
                 <div className="text-sm text-slate-200">{row.label}</div>
                 <div className="flex justify-end">
@@ -97,7 +98,7 @@ export function ComparisonTable() {
           </div>
         </div>
 
-        <div className="border-gradient reveal relative mt-10 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[#8A8E96]/10 via-[#8A8E96]/10 to-[#5A5E66]/10 p-6 text-center backdrop-blur-sm sm:p-8">
+        <div className="border-gradient relative mt-10 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[#8A8E96]/10 via-[#8A8E96]/10 to-[#5A5E66]/10 p-6 text-center backdrop-blur-sm sm:p-8">
           <p className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
             В{' '}
             <span className="bg-gradient-to-r from-[#C0C4CB] via-[#C0C4CB] to-[#C0C4CB] bg-clip-text text-transparent">

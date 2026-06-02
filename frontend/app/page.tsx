@@ -11,7 +11,6 @@ import { StickyCta } from '@/components/landing/StickyCta';
 import { ScrollTracker } from '@/components/analytics/ScrollTracker';
 import { TypingDemo } from '@/components/landing/TypingDemo';
 import { RevealInit } from '@/components/landing/RevealInit';
-import { CursorGlow } from '@/components/landing/CursorGlow';
 
 /*
  * SpaceX-inspired redesign.
@@ -27,7 +26,6 @@ export default function LandingPage() {
     <div className="relative min-h-screen bg-black text-white antialiased">
       <ScrollTracker />
       <RevealInit />
-      <CursorGlow />
       <SpaceXHeader />
 
       {/* ───────── HERO BAND ───────── */}
@@ -44,18 +42,22 @@ export default function LandingPage() {
         </div>
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 pt-24 sm:pb-20 sm:pt-28">
-          <Eyebrow>ИИ-администратор · сейчас отвечает клиентам</Eyebrow>
+          <Eyebrow>
+            <span className="hero-word" style={{ ['--d' as any]: '0ms' }}>ИИ-администратор · сейчас отвечает клиентам</span>
+          </Eyebrow>
           <h1 className="font-bebas mt-5 text-[2.75rem] uppercase leading-[1.02] tracking-[0.04em] sm:text-[4.5rem] lg:text-[3.75rem] xl:text-[5rem]">
-            Ваш
+            <span className="hero-word" style={{ ['--d' as any]: '100ms' }}>Ваш</span>
             <br />
-            ИИ-администратор,
+            <span className="hero-word" style={{ ['--d' as any]: '180ms' }}>ИИ-администратор,</span>
             <br />
-            <span className="text-[#60A5FA]">который не спит</span>
+            <span className="hero-word text-[#60A5FA]" style={{ ['--d' as any]: '320ms' }}>который</span>{' '}
+            <span className="hero-word text-[#60A5FA]" style={{ ['--d' as any]: '420ms' }}>не</span>{' '}
+            <span className="hero-word text-[#60A5FA]" style={{ ['--d' as any]: '500ms' }}>спит</span>
           </h1>
-          <p className="mt-6 max-w-md text-[15px] leading-[1.6] text-white/70">
+          <p className="hero-word mt-6 max-w-md text-[15px] leading-[1.6] text-white/70" style={{ ['--d' as any]: '650ms' }}>
             Отвечает в Telegram, на Авито и на сайте — записывает клиента на услугу за минуту.
           </p>
-          <div className="mt-10 flex flex-wrap gap-3">
+          <div className="hero-word mt-10 flex flex-wrap gap-3" style={{ ['--d' as any]: '780ms' }}>
             <CtaPrimary href="/register" onClick={() => track('cta_register', { location: 'hero' })}>
               Попробовать бесплатно
             </CtaPrimary>
@@ -74,7 +76,7 @@ export default function LandingPage() {
             Три причины, почему Liva ai не страшно подключить
           </h2>
 
-          <div className="mt-16 grid grid-cols-1 gap-px bg-white/[0.08] md:grid-cols-3">
+          <div className="reveal stagger mt-16 grid grid-cols-1 gap-px bg-white/[0.08] md:grid-cols-3">
             <TrustCell
               eyebrow="Под капотом"
               title="Claude Haiku от Anthropic"
@@ -104,7 +106,7 @@ export default function LandingPage() {
             который ушёл к конкуренту.
           </h2>
 
-          <div className="mt-16 grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-10">
+          <div className="reveal stagger mt-16 grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-10">
             <PainBlock
               pain="Клиент написал в 22:30 — ответили утром. Он ушёл к конкуренту."
               gain="ИИ отвечает за 3 секунды в любое время суток."
@@ -168,7 +170,7 @@ export default function LandingPage() {
             Всё, что делает живой администратор
           </h2>
 
-          <div className="mt-16 grid grid-cols-1 gap-px bg-white/[0.08] md:grid-cols-2 lg:grid-cols-3">
+          <div className="reveal stagger mt-16 grid grid-cols-1 gap-px bg-white/[0.08] md:grid-cols-2 lg:grid-cols-3">
             <FeatureCell title="AI на Claude — не сценарий" text="Отвечает на нестандартные вопросы, понимает опечатки и контекст. Не «зависает» на фразе вне сценария." />
             <FeatureCell title="Запись в YClients" text="Свободные слоты, мастера, услуги — синхронно с вашим расписанием. Запись падает прямо в YClients." />
             <FeatureCell title="Напоминания 24 и 2 часа" text="Автоматические напоминания клиенту за сутки и за 2 часа до визита. Меньше пустых слотов и забывших про запись." />
@@ -187,7 +189,7 @@ export default function LandingPage() {
             Три шага. Один вечер. Никакого кода.
           </h2>
 
-          <div className="mt-16 grid grid-cols-1 gap-12 md:grid-cols-3">
+          <div className="reveal stagger mt-16 grid grid-cols-1 gap-12 md:grid-cols-3">
             <Step num="01" title="Регистрируетесь" text="Почта и пароль — 30 секунд. Сразу попадаете в дашборд и выбираете нишу." />
             <Step num="02" title="Подключаете канал" text="Вставляете токен Telegram-канала (3 клика в @BotFather, инструкция в админке) или вешаете виджет на сайт." />
             <Step num="03" title="AI начинает отвечать" text="Загружаете прайс и расписание одним файлом — ИИ сразу отвечает клиентам и записывает на услугу." />

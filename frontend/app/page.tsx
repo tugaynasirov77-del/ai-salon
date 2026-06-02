@@ -292,15 +292,16 @@ export default function LandingPage() {
           <div className="uppercase tracking-[0.1em]">Сделано в России</div>
         </div>
 
-        {/* Гигантский outline-wordmark «Liva» — финальный визуальный аккорд.
-            Тянется на всю ширину viewport (не контейнер), без бордеров вокруг. */}
+        {/* Гигантский wordmark «LIVA» — финальный визуальный аккорд.
+            Solid muted slate-blue, широкое letter-spacing, как на бренд-референсе. */}
         <div
           aria-hidden
-          className="font-bebas pointer-events-none mt-20 w-full select-none overflow-hidden text-center uppercase leading-[0.82] tracking-[0.01em]"
+          className="font-sans pointer-events-none mt-20 w-full select-none overflow-hidden text-center font-light uppercase leading-[0.85]"
           style={{
-            color: 'transparent',
-            WebkitTextStroke: '1.5px rgba(255,255,255,0.14)',
-            fontSize: 'clamp(10rem, 42vw, 32rem)',
+            color: '#7C8AAB',
+            opacity: 0.45,
+            letterSpacing: '0.18em',
+            fontSize: 'clamp(8rem, 36vw, 28rem)',
           }}
         >
           Liva

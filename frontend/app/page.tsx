@@ -291,6 +291,19 @@ export default function LandingPage() {
           <div>© {new Date().getFullYear()} Liva ai</div>
           <div className="uppercase tracking-[0.1em]">Сделано в России</div>
         </div>
+
+        {/* Гигантский outline-wordmark «Liva» на всю ширину — финальный визуальный аккорд */}
+        <div
+          aria-hidden
+          className="font-bebas pointer-events-none mt-16 select-none overflow-hidden text-center uppercase leading-[0.85] tracking-[0.02em]"
+          style={{
+            color: 'transparent',
+            WebkitTextStroke: '1px rgba(255,255,255,0.12)',
+            fontSize: 'clamp(8rem, 28vw, 22rem)',
+          }}
+        >
+          Liva
+        </div>
       </footer>
     </div>
   );

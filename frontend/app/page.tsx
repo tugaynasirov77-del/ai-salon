@@ -296,7 +296,7 @@ export default function LandingPage() {
             перекладины (греческая Λ). Совпадает с бренд-вордмарком на лого. */}
         <div
           aria-hidden
-          className="font-sans pointer-events-none -mb-[6vw] mt-6 w-full select-none overflow-hidden text-center font-light leading-[0.78] translate-y-[3vw]"
+          className="font-sans pointer-events-none mt-10 w-full select-none overflow-hidden text-center font-light leading-[0.7]"
           style={{
             color: 'transparent',
             WebkitTextStroke: '1px rgba(124,138,171,0.5)',

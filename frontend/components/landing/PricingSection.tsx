@@ -16,7 +16,7 @@ export function PricingSection() {
       <div className="mx-auto max-w-5xl px-4">
         <div className="text-center">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C0C4CB]">Тарифы</span>
-          <h2 className="mt-3 bg-gradient-to-b from-white to-white/70 bg-clip-text text-4xl font-semibold tracking-tight text-transparent sm:text-5xl">
+          <h2 className="font-bebas mt-3 text-[2.5rem] uppercase leading-[1.02] tracking-[0.04em] text-white sm:text-[3.5rem]">
             Прозрачно. Без скрытых платежей.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-slate-400">

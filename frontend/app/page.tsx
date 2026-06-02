@@ -299,7 +299,7 @@ export default function LandingPage() {
           className="font-sans pointer-events-none mt-20 w-full select-none overflow-hidden text-center font-light leading-[0.85]"
           style={{
             color: 'transparent',
-            WebkitTextStroke: '2px rgba(124,138,171,0.55)',
+            WebkitTextStroke: '1px rgba(124,138,171,0.5)',
             letterSpacing: '0.18em',
             fontSize: 'clamp(8rem, 36vw, 28rem)',
           }}

@@ -266,7 +266,7 @@ export default function LandingPage() {
       <StickyCta />
 
       {/* ───────── FOOTER ───────── */}
-      <footer className="border-t border-white/[0.08] py-16">
+      <footer className="py-16">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-10 px-6 sm:grid-cols-4">
           <div className="col-span-2">
             <Logo size={28} variant="light" />
@@ -287,19 +287,20 @@ export default function LandingPage() {
             <FooterLink href="/terms">Условия</FooterLink>
           </FooterCol>
         </div>
-        <div className="mx-auto mt-12 flex max-w-7xl flex-col items-start justify-between gap-3 border-t border-white/[0.08] px-6 pt-6 text-xs text-white/50 sm:flex-row">
+        <div className="mx-auto mt-12 flex max-w-7xl flex-col items-start justify-between gap-3 px-6 text-xs text-white/50 sm:flex-row">
           <div>© {new Date().getFullYear()} Liva ai</div>
           <div className="uppercase tracking-[0.1em]">Сделано в России</div>
         </div>
 
-        {/* Гигантский outline-wordmark «Liva» на всю ширину — финальный визуальный аккорд */}
+        {/* Гигантский outline-wordmark «Liva» — финальный визуальный аккорд.
+            Тянется на всю ширину viewport (не контейнер), без бордеров вокруг. */}
         <div
           aria-hidden
-          className="font-bebas pointer-events-none mt-16 select-none overflow-hidden text-center uppercase leading-[0.85] tracking-[0.02em]"
+          className="font-bebas pointer-events-none mt-20 w-full select-none overflow-hidden text-center uppercase leading-[0.82] tracking-[0.01em]"
           style={{
             color: 'transparent',
-            WebkitTextStroke: '1px rgba(255,255,255,0.12)',
-            fontSize: 'clamp(8rem, 28vw, 22rem)',
+            WebkitTextStroke: '1.5px rgba(255,255,255,0.14)',
+            fontSize: 'clamp(10rem, 42vw, 32rem)',
           }}
         >
           Liva

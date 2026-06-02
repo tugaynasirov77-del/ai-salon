@@ -179,10 +179,8 @@ export default function LandingPage() {
       <section id="how" className="relative border-t border-white/[0.08] py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6">
           <Eyebrow>Как это работает</Eyebrow>
-          <h2 className="font-bebas mt-4 max-w-4xl text-[3rem] uppercase leading-[1.02] tracking-[0.04em] sm:text-[5.5rem]">
-            Три шага. Один вечер.
-            <br />
-            Никакого кода.
+          <h2 className="font-bebas mt-4 text-[2.5rem] uppercase leading-[1.02] tracking-[0.04em] sm:text-[3.5rem] lg:whitespace-nowrap lg:text-[3.75rem] xl:text-[5rem]">
+            Три шага. Один вечер. Никакого кода.
           </h2>
 
           <div className="mt-16 grid grid-cols-1 gap-12 md:grid-cols-3">

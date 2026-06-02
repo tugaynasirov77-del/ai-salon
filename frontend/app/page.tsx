@@ -11,6 +11,9 @@ import { StickyCta } from '@/components/landing/StickyCta';
 import { ScrollTracker } from '@/components/analytics/ScrollTracker';
 import { TypingDemo } from '@/components/landing/TypingDemo';
 import { RevealInit } from '@/components/landing/RevealInit';
+import { ScrollProgress } from '@/components/landing/ScrollProgress';
+import { CountUp } from '@/components/landing/CountUp';
+import { SectionParallax } from '@/components/landing/SectionParallax';
 
 /*
  * SpaceX-inspired redesign.
@@ -26,6 +29,8 @@ export default function LandingPage() {
     <div className="relative min-h-screen bg-black text-white antialiased">
       <ScrollTracker />
       <RevealInit />
+      <ScrollProgress />
+      <SectionParallax />
       <SpaceXHeader />
 
       {/* ───────── HERO BAND ───────── */}
@@ -72,7 +77,7 @@ export default function LandingPage() {
       <section className="relative border-t border-white/[0.08] py-24 sm:py-32">
         <div className="reveal mx-auto max-w-7xl px-6">
           <Eyebrow>Спокойно показывать клиентам</Eyebrow>
-          <h2 className="font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[3.5rem]">
+          <h2 className="parallax-slow font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[3.5rem]">
             Три причины, почему Liva ai не страшно подключить
           </h2>
 
@@ -100,7 +105,7 @@ export default function LandingPage() {
       <section className="relative border-t border-white/[0.08] py-24 sm:py-32">
         <div className="reveal mx-auto max-w-7xl px-6">
           <Eyebrow>Знакомо</Eyebrow>
-          <h2 className="font-bebas mt-4 max-w-4xl text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[4rem]">
+          <h2 className="parallax-slow font-bebas mt-4 max-w-4xl text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[4rem]">
             Каждое неотвеченное сообщение — клиент,
             <br />
             который ушёл к конкуренту.
@@ -109,11 +114,20 @@ export default function LandingPage() {
           <div className="reveal stagger mt-16 grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-10">
             <PainBlock
               pain="Клиент написал в 22:30 — ответили утром. Он ушёл к конкуренту."
-              gain="ИИ отвечает за 3 секунды в любое время суток."
+              gain={
+                <>
+                  ИИ отвечает за <CountUp to={3} className="tabular-nums text-[#60A5FA] font-semibold" /> секунды в любое время суток.
+                </>
+              }
             />
             <PainBlock
               pain="Администратор за 45 000 ₽ болеет, в отпуске, увольняется."
-              gain="Liva ai работает 365 дней в году. 2 500 ₽/мес."
+              gain={
+                <>
+                  Liva ai работает <CountUp to={365} className="tabular-nums text-[#60A5FA] font-semibold" /> дней в году.{' '}
+                  <CountUp to={2500} format={(n) => Math.round(n).toLocaleString('ru-RU')} className="tabular-nums text-[#60A5FA] font-semibold" /> ₽/мес.
+                </>
+              }
             />
             <PainBlock
               pain="Диалоги в трёх мессенджерах — половину забываете."
@@ -130,7 +144,7 @@ export default function LandingPage() {
       >
         <div className="reveal mx-auto max-w-7xl px-6">
           <Eyebrow>Демо</Eyebrow>
-          <h2 className="font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[4rem]">
+          <h2 className="parallax-slow font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[4rem]">
             Так выглядит диалог с клиентом
           </h2>
           <p className="mt-5 max-w-xl text-[15px] leading-[1.6] text-white/70">
@@ -166,7 +180,7 @@ export default function LandingPage() {
       <section id="features" className="relative border-t border-white/[0.08] py-24 sm:py-32">
         <div className="reveal mx-auto max-w-7xl px-6">
           <Eyebrow>Возможности</Eyebrow>
-          <h2 className="font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[4rem]">
+          <h2 className="parallax-slow font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[4rem]">
             Всё, что делает живой администратор
           </h2>
 
@@ -185,7 +199,7 @@ export default function LandingPage() {
       <section id="how" className="relative border-t border-white/[0.08] py-24 sm:py-32">
         <div className="reveal mx-auto max-w-7xl px-6">
           <Eyebrow>Как это работает</Eyebrow>
-          <h2 className="font-bebas mt-4 text-[2.5rem] uppercase leading-[1.02] tracking-[0.04em] sm:text-[3.5rem] lg:whitespace-nowrap lg:text-[3.75rem] xl:text-[5rem]">
+          <h2 className="parallax-slow font-bebas mt-4 text-[2.5rem] uppercase leading-[1.02] tracking-[0.04em] sm:text-[3.5rem] lg:whitespace-nowrap lg:text-[3.75rem] xl:text-[5rem]">
             Три шага. Один вечер. Никакого кода.
           </h2>
 
@@ -211,7 +225,7 @@ export default function LandingPage() {
       <section id="faq" className="relative border-t border-white/[0.08] py-24 sm:py-32">
         <div className="reveal mx-auto max-w-3xl px-6">
           <Eyebrow>Частые вопросы</Eyebrow>
-          <h2 className="font-bebas mt-4 text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[3.5rem]">
+          <h2 className="parallax-slow font-bebas mt-4 text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[3.5rem]">
             Отвечаем заранее
           </h2>
           <div className="mt-12 divide-y divide-white/[0.08] border-y border-white/[0.08]">
@@ -250,7 +264,7 @@ export default function LandingPage() {
       <section className="relative flex min-h-[80svh] items-center justify-center border-t border-white/[0.08] py-32">
         <div className="reveal mx-auto max-w-4xl px-6 text-center">
           <Eyebrow>Подключите сегодня</Eyebrow>
-          <h2 className="font-bebas mx-auto mt-5 max-w-3xl text-[3rem] uppercase leading-[1.02] tracking-[0.04em] sm:text-[6rem]">
+          <h2 className="parallax-slow font-bebas mx-auto mt-5 max-w-3xl text-[3rem] uppercase leading-[1.02] tracking-[0.04em] sm:text-[6rem]">
             Каждый день без Liva ai —
             <br />
             <span className="text-[#60A5FA]">упущенные клиенты</span>
@@ -423,7 +437,7 @@ function SpotlightCell({ children }: { children: React.ReactNode }) {
   );
 }
 
-function PainBlock({ pain, gain }: { pain: string; gain: string }) {
+function PainBlock({ pain, gain }: { pain: string; gain: React.ReactNode }) {
   return (
     <div>
       <div className="text-[13px] uppercase tracking-[0.14em] text-white/45">— Проблема</div>

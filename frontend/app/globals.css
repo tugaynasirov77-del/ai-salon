@@ -143,6 +143,18 @@ summary:focus-visible,
   }
 }
 
+/* ---------- Mini-parallax для section headers ----------
+   Каждый header-блок с классом .parallax-slow получает translateY
+   через CSS-переменную --p (-1..1, обновляется rAF в page.tsx).
+   Эффект едва заметный, добавляет «дыхание» при скролле. */
+.parallax-slow {
+  transform: translate3d(0, calc(var(--p, 0) * -22px), 0);
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .parallax-slow { transform: none; }
+}
+
 /* ---------- Reveal on scroll ---------- */
 .reveal {
   opacity: 0;

@@ -229,9 +229,13 @@ function LeadModal({ open, onClose }: { open: boolean; onClose: () => void }) {
                     onChange={(e) => setForm((f) => ({ ...f, niche: e.target.value }))}
                     className={modalInputCls + ' px-2'}
                   >
-                    <option value="">— Не указано —</option>
+                    {/* Явный чёрный текст в <option>, иначе тёмная тема ОС
+                        наследует белый и в dropdown ничего не видно. */}
+                    <option value="" style={{ color: '#000', background: '#fff' }}>— Не указано —</option>
                     {Object.entries(NICHES).map(([key, n]: any) => (
-                      <option key={key} value={key}>{n.emoji} {n.label}</option>
+                      <option key={key} value={key} style={{ color: '#000', background: '#fff' }}>
+                        {n.emoji} {n.label}
+                      </option>
                     ))}
                   </select>
                 </ModalField>

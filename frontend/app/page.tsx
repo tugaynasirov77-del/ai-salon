@@ -535,7 +535,7 @@ function SpaceXHeader() {
           <nav className="hidden items-center gap-8 text-[12px] font-bold uppercase tracking-[0.14em] text-white md:flex">
             <a href="#demo" className="hover:text-white/70">Демо</a>
             <a href="#features" className="hover:text-white/70">Возможности</a>
-            <a href="#how" className="hover:text-white/70">Как работает</a>
+            <Link href="/journey" className="hover:text-white/70">Как работает</Link>
             <a href="#pricing" className="hover:text-white/70">Тарифы</a>
             <a href="#faq" className="hover:text-white/70">FAQ</a>
             <Link href="/login" className="hover:text-white/70">Войти</Link>

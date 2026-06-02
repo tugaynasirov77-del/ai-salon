@@ -78,12 +78,13 @@ export function ComparisonTable() {
             </div>
           </div>
 
-          {/* Rows */}
-          <div className="divide-y divide-white/[0.05]">
-            {ROWS.map((row) => (
+          {/* Rows — каждая строка появляется со stagger-задержкой при выходе в viewport */}
+          <div className="reveal stagger divide-y divide-white/[0.05]">
+            {ROWS.map((row, i) => (
               <div
                 key={row.label}
                 className="grid grid-cols-[1fr_auto_auto] items-center gap-4 px-5 py-4 transition-colors hover:bg-white/[0.02] sm:gap-8 sm:px-8"
+                style={{ ['--row-i' as any]: i }}
               >
                 <div className="text-sm text-slate-200">{row.label}</div>
                 <div className="flex justify-end">

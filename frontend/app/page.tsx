@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Menu, X, Check } from 'lucide-react';
 import { PricingSection } from '@/components/landing/PricingSection';
@@ -10,6 +10,8 @@ import { ComparisonTable } from '@/components/landing/ComparisonTable';
 import { StickyCta } from '@/components/landing/StickyCta';
 import { ScrollTracker } from '@/components/analytics/ScrollTracker';
 import { TypingDemo } from '@/components/landing/TypingDemo';
+import { RevealInit } from '@/components/landing/RevealInit';
+import { CursorGlow } from '@/components/landing/CursorGlow';
 
 /*
  * SpaceX-inspired redesign.
@@ -24,6 +26,8 @@ export default function LandingPage() {
   return (
     <div className="relative min-h-screen bg-black text-white antialiased">
       <ScrollTracker />
+      <RevealInit />
+      <CursorGlow />
       <SpaceXHeader />
 
       {/* ───────── HERO BAND ───────── */}
@@ -64,7 +68,7 @@ export default function LandingPage() {
 
       {/* ───────── TRUST BAND ───────── */}
       <section className="relative border-t border-white/[0.08] py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="reveal mx-auto max-w-7xl px-6">
           <Eyebrow>Спокойно показывать клиентам</Eyebrow>
           <h2 className="font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[3.5rem]">
             Три причины, почему Liva ai не страшно подключить
@@ -92,7 +96,7 @@ export default function LandingPage() {
 
       {/* ───────── PAIN BAND ───────── */}
       <section className="relative border-t border-white/[0.08] py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="reveal mx-auto max-w-7xl px-6">
           <Eyebrow>Знакомо</Eyebrow>
           <h2 className="font-bebas mt-4 max-w-4xl text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[4rem]">
             Каждое неотвеченное сообщение — клиент,
@@ -122,7 +126,7 @@ export default function LandingPage() {
         id="demo"
         className="relative border-t border-white/[0.08] py-24 sm:py-32"
       >
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="reveal mx-auto max-w-7xl px-6">
           <Eyebrow>Демо</Eyebrow>
           <h2 className="font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[4rem]">
             Так выглядит диалог с клиентом
@@ -158,7 +162,7 @@ export default function LandingPage() {
 
       {/* ───────── FEATURES BAND ───────── */}
       <section id="features" className="relative border-t border-white/[0.08] py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="reveal mx-auto max-w-7xl px-6">
           <Eyebrow>Возможности</Eyebrow>
           <h2 className="font-bebas mt-4 max-w-3xl text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[4rem]">
             Всё, что делает живой администратор
@@ -177,7 +181,7 @@ export default function LandingPage() {
 
       {/* ───────── HOW BAND ───────── */}
       <section id="how" className="relative border-t border-white/[0.08] py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="reveal mx-auto max-w-7xl px-6">
           <Eyebrow>Как это работает</Eyebrow>
           <h2 className="font-bebas mt-4 text-[2.5rem] uppercase leading-[1.02] tracking-[0.04em] sm:text-[3.5rem] lg:whitespace-nowrap lg:text-[3.75rem] xl:text-[5rem]">
             Три шага. Один вечер. Никакого кода.
@@ -203,7 +207,7 @@ export default function LandingPage() {
 
       {/* ───────── FAQ BAND ───────── */}
       <section id="faq" className="relative border-t border-white/[0.08] py-24 sm:py-32">
-        <div className="mx-auto max-w-3xl px-6">
+        <div className="reveal mx-auto max-w-3xl px-6">
           <Eyebrow>Частые вопросы</Eyebrow>
           <h2 className="font-bebas mt-4 text-[2.5rem] uppercase leading-[1] tracking-[0.04em] sm:text-[3.5rem]">
             Отвечаем заранее
@@ -242,7 +246,7 @@ export default function LandingPage() {
 
       {/* ───────── FINAL CTA BAND ───────── */}
       <section className="relative flex min-h-[80svh] items-center justify-center border-t border-white/[0.08] py-32">
-        <div className="mx-auto max-w-4xl px-6 text-center">
+        <div className="reveal mx-auto max-w-4xl px-6 text-center">
           <Eyebrow>Подключите сегодня</Eyebrow>
           <h2 className="font-bebas mx-auto mt-5 max-w-3xl text-[3rem] uppercase leading-[1.02] tracking-[0.04em] sm:text-[6rem]">
             Каждый день без Liva ai —
@@ -364,21 +368,55 @@ function CtaGhost({
 
 function TrustCell({ eyebrow, title, text }: { eyebrow: string; title: string; text: string }) {
   return (
-    <div className="bg-black p-8">
+    <SpotlightCell>
       <Eyebrow>{eyebrow}</Eyebrow>
       <h3 className="font-bebas mt-3 text-[1.75rem] uppercase leading-[1.05] tracking-[0.04em]">
         {title}
       </h3>
       <p className="mt-4 text-[14px] leading-[1.6] text-white/65">{text}</p>
-    </div>
+    </SpotlightCell>
   );
 }
 
 function FeatureCell({ title, text }: { title: string; text: string }) {
   return (
-    <div className="bg-black p-8">
+    <SpotlightCell>
       <h3 className="font-bebas text-[1.5rem] uppercase leading-[1.1] tracking-[0.04em]">{title}</h3>
       <p className="mt-3 text-[14px] leading-[1.6] text-white/65">{text}</p>
+    </SpotlightCell>
+  );
+}
+
+/**
+ * Ячейка с hover-spotlight: при наведении синее пятно следует за курсором
+ * внутри карточки + lift вверх. Без библиотек — pointermove + CSS-переменные.
+ * На touch-устройствах эффект не активируется (no hover).
+ */
+function SpotlightCell({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  function onMove(e: React.PointerEvent<HTMLDivElement>) {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    el.style.setProperty('--my', `${e.clientY - r.top}px`);
+  }
+  return (
+    <div
+      ref={ref}
+      onPointerMove={onMove}
+      className="group relative bg-black p-8 transition-transform duration-300 hover:-translate-y-1"
+      data-hover
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background:
+            'radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(59,130,246,0.15), transparent 60%)',
+        }}
+      />
+      <div className="relative">{children}</div>
     </div>
   );
 }

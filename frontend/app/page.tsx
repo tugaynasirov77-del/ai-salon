@@ -266,7 +266,7 @@ export default function LandingPage() {
       <StickyCta />
 
       {/* ───────── FOOTER ───────── */}
-      <footer className="py-16">
+      <footer className="pb-0 pt-16">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-10 px-6 sm:grid-cols-4">
           <div className="col-span-2">
             <Logo size={28} variant="light" />
@@ -296,7 +296,7 @@ export default function LandingPage() {
             перекладины (греческая Λ). Совпадает с бренд-вордмарком на лого. */}
         <div
           aria-hidden
-          className="font-sans pointer-events-none mt-20 w-full select-none overflow-hidden text-center font-light leading-[0.85]"
+          className="font-sans pointer-events-none mt-12 w-full select-none overflow-hidden text-center font-light leading-[0.78]"
           style={{
             color: 'transparent',
             WebkitTextStroke: '1px rgba(124,138,171,0.5)',

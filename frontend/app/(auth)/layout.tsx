@@ -7,7 +7,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <header className="border-b border-white/[0.08] bg-black">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
           <Link href="/" className="inline-flex">
-            <Logo size={30} variant="dark" />
+            <Logo size={30} variant="light" />
           </Link>
           <nav className="flex items-center gap-3">
             <Link

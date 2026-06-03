@@ -88,7 +88,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div className="relative min-h-screen bg-black text-white">
       {/* Mobile header */}
       <div className="flex items-center justify-between border-b border-white/[0.08] bg-black px-4 py-3 md:hidden">
-        <Logo size={26} variant="dark" />
+        <Logo size={26} variant="light" />
         <button onClick={() => setMobileOpen(!mobileOpen)} aria-label="Меню" className="text-white">
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -103,7 +103,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       >
         <div className="flex h-full flex-col">
           <div className="border-b border-white/[0.08] px-5 py-5">
-            <Logo size={28} variant="dark" />
+            <Logo size={28} variant="light" />
             <div className="mt-4 font-bebas text-[15px] uppercase tracking-[0.08em] text-white">
               {salon?.name || '—'}
             </div>

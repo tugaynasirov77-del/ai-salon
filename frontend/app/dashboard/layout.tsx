@@ -26,7 +26,6 @@ import { ChannelStatus } from '@/components/dashboard/ChannelStatus';
 import { NotificationManager } from '@/components/dashboard/NotificationManager';
 import { apiMe, apiLogout, hasToken, useAuthStore } from '@/lib/auth';
 import { Logo } from '@/components/landing/Logo';
-import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { fetchConversations } from '@/lib/api';
 
 const NAV = [
@@ -37,7 +36,7 @@ const NAV = [
   { href: '/dashboard/analytics', label: 'Аналитика', icon: BarChart3 },
   { href: '/dashboard/services', label: 'Услуги', icon: Scissors },
   { href: '/dashboard/masters', label: 'Мастера', icon: UserCog },
-  { href: '/dashboard/working-hours', label: 'График работы', icon: CalendarClock },
+  { href: '/dashboard/working-hours', label: 'График', icon: CalendarClock },
   { href: '/dashboard/faq', label: 'FAQ', icon: HelpCircle },
   { href: '/dashboard/test-chat', label: 'Тест-чат', icon: Sparkles },
   { href: '/dashboard/settings', label: 'Настройки', icon: Settings },
@@ -49,7 +48,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [mobileOpen, setMobileOpen] = useState(false);
   const { user, salon, loaded, setSession, clear } = useAuthStore();
 
-  // Поллим диалоги для бейджа непрочитанных + браузерных уведомлений.
   const convQ = useQuery({
     queryKey: ['conversations', salon?.id],
     queryFn: () => fetchConversations(salon!.id),
@@ -58,7 +56,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   });
   const totalUnread = (convQ.data || []).reduce((s, c) => s + (c.unreadCount || 0), 0);
 
-  // Auth guard + загрузка профиля при первом рендере
   useEffect(() => {
     if (loaded) return;
     if (!hasToken()) {
@@ -81,48 +78,41 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (!loaded || !user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-[#080C14]">
-        <Loader2 className="h-6 w-6 animate-spin text-slate-400" />
+      <div className="flex min-h-screen items-center justify-center bg-black">
+        <Loader2 className="h-6 w-6 animate-spin text-white/40" />
       </div>
     );
   }
 
   return (
-    <div className="relative min-h-screen bg-slate-50 text-[#12151C] dark:bg-[#080C14] dark:text-slate-100">
-      {/* Ambient glow для премиальной атмосферы (только в dark) */}
-      <div className="pointer-events-none fixed inset-0 -z-10 hidden dark:block">
-        <div className="absolute -top-40 -left-32 h-[500px] w-[500px] rounded-full bg-amber-600/15 blur-[140px]" />
-        <div className="absolute bottom-[-200px] right-[-100px] h-[480px] w-[480px] rounded-full bg-amber-600/10 blur-[140px]" />
-      </div>
-
-      <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 md:hidden dark:border-white/[0.06] dark:bg-[#080C14]/80 dark:backdrop-blur-xl">
-        <Logo size={26} variant="auto" />
-        <div className="flex items-center gap-1">
-          <ThemeToggle />
-          <button onClick={() => setMobileOpen(!mobileOpen)} aria-label="Меню">
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </div>
+    <div className="relative min-h-screen bg-black text-white">
+      {/* Mobile header */}
+      <div className="flex items-center justify-between border-b border-white/[0.08] bg-black px-4 py-3 md:hidden">
+        <Logo size={26} variant="dark" />
+        <button onClick={() => setMobileOpen(!mobileOpen)} aria-label="Меню" className="text-white">
+          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
       </div>
 
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-40 w-60 border-r border-slate-200 bg-white transition-transform',
-          'dark:border-white/[0.06] dark:bg-[#080C14]/80 dark:backdrop-blur-xl',
+          'fixed inset-y-0 left-0 z-40 w-60 border-r border-white/[0.08] bg-black transition-transform',
           'md:translate-x-0',
           mobileOpen ? 'translate-x-0' : '-translate-x-full',
         )}
       >
         <div className="flex h-full flex-col">
-          <div className="border-b border-slate-100 px-5 py-5 dark:border-white/[0.06]">
-            <Logo size={28} variant="auto" />
-            <div className="mt-3 text-sm font-medium text-slate-700 dark:text-slate-300">
+          <div className="border-b border-white/[0.08] px-5 py-5">
+            <Logo size={28} variant="dark" />
+            <div className="mt-4 font-bebas text-[15px] uppercase tracking-[0.08em] text-white">
               {salon?.name || '—'}
             </div>
-            <div className="text-xs text-slate-500">Тариф: {salon?.plan || 'free'}</div>
+            <div className="mt-1 text-[10px] font-medium uppercase tracking-[0.18em] text-white/45">
+              Тариф · {salon?.plan || 'free'}
+            </div>
           </div>
 
-          <nav className="flex-1 overflow-y-auto space-y-1 px-3 py-4">
+          <nav className="flex-1 space-y-0.5 overflow-y-auto px-3 py-4">
             {NAV.map((item) => {
               const Icon = item.icon;
               const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
@@ -132,19 +122,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   href={item.href}
                   onClick={() => setMobileOpen(false)}
                   className={cn(
-                    'group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all',
+                    'group relative flex items-center gap-3 px-3 py-2.5 text-[11px] font-bold uppercase tracking-[0.14em] transition-colors',
                     active
-                      ? 'bg-gradient-to-r from-amber-500/20 via-amber-500/15 to-amber-500/10 text-white shadow-[inset_0_0_0_1px_rgba(59,130,246,0.25)] dark:text-white'
-                      : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/[0.04] dark:hover:text-slate-200',
+                      ? 'bg-white/[0.06] text-white'
+                      : 'text-white/55 hover:bg-white/[0.03] hover:text-white',
                   )}
                 >
-                  {active && (
-                    <span className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-[#38BDF8] via-[#38BDF8] to-[#3B82F6]" />
-                  )}
-                  <Icon className={cn('h-4 w-4', active && 'text-amber-300')} />
+                  {active && <span className="absolute left-0 top-0 h-full w-0.5 bg-[#3B82F6]" />}
+                  <Icon className="h-4 w-4 shrink-0" />
                   <span className="flex-1">{item.label}</span>
                   {item.href === '/dashboard/conversations' && totalUnread > 0 && (
-                    <span className="rounded-full bg-gradient-to-r from-[#38BDF8] to-[#3B82F6] px-1.5 py-0.5 text-[10px] font-semibold text-white shadow-[0_0_10px_rgba(59,130,246,0.6)]">
+                    <span className="rounded-full bg-[#3B82F6] px-1.5 py-0.5 text-[10px] font-semibold tracking-normal text-white">
                       {totalUnread > 99 ? '99+' : totalUnread}
                     </span>
                   )}
@@ -153,26 +141,25 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             })}
           </nav>
 
-          <div className="border-t border-slate-100 px-5 py-3 dark:border-white/[0.06]">
+          <div className="border-t border-white/[0.08] px-5 py-3">
             <ChannelStatus />
           </div>
 
-          <div className="flex items-center gap-3 border-t border-slate-100 px-5 py-3 dark:border-white/[0.06]">
+          <div className="flex items-center gap-3 border-t border-white/[0.08] px-5 py-3">
             <Link
               href="/dashboard/profile"
               onClick={() => setMobileOpen(false)}
-              className="flex flex-1 items-center gap-3 rounded-lg p-1 transition-colors hover:bg-white/[0.04]"
+              className="flex flex-1 items-center gap-3 p-1 transition-colors hover:bg-white/[0.04]"
               aria-label="Профиль"
             >
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#3B82F6] via-[#3B82F6] to-[#2563EB] text-sm font-semibold text-white">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] text-sm font-semibold text-white">
                 {(salon?.ownerName || user.email || '?').charAt(0).toUpperCase()}
               </div>
-              <div className="flex-1 truncate text-sm font-medium text-slate-700 dark:text-slate-300">
+              <div className="flex-1 truncate text-[11px] font-medium uppercase tracking-[0.14em] text-white/70">
                 {salon?.ownerName || user.email}
               </div>
             </Link>
-            <ThemeToggle />
-            <button onClick={logout} className="text-slate-400 transition-colors hover:text-red-400" aria-label="Выход">
+            <button onClick={logout} className="text-white/45 transition-colors hover:text-red-400" aria-label="Выход">
               <LogOut className="h-4 w-4" />
             </button>
           </div>

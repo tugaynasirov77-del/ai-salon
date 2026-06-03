@@ -37,13 +37,12 @@ export function StickyCta() {
         (visible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0')
       }
     >
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-20 bg-[radial-gradient(ellipse_50%_100%_at_50%_100%,rgba(59,130,246,0.4),transparent_70%)] blur-xl" />
-      <div className="pointer-events-auto relative flex w-full max-w-3xl items-center gap-3 rounded-2xl border border-white/10 bg-[#080C14]/40 px-4 py-2.5 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] backdrop-blur-md sm:gap-4 sm:rounded-full sm:px-5 sm:py-3">
-        <div className="flex shrink-0 items-center gap-2.5">
-          <LogoMark size={32} />
-          <div className="hidden text-xs leading-tight sm:block">
-            <div className="font-semibold text-white">Готовы попробовать?</div>
-            <div className="text-slate-400">Запуск за 15 минут</div>
+      <div className="pointer-events-auto relative flex w-full max-w-3xl items-center gap-3 rounded-2xl border border-white/[0.12] bg-black/40 px-4 py-2.5 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.9)] backdrop-blur-md sm:gap-4 sm:rounded-full sm:px-5 sm:py-3">
+        <div className="flex shrink-0 items-center gap-3">
+          <LogoMark size={28} />
+          <div className="hidden leading-tight sm:block">
+            <div className="font-bebas text-[15px] uppercase tracking-[0.08em] text-white">Готовы попробовать?</div>
+            <div className="text-[10px] font-medium uppercase tracking-[0.18em] text-white/45">Запуск за 15 минут</div>
           </div>
         </div>
 
@@ -51,17 +50,16 @@ export function StickyCta() {
           <Link
             href="#pricing"
             onClick={() => track('cta_pricing_anchor', { location: 'sticky' })}
-            className="hidden rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-2 text-xs font-medium text-slate-200 hover:bg-white/[0.08] sm:inline-flex"
+            className="hidden items-center justify-center rounded-full border border-white/70 bg-transparent px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-white transition-colors hover:bg-white hover:text-black sm:inline-flex"
           >
             Тарифы
           </Link>
           <Link
             href="/register"
             onClick={() => track('cta_register', { location: 'sticky' })}
-            className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-gradient-to-r from-[#38BDF8] via-[#3B82F6] to-[#2563EB] px-3.5 py-2 text-xs font-semibold text-white shadow-[0_0_24px_-4px_rgba(59,130,246,0.7)] sm:px-4 sm:text-sm"
+            className="inline-flex items-center gap-1.5 rounded-full bg-[#3B82F6] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-white shadow-[0_0_0_1px_rgba(59,130,246,0.4),0_0_30px_-8px_rgba(59,130,246,0.7)] transition-all hover:bg-[#2563EB]"
           >
-            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-            Начать бесплатно
+            Начать
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>

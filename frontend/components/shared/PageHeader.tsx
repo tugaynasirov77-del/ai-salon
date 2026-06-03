@@ -1,11 +1,14 @@
 export function PageHeader({ title, description }: { title: string; description?: string }) {
   return (
-    <header className="mb-6">
-      <h1 className="bg-gradient-to-b from-[#12151C] to-slate-700 bg-clip-text text-2xl font-semibold tracking-tight text-transparent dark:from-white dark:to-white/70">
+    <header className="mb-8 border-b border-white/[0.08] pb-6">
+      <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/45">
+        Liva ai · Админка
+      </div>
+      <h1 className="font-bebas mt-2 text-[2rem] uppercase leading-[1] tracking-[0.04em] text-white sm:text-[2.5rem]">
         {title}
       </h1>
       {description && (
-        <p className="mt-1.5 text-sm text-slate-500 dark:text-slate-400">{description}</p>
+        <p className="mt-3 max-w-2xl text-sm text-white/55">{description}</p>
       )}
     </header>
   );

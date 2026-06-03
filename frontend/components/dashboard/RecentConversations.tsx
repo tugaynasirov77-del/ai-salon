@@ -23,12 +23,12 @@ const CHANNEL_ICON: Record<Channel, React.ComponentType<{ className?: string }>>
 };
 
 const CHANNEL_COLOR: Record<Channel, string> = {
-  telegram: 'text-amber-500',
-  max: 'text-purple-500',
-  vk: 'text-amber-500',
-  sms: 'text-slate-500',
-  webchat: 'text-emerald-500',
-  avito: 'text-orange-500',
+  telegram: 'text-[#60A5FA]',
+  max: 'text-purple-400',
+  vk: 'text-[#60A5FA]',
+  sms: 'text-white/45',
+  webchat: 'text-emerald-400',
+  avito: 'text-orange-400',
 };
 
 function initials(name?: string | null) {
@@ -54,48 +54,48 @@ export function RecentConversations({ items, loading, limit = 5 }: Props) {
           <div className="space-y-3 p-5">
             {[0, 1, 2, 3, 4].map((i) => (
               <div key={i} className="flex gap-3">
-                <div className="h-9 w-9 animate-pulse rounded-full bg-slate-200 dark:bg-slate-800" />
+                <div className="h-9 w-9 animate-pulse rounded-full bg-white/[0.08]" />
                 <div className="flex-1 space-y-2">
-                  <div className="h-3 w-24 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-                  <div className="h-3 w-full animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
+                  <div className="h-3 w-24 animate-pulse bg-white/[0.08]" />
+                  <div className="h-3 w-full animate-pulse bg-white/[0.08]" />
                 </div>
               </div>
             ))}
           </div>
         ) : list.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 text-slate-400">
+          <div className="flex flex-col items-center justify-center py-12 text-white/35">
             <MailX className="mb-3 h-10 w-10" />
-            <div className="text-sm">Диалогов пока нет</div>
+            <div className="text-[11px] font-medium uppercase tracking-[0.18em]">Диалогов пока нет</div>
           </div>
         ) : (
-          <ul className="divide-y divide-slate-100 dark:divide-slate-800">
+          <ul className="divide-y divide-white/[0.06]">
             {list.map((it) => {
               const ch = it.client.preferredChannel;
               const Icon = CHANNEL_ICON[ch];
               const msg = it.lastMessage;
               return (
-                <li key={it.client.id} className="flex gap-3 px-5 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-amber-100 text-sm font-semibold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
+                <li key={it.client.id} className="flex gap-3 px-5 py-3 hover:bg-white/[0.03]">
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] text-sm font-semibold text-white">
                     {initials(it.client.name)}
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-1.5 truncate">
-                        <span className="truncate text-sm font-medium text-[#12151C] dark:text-slate-100">
+                        <span className="truncate text-sm font-medium text-white">
                           {it.client.name || 'Без имени'}
                         </span>
                         <Icon className={`h-3.5 w-3.5 flex-shrink-0 ${CHANNEL_COLOR[ch]}`} />
                         {it.messagesCount > 0 && (
-                          <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-500 dark:bg-slate-800">
+                          <span className="border border-white/10 px-1.5 py-0.5 text-[10px] font-medium text-white/55">
                             {it.messagesCount}
                           </span>
                         )}
                       </div>
                       {msg && (
-                        <span className="flex-shrink-0 text-xs text-slate-400">{timeAgo(msg.createdAt)}</span>
+                        <span className="flex-shrink-0 text-[10px] font-medium uppercase tracking-[0.14em] text-white/40">{timeAgo(msg.createdAt)}</span>
                       )}
                     </div>
-                    <div className="mt-0.5 truncate text-xs text-slate-500 dark:text-slate-400">
+                    <div className="mt-0.5 truncate text-xs text-white/55">
                       {msg ? truncate(msg.text, 50) : 'Нет сообщений'}
                     </div>
                   </div>

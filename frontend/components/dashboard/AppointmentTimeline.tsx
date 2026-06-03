@@ -10,10 +10,10 @@ interface Props {
 }
 
 const STATUS: Record<AppointmentStatus, { color: string; label: string }> = {
-  confirmed: { color: 'bg-green-500', label: 'Подтверждена' },
-  completed: { color: 'bg-slate-400', label: 'Завершена' },
-  cancelled: { color: 'bg-red-500', label: 'Отменена' },
-  no_show: { color: 'bg-orange-500', label: 'Не пришёл' },
+  confirmed: { color: 'bg-emerald-400', label: 'Подтверждена' },
+  completed: { color: 'bg-white/40', label: 'Завершена' },
+  cancelled: { color: 'bg-red-400', label: 'Отменена' },
+  no_show: { color: 'bg-orange-400', label: 'Не пришёл' },
 };
 
 function fmtTime(d: Date | string) {
@@ -38,21 +38,21 @@ export function AppointmentTimeline({ appointments, clients, loading }: Props) {
           <div className="space-y-4">
             {[0, 1, 2].map((i) => (
               <div key={i} className="flex gap-4">
-                <div className="h-3 w-3 mt-2 animate-pulse rounded-full bg-slate-200 dark:bg-slate-800" />
+                <div className="mt-2 h-3 w-3 animate-pulse rounded-full bg-white/[0.08]" />
                 <div className="flex-1 space-y-2">
-                  <div className="h-4 w-32 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-                  <div className="h-3 w-48 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
+                  <div className="h-4 w-32 animate-pulse bg-white/[0.08]" />
+                  <div className="h-3 w-48 animate-pulse bg-white/[0.08]" />
                 </div>
               </div>
             ))}
           </div>
         ) : items.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 text-slate-400">
+          <div className="flex flex-col items-center justify-center py-12 text-white/35">
             <CalendarOff className="mb-3 h-10 w-10" />
-            <div className="text-sm">Сегодня записей нет</div>
+            <div className="text-[11px] font-medium uppercase tracking-[0.18em]">Сегодня записей нет</div>
           </div>
         ) : (
-          <ol className="relative space-y-5 border-l border-slate-200 pl-6 dark:border-slate-800">
+          <ol className="relative space-y-5 border-l border-white/[0.08] pl-6">
             {items.map((a) => {
               const client = clients.find((c) => c.id === a.clientId);
               const s = STATUS[a.status];
@@ -60,19 +60,19 @@ export function AppointmentTimeline({ appointments, clients, loading }: Props) {
                 <li key={a.id} className="relative">
                   <span
                     className={cn(
-                      'absolute -left-[31px] top-1.5 h-3 w-3 rounded-full ring-4 ring-white dark:ring-[#12151C]',
+                      'absolute -left-[31px] top-1.5 h-3 w-3 rounded-full ring-4 ring-black',
                       s.color,
                     )}
                   />
                   <div className="flex items-baseline gap-3">
-                    <span className="text-sm font-semibold text-[#12151C] dark:text-slate-100">
+                    <span className="font-bebas text-[1.1rem] uppercase tracking-[0.04em] text-white">
                       {fmtTime(a.datetime)}
                     </span>
-                    <span className="text-xs text-slate-400">{s.label}</span>
+                    <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-white/45">{s.label}</span>
                   </div>
-                  <div className="mt-0.5 text-sm text-slate-700 dark:text-slate-300">
+                  <div className="mt-1 text-sm text-white/70">
                     {client?.name || 'Клиент'} · {a.service}
-                    {a.master && <span className="text-slate-400"> · {a.master}</span>}
+                    {a.master && <span className="text-white/40"> · {a.master}</span>}
                   </div>
                 </li>
               );

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Loader2, ArrowRight } from 'lucide-react';
@@ -21,6 +21,14 @@ const inputCls =
 const labelCls = 'mb-1 block text-xs font-medium uppercase tracking-wider text-slate-400';
 
 export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="text-sm text-slate-400">Загрузка…</div>}>
+      <RegisterPageInner />
+    </Suspense>
+  );
+}
+
+function RegisterPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const setSession = useAuthStore((s) => s.setSession);
